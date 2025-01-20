@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Company extends Model
+class TaskPriority extends Model
 {
     protected $fillable = [
-        'title'
+        'title',
+        'key'
     ];
 
-    public function task(): HasMany
+    public function tasks(): HasMany
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class, 'priority_id');
     }
 }
