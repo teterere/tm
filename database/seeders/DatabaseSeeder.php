@@ -26,5 +26,10 @@ class DatabaseSeeder extends Seeder
             'company_id' => $company->id,
             'password'   => Hash::make('parole123')
         ]);
+
+        $this->call([
+            TaskPrioritySeeder::class,
+            TaskSeeder::class
+        ]);
     }
 }
