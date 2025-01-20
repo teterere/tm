@@ -1,4 +1,12 @@
 <template>
+    <!--
+      This example requires updating your template:
+
+      ```
+      <html class="h-full bg-white">
+      <body class="h-full">
+      ```
+    -->
     <div>
         <TransitionRoot as="template" :show="sidebarOpen">
             <Dialog class="relative z-50 lg:hidden" @close="sidebarOpen = false">
@@ -102,63 +110,127 @@
         </div>
 
         <div class="lg:pl-72">
-            <div class="sticky top-0 z-40 lg:mx-auto lg:max-w-7xl lg:px-8">
-                <div class="flex h-16 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-2xs sm:gap-x-6 sm:px-6 lg:px-0 lg:shadow-none">
-                    <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="sidebarOpen = true">
-                        <span class="sr-only">Open sidebar</span>
-                        <Bars3Icon class="size-6" aria-hidden="true" />
-                    </button>
+            <div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8">
+                <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="sidebarOpen = true">
+                    <span class="sr-only">Open sidebar</span>
+                    <Bars3Icon class="size-6" aria-hidden="true" />
+                </button>
 
-                    <!-- Separator -->
-                    <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" />
+                <!-- Separator -->
+                <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" />
 
-                    <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                        <form class="grid flex-1 grid-cols-1" action="#" method="GET">
-                            <input type="search" name="search" aria-label="Search" class="col-start-1 row-start-1 block size-full bg-white pl-8 text-base text-gray-900 outline-hidden placeholder:text-gray-400 sm:text-sm/6" placeholder="Search" />
-                            <MagnifyingGlassIcon class="pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400" aria-hidden="true" />
-                        </form>
-                        <div class="flex items-center gap-x-4 lg:gap-x-6">
-                            <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
-                                <span class="sr-only">View notifications</span>
-                                <BellIcon class="size-6" aria-hidden="true" />
-                            </button>
+                <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
+                    <form class="grid flex-1 grid-cols-1" action="#" method="GET">
+                        <input type="search" name="search" aria-label="Meklēt" class="col-start-1 row-start-1 block size-full bg-white pl-8 text-base text-gray-900 outline-hidden placeholder:text-gray-400 sm:text-sm/6 border-0" placeholder="Meklēt" />
+                        <MagnifyingGlassIcon class="pointer-events-none col-start-1 row-start-1 size-5 self-center text-gray-400" aria-hidden="true" />
+                    </form>
+                    <div class="flex items-center gap-x-4 lg:gap-x-6">
+                        <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
+                            <span class="sr-only">View notifications</span>
+                            <BellIcon class="size-6" aria-hidden="true" />
+                        </button>
 
-                            <!-- Separator -->
-                            <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true" />
+                        <!-- Separator -->
+                        <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true" />
 
-                            <!-- Profile dropdown -->
-                            <Menu as="div" class="relative">
-                                <MenuButton class="-m-1.5 flex items-center p-1.5">
-                                    <span class="sr-only">Open user menu</span>
-                                    <img class="size-8 rounded-full bg-gray-50" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-                                    <span class="hidden lg:flex lg:items-center">
-                    <span class="ml-4 text-sm/6 font-semibold text-gray-900" aria-hidden="true">
-                                                {{ $page.props.auth.user.name }}
-                    </span>
-                    <ChevronDownIcon class="ml-2 size-5 text-gray-400" aria-hidden="true" />
+                        <!-- Profile dropdown -->
+                        <Menu as="div" class="relative">
+                            <MenuButton class="-m-1.5 flex items-center p-1.5">
+                                <span class="sr-only">Open user menu</span>
+                                <img class="size-8 rounded-full bg-gray-50" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                                <span class="hidden lg:flex lg:items-center">
+                  <span class="ml-4 text-sm/6 font-semibold text-gray-900" aria-hidden="true">
+                      {{ $page.props.auth.user.name }}
                   </span>
-                                </MenuButton>
-                                <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                                    <MenuItems class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 ring-1 shadow-lg ring-gray-900/5 focus:outline-hidden">
-                                        <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                                            <a :href="item.href" :class="[active ? 'bg-gray-50 outline-hidden' : '', 'block px-3 py-1 text-sm/6 text-gray-900']">{{ item.name }}</a>
-                                        </MenuItem>
-                                        <MenuItem v-slot="{ active }">
-                                            <button @click.prevent="logout" :class="[active ? 'bg-gray-50 outline-hidden' : '', 'block px-3 py-1 text-sm/6 text-gray-900 cursor-pointer w-full text-left']">
-                                                Iziet
-                                            </button>
-                                        </MenuItem>
-                                    </MenuItems>
-                                </transition>
-                            </Menu>
-                        </div>
+                  <ChevronDownIcon class="ml-2 size-5 text-gray-400" aria-hidden="true" />
+                </span>
+                            </MenuButton>
+                            <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                                <MenuItems class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 ring-1 shadow-lg ring-gray-900/5 focus:outline-hidden">
+                                    <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
+                                        <a :href="item.href" :class="[active ? 'bg-gray-50 outline-hidden' : '', 'block px-3 py-1 text-sm/6 text-gray-900']">{{ item.name }}</a>
+                                    </MenuItem>
+                                    <MenuItem v-slot="{ active }">
+                                        <button @click.prevent="logout" :class="[active ? 'bg-gray-50 outline-hidden' : '', 'block px-3 py-1 text-sm/6 text-gray-900 cursor-pointer w-full text-left']">
+                                            Iziet
+                                        </button>
+                                    </MenuItem>
+                                </MenuItems>
+                            </transition>
+                        </Menu>
                     </div>
                 </div>
             </div>
 
             <main class="py-10">
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <!-- Your content -->
+                <div class="grid grid-cols-4 px-4 sm:px-6 lg:px-8 space-x-4">
+                    <div class="col-span-1 bg-slate-100 rounded p-3">
+                        <div class="border-b-2 mb-4 pb-2 border-indigo-200 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <h3 class="uppercase font-semibold text-sm text-gray-700 mr-2">Neiesākts</h3>
+                                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-indigo-100 text-xs font-bold text-indigo-500">3</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <PlusIcon class="h-4 w-4 text-gray-400" />
+                                <EllipsisHorizontalIcon class="h-4 w-4 text-gray-400" />
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded p-3">
+                            <div class="flex justify-between">
+                                <div class="flex space-x-2">
+                                <span class="inline-flex items-center gap-x-1.5 rounded-md bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-700">
+                                <svg class="size-1.5 fill-red-500" viewBox="0 0 6 6" aria-hidden="true">
+                                  <circle cx="3" cy="3" r="3"/>
+                                </svg>
+                                Augsta prioritāte
+                              </span>
+
+                                    <span class="inline-flex items-center rounded-md bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700">
+                                    Dizains
+                                </span>
+                                </div>
+
+                                <EllipsisHorizontalIcon class="h-4 w-4 text-gray-400" />
+                            </div>
+
+                            <div class="py-3">
+                                <h3 class="font-medium mb-2">Galvenās lapas dizaina prototipa izveide</h3>
+                                <p class="text-gray-500 text-sm line-clamp-3">Izveidot augstas kvalitātes dizaina prototipu galvenajai lapai, iekļaujot navigāciju, hero section, galveno piedāvājumu un aicinājumu uz darbību (CTA) pogas. Pārliecināties, ka dizains ir saskaņots ar uzņēmuma vizuālo identitāti un ir lietotājam draudzīgs.</p>
+                            </div>
+                            <div class="flex items-center border-b-1 pb-2 mb-2">
+                                <ClockIcon class="h-4 w-4 text-gray-500 mr-1" />
+                                <span class="text-gray-500 text-xs">13. februāris</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <img class="inline-block size-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+
+                                <div class="flex items-center space-x-3">
+                                    <div class="flex items-center">
+                                        <CheckCircleIcon class="h-4 w-4 text-gray-500 mr-1" />
+                                        <span class="text-sm text-gray-500">2/4</span>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <EnvelopeIcon class="h-4 w-4 text-gray-500 mr-1" />
+                                        <span class="text-sm text-gray-500">2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-span-1 bg-slate-100 rounded">
+                        // procesā
+
+                    </div>
+                    <div class="col-span-1 bg-slate-100 rounded">
+                        // tiek pārskatīts
+
+                    </div>
+                    <div class="col-span-1 bg-slate-100 rounded">
+                        // Izpildīts
+
+                    </div>
                 </div>
             </main>
         </div>
@@ -188,6 +260,11 @@ import {
     HomeIcon,
     UsersIcon,
     XMarkIcon,
+    PlusIcon,
+    EllipsisHorizontalIcon,
+    ClockIcon,
+    EnvelopeIcon,
+    CheckCircleIcon
 } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import {router} from "@inertiajs/vue3";
@@ -205,12 +282,11 @@ const teams = [
     { id: 2, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
     { id: 3, name: 'Workcation', href: '#', initial: 'W', current: false },
 ]
-
 const userNavigation = [
-    { name: 'Your profile', href: route('profile.show') }
+    { name: 'Your profile', href: '#' },
 ]
 
-const sidebarOpen = ref(false);
+const sidebarOpen = ref(false)
 
 const logout = () => {
     router.post(route('logout'));
