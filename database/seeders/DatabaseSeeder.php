@@ -16,18 +16,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $company = Company::create([
+        Company::create([
             'title' => 'Uzņēmums ABC'
         ]);
 
-        User::factory()->create([
-            'name'       => 'Andris Bērziņš',
-            'email'      => 'andris.berzins@example.com',
-            'company_id' => $company->id,
-            'password'   => Hash::make('parole123')
-        ]);
-
         $this->call([
+            UserSeeder::class,
             TaskPrioritySeeder::class,
             TaskSeeder::class
         ]);
