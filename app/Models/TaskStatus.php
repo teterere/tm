@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
+
+class TaskStatus extends Model
+{
+    protected $fillable = [
+        'title',
+        'key'
+    ];
+
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class, 'status_id');
+    }
+
+    public static function withTasksForCompany($companyId = null)
+    {
+        $companyId = $companyId ?? Auth::user()->company_id;
+
+        return self::withCount(['tasks' => function ($query) use ($companyId) {
+            $query->where('company_id', $companyId);
+        }])->get();
+    }
+}

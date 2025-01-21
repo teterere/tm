@@ -14,6 +14,7 @@ class Task extends Model
     protected $fillable = [
         'company_id',
         'assignee_id',
+        'status_id',
         'priority_id',
         'title',
         'description',
@@ -37,6 +38,11 @@ class Task extends Model
     public function assignee(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assignee_id');
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(TaskStatus::class, 'status_id');
     }
 
     public function priority(): HasOne
