@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
@@ -18,12 +19,15 @@ class TaskStatus extends Model
         return $this->hasMany(Task::class, 'status_id');
     }
 
-    public static function withTasksForCompany($companyId = null)
+    public static function withTasksForCompany($companyId = null): Collection
     {
         $companyId = $companyId ?? Auth::user()->company_id;
 
-        return self::withCount(['tasks' => function ($query) use ($companyId) {
-            $query->where('company_id', $companyId);
-        }])->get();
+        return self::with([
+            'tasks' => function ($query) use ($companyId) {
+                $query->with(['priority', 'assignee', 'status'])
+                    ->where('company_id', $companyId);
+            }
+        ])->get();
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Task;
 use App\Models\TaskPriority;
+use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -28,6 +29,7 @@ class TaskFactory extends Factory
             'due_date'    => $this->faker->dateTimeBetween('now', '+1 month'),
             'priority_id' => TaskPriority::inRandomOrder()->first()->id,
             'assignee_id' => User::inRandomOrder()->first()->id,
+            'status_id'   => TaskStatus::inRandomOrder()->first()->id,
             'estimate'    => $this->faker->randomFloat(2, 0, 24) + ($this->faker->numberBetween(0, 59) / 60)
         ];
     }

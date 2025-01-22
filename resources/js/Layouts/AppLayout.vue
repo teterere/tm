@@ -1,14 +1,5 @@
 <template>
-    <!--
-      This example requires updating your template:
-
-      ```
-      <html class="h-full bg-white">
-      <body class="h-full">
-      ```
-    -->
-    <div>
-        <TransitionRoot as="template" :show="sidebarOpen">
+    <TransitionRoot as="template" :show="sidebarOpen">
             <Dialog class="relative z-50 lg:hidden" @close="sidebarOpen = false">
                 <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="transition-opacity ease-linear duration-300" leave-from="opacity-100" leave-to="opacity-0">
                     <div class="fixed inset-0 bg-gray-900/80" />
@@ -68,48 +59,48 @@
             </Dialog>
         </TransitionRoot>
 
-        <!-- Static sidebar for desktop -->
-        <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-            <!-- Sidebar component, swap this element with another sidebar if you like -->
-            <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
-                <div class="flex h-16 shrink-0 items-center">
-                    <img class="h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />
-                </div>
-                <nav class="flex flex-1 flex-col">
-                    <ul role="list" class="flex flex-1 flex-col gap-y-7">
-                        <li>
-                            <ul role="list" class="-mx-2 space-y-1">
-                                <li v-for="item in navigation" :key="item.name">
-                                    <a :href="item.href" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold']">
-                                        <component :is="item.icon" :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600', 'size-6 shrink-0']" aria-hidden="true" />
-                                        {{ item.name }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <div class="text-xs/6 font-semibold text-gray-400">Your teams</div>
-                            <ul role="list" class="-mx-2 mt-2 space-y-1">
-                                <li v-for="team in teams" :key="team.name">
-                                    <a :href="team.href" :class="[team.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold']">
-                                        <span :class="[team.current ? 'border-indigo-600 text-indigo-600' : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600', 'flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium']">{{ team.initial }}</span>
-                                        <span class="truncate">{{ team.name }}</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="mt-auto">
-                            <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
-                                <Cog6ToothIcon class="size-6 shrink-0 text-gray-400 group-hover:text-indigo-600" aria-hidden="true" />
-                                Settings
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+    <!-- Static sidebar for desktop -->
+    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        <!-- Sidebar component, swap this element with another sidebar if you like -->
+        <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
+            <div class="flex h-16 shrink-0 items-center">
+                <img class="h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />
             </div>
+            <nav class="flex flex-1 flex-col">
+                <ul role="list" class="flex flex-1 flex-col gap-y-7">
+                    <li>
+                        <ul role="list" class="-mx-2 space-y-1">
+                            <li v-for="item in navigation" :key="item.name">
+                                <a :href="item.href" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold']">
+                                    <component :is="item.icon" :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600', 'size-6 shrink-0']" aria-hidden="true" />
+                                    {{ item.name }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="text-xs/6 font-semibold text-gray-400">Your teams</div>
+                        <ul role="list" class="-mx-2 mt-2 space-y-1">
+                            <li v-for="team in teams" :key="team.name">
+                                <a :href="team.href" :class="[team.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold']">
+                                    <span :class="[team.current ? 'border-indigo-600 text-indigo-600' : 'border-gray-200 text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600', 'flex size-6 shrink-0 items-center justify-center rounded-lg border bg-white text-[0.625rem] font-medium']">{{ team.initial }}</span>
+                                    <span class="truncate">{{ team.name }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="mt-auto">
+                        <a href="#" class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-indigo-600">
+                            <Cog6ToothIcon class="size-6 shrink-0 text-gray-400 group-hover:text-indigo-600" aria-hidden="true" />
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
+    </div>
 
-        <div class="lg:pl-72">
+    <div class="lg:pl-72">
             <div class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8">
                 <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="sidebarOpen = true">
                     <span class="sr-only">Open sidebar</span>
@@ -163,78 +154,9 @@
             </div>
 
             <main class="py-10">
-                <div class="grid grid-cols-4 px-4 sm:px-6 lg:px-8 space-x-4">
-                    <div class="col-span-1 bg-slate-100 rounded p-3">
-                        <div class="border-b-2 mb-4 pb-2 border-indigo-200 flex items-center justify-between">
-                            <div class="flex items-center">
-                                <h3 class="uppercase font-semibold text-sm text-gray-700 mr-2">Neiesākts</h3>
-                                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-indigo-100 text-xs font-bold text-indigo-500">3</span>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <PlusIcon class="h-4 w-4 text-gray-400" />
-                                <EllipsisHorizontalIcon class="h-4 w-4 text-gray-400" />
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded p-3">
-                            <div class="flex justify-between">
-                                <div class="flex space-x-2">
-                                <span class="inline-flex items-center gap-x-1.5 rounded-md bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-700">
-                                <svg class="size-1.5 fill-red-500" viewBox="0 0 6 6" aria-hidden="true">
-                                  <circle cx="3" cy="3" r="3"/>
-                                </svg>
-                                Augsta prioritāte
-                              </span>
-
-                                    <span class="inline-flex items-center rounded-md bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700">
-                                    Dizains
-                                </span>
-                                </div>
-
-                                <EllipsisHorizontalIcon class="h-4 w-4 text-gray-400" />
-                            </div>
-
-                            <div class="py-3">
-                                <h3 class="font-medium mb-2">Galvenās lapas dizaina prototipa izveide</h3>
-                                <p class="text-gray-500 text-sm line-clamp-3">Izveidot augstas kvalitātes dizaina prototipu galvenajai lapai, iekļaujot navigāciju, hero section, galveno piedāvājumu un aicinājumu uz darbību (CTA) pogas. Pārliecināties, ka dizains ir saskaņots ar uzņēmuma vizuālo identitāti un ir lietotājam draudzīgs.</p>
-                            </div>
-                            <div class="flex items-center border-b-1 pb-2 mb-2">
-                                <ClockIcon class="h-4 w-4 text-gray-500 mr-1" />
-                                <span class="text-gray-500 text-xs">13. februāris</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <img class="inline-block size-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-
-                                <div class="flex items-center space-x-3">
-                                    <div class="flex items-center">
-                                        <CheckCircleIcon class="h-4 w-4 text-gray-500 mr-1" />
-                                        <span class="text-sm text-gray-500">2/4</span>
-                                    </div>
-
-                                    <div class="flex items-center">
-                                        <EnvelopeIcon class="h-4 w-4 text-gray-500 mr-1" />
-                                        <span class="text-sm text-gray-500">2</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-span-1 bg-slate-100 rounded">
-                        // procesā
-
-                    </div>
-                    <div class="col-span-1 bg-slate-100 rounded">
-                        // tiek pārskatīts
-
-                    </div>
-                    <div class="col-span-1 bg-slate-100 rounded">
-                        // Izpildīts
-
-                    </div>
-                </div>
+                <slot />
             </main>
         </div>
-    </div>
 </template>
 
 <script setup>
@@ -260,11 +182,6 @@ import {
     HomeIcon,
     UsersIcon,
     XMarkIcon,
-    PlusIcon,
-    EllipsisHorizontalIcon,
-    ClockIcon,
-    EnvelopeIcon,
-    CheckCircleIcon
 } from '@heroicons/vue/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import {router} from "@inertiajs/vue3";

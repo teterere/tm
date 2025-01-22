@@ -47,6 +47,6 @@ class Task extends Model
 
     public function priority(): HasOne
     {
-        return $this->hasOne(TaskPriority::class, 'priority_id');
+        return $this->hasOne(TaskPriority::class, 'id', 'priority_id');
     }
 }

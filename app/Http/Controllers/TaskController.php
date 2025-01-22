@@ -2,17 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TaskStatusResource;
 use App\Models\Task;
+use App\Models\TaskStatus;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
-        //
+        $statuses = TaskStatus::withTasksForCompany();
+
+        return Inertia::render('Tasks/Index', [
+            'statuses' => TaskStatusResource::collection($statuses)
+        ]);
     }
 
     /**
