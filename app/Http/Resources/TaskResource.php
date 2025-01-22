@@ -19,6 +19,7 @@ class TaskResource extends JsonResource
             'assignee'    => $this->whenLoaded('assignee'),
             'priority'    => $this->whenLoaded('priority'),
             'status'      => $this->whenLoaded('status'),
+            'labels'      => $this->whenLoaded('labels'),
             'title'       => $this->title,
             'description' => $this->description,
             'due_date'    => $this->due_date->locale('lv')->translatedFormat('j. F'),

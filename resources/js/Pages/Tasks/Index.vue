@@ -23,9 +23,14 @@
                         {{ task.priority.title }}
                       </span>
 
-                            <span class="inline-flex items-center rounded-md bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700">
-                            Label
-                        </span>
+                        <div v-if="task.labels.length" class="flex items-center space-x-1">
+                            <span v-for="label in task.labels"
+                                  class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium text-blue-700"
+                                  :style="{ backgroundColor: label.color }"
+                            >
+                                <span :style="{ color: label.color, filter: 'brightness(30%)'}">{{ label.title }}</span>
+                            </span>
+                        </div>
                         </div>
 
                         <EllipsisHorizontalIcon class="h-4 w-4 text-gray-400" />

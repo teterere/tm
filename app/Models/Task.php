@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model
@@ -48,5 +49,10 @@ class Task extends Model
     public function priority(): HasOne
     {
         return $this->hasOne(TaskPriority::class, 'id', 'priority_id');
+    }
+
+    public function labels(): BelongsToMany
+    {
+        return $this->belongsToMany(TaskLabel::class, 'label_task', 'task_id', 'label_id');
     }
 }
