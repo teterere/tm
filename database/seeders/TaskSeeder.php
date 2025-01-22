@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Task;
+use App\Models\TaskLabel;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -56,11 +57,13 @@ class TaskSeeder extends Seeder
             ],
         ];
 
-        foreach ($tasks as $task) {
-            Task::factory()->create([
-                'title'       => $task['title'],
-                'description' => $task['description'],
-            ]);
+        foreach ($tasks as $data) {
+            $task = Task::factory()->create($data);
+
+            $task->labels()->sync(TaskLabel::inRandomOrder()->first()->id);
         }
+
+        // Add an extra label to one of the tasks
+        Task::inRandomOrder()->first()->labels()->sync(TaskLabel::inRandomOrder()->first()->id);
     }
 }

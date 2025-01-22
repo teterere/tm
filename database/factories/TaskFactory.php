@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Task;
+use App\Models\TaskLabel;
 use App\Models\TaskPriority;
 use App\Models\TaskStatus;
 use App\Models\User;
