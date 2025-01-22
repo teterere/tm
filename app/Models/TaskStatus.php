@@ -25,7 +25,7 @@ class TaskStatus extends Model
 
         return self::with([
             'tasks' => function ($query) use ($companyId) {
-                $query->with(['priority', 'assignee', 'status'])
+                $query->with(['priority', 'assignee', 'status', 'labels'])
                     ->where('company_id', $companyId);
             }
         ])->get();
