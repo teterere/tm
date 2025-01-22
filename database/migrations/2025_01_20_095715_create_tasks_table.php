@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('company_id')->index();
             $table->foreignId('status_id')->default(1);
-            $table->foreignId('label_id')->default(1);
             $table->foreignId('assignee_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('priority_id')->default(1);
             $table->string('title');
