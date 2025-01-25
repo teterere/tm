@@ -13,9 +13,10 @@
                     </div>
                 </div>
 
-                <Task v-for="task in status.tasks" :task="task" />
+                <Task @click="openTaskDetailsModal(task)" v-for="task in status.tasks" :task="task" />
             </div>
         </div>
+        <TaskDetailsModal v-if="selectedTask" :show="showTaskDetailsModal" :task="selectedTask" @close="closeTaskDetailsModal" />
     </AppLayout>
 </template>
 
@@ -30,8 +31,26 @@ import {
     CheckCircleIcon
 } from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
+import {computed, ref} from "vue";
+import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
 
 const props = defineProps({
-    statuses: Object
+    statuses: {
+        type: Object
+    }
 });
+
+const selectedTask = ref(null);
+
+const showTaskDetailsModal = ref(false);
+
+const openTaskDetailsModal = (task) => {
+    selectedTask.value = task;
+    showTaskDetailsModal.value = true;
+}
+
+const closeTaskDetailsModal = () => {
+    selectedTask.value = null;
+    showTaskDetailsModal.value = false;
+}
 </script>

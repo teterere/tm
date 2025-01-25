@@ -55,4 +55,13 @@ class Task extends Model
     {
         return $this->belongsToMany(TaskLabel::class, 'label_task', 'task_id', 'label_id');
     }
+
+    public function getFormattedEstimateAttribute()
+    {
+        $estimate = $this->estimate;
+        $hours = floor($estimate);
+        $minutes = round(($estimate - $hours) * 60);
+
+        return "{$hours}h {$minutes}min";
+    }
 }
