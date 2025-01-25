@@ -22,10 +22,8 @@
 </template>
 
 <script setup>
-
 import TaskComment from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComment.vue";
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import {ChevronDownIcon} from "@heroicons/vue/24/outline/index.js";
-import TaskListItem from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklistItem.vue";
 import AddCommentInput from "@/Components/Task/TaskDetailsModal/TaskComments/AddCommentInput.vue";
 </script>
