@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Task;
+use App\Models\TaskChecklistItem;
 use App\Models\TaskLabel;
+use Database\Factories\TaskChecklistItemFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -61,6 +63,10 @@ class TaskSeeder extends Seeder
             $task = Task::factory()->create($data);
 
             $task->labels()->sync(TaskLabel::inRandomOrder()->first()->id);
+
+            TaskChecklistItem::factory()->count(rand(2, 8))->create([
+                'task_id' => $task->id
+            ]);
         }
 
         // Add an extra label to one of the tasks

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model
@@ -56,11 +57,21 @@ class Task extends Model
         return $this->belongsToMany(TaskLabel::class, 'label_task', 'task_id', 'label_id');
     }
 
+    public function checklistItems(): HasMany
+    {
+        return $this->hasMany(TaskChecklistItem::class);
+    }
+
     public function getFormattedEstimateAttribute(): string
     {
         $hours = floor($this->estimate);
         $minutes = round(($this->estimate - $hours) * 60);
 
         return "{$hours}h {$minutes}min";
+    }
+
+    public function getCompletedChecklistItemsCountAttribute(): int
+    {
+        return $this->checklistItems()->where('completed', true)->count();
     }
 }
