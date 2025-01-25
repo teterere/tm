@@ -10,7 +10,10 @@
                     <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
                         <DialogPanel class="relative transform sm:max-w-4xl rounded bg-white px-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:px-6 sm:pt-5 sm:pb-6">
                             <div class="flex justify-between items-center border-b border-gray-200 pb-2 mb-4">
-                                <h3 class="text-base font-semibold text-gray-900">uzdevums</h3>
+                                <div class="flex items-center gap-x-1 text-xs font-medium text-gray-900 bg-gray-100 hover:bg-gray-200 p-2 rounded-sm cursor-pointer">
+                                    <LinkIcon class="h-4 w-4" />
+                                    <h5>DEV-123</h5>
+                                </div>
                                 <div @click="show = false; $emit('close')" class="cursor-pointer p-2">
                                     <XMarkIcon class="w-6 h-6"></XMarkIcon>
                                 </div>
@@ -43,7 +46,7 @@
 <script setup>
 import TaskChecklist from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklist.vue";
 import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from "@headlessui/vue";
-import {XMarkIcon} from "@heroicons/vue/24/outline/index.js";
+import {XMarkIcon, LinkIcon} from "@heroicons/vue/24/outline/index.js";
 import TaskInfoPanel from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoPanel.vue";
 import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComments.vue";
 
