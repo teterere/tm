@@ -36,7 +36,11 @@
             <div class="flex items-center space-x-3">
                 <div class="flex items-center">
                     <CheckCircleIcon class="h-4 w-4 text-gray-500 mr-1" />
-                    <span class="text-sm text-gray-500">2/4</span>
+                    <div class="flex text-xs font-medium text-gray-400">
+                        <span>{{ task.completed_checklist_items_count }}</span>
+                        <span>/</span>
+                        <span>{{ task.checklist_items.length}}</span>
+                    </div>
                 </div>
 
                 <div class="flex items-center">

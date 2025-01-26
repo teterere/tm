@@ -34,10 +34,6 @@ class TaskChecklistItemController extends Controller
             'task_id'     => $task->id,
             'description' => $request->get('description')
         ]);
-
-        $task->load('checklistItems');
-
-        return redirect()->route('tasks.show', $task->id)->with('success', 'Checklist item pievienots.');
     }
 
     /**

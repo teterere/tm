@@ -19,11 +19,7 @@
                                 </div>
                             </div>
 
-                            <div v-if="isLoading" class="text-center">
-                                <p>Ielādē...</p>
-                            </div>
-
-                            <div v-else-if="task" class="grid grid-cols-6 space-x-8">
+                            <div class="grid grid-cols-6 space-x-8">
                                 <div class="col-span-4">
                                     <div class="border-b border-gray-200 pb-4">
                                         <h2 class="text-xl font-medium mb-4">
@@ -40,10 +36,6 @@
                                 </div>
                                 <TaskInfoPanel :task="task" />
                             </div>
-
-                            <div v-else class="text-center">
-                                <p>Kļūda ielādējot uzdevuma datus.</p>
-                            </div>
                         </DialogPanel>
                     </TransitionChild>
                 </div>
@@ -59,6 +51,7 @@ import {XMarkIcon, LinkIcon} from "@heroicons/vue/24/outline/index.js";
 import TaskInfoPanel from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoPanel.vue";
 import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComments.vue";
 import {ref} from "vue";
+import {router} from "@inertiajs/vue3";
 
 const emit = defineEmits(['close']);
 
@@ -67,32 +60,30 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-    taskId: {
-        type: Number
+    task: {
+        type: Object
     }
 });
 
-const task = ref(null);
-const isLoading = ref(false);
-
-const fetchTask = async () => {
-    isLoading.value = true;
-    task.value = null;
-
-    try {
-        const response = await axios.get(route('tasks.show', { id: props.taskId }));
-        task.value = response.data.task; // Pieņemot, ka atgriež uzdevuma datus
-    } catch (error) {
-        console.error("Failed to load task:", error);
-    } finally {
-        isLoading.value = false;
-    }
-};
-
-fetchTask();
+// const fetchTask = async () => {
+//     isLoading.value = true;
+//     task.value = null;
+//     console.log('fetching task..')
+//
+//     try {
+//         const response = await axios.get(route('tasks.show', { id: props.taskId }));
+//         task.value = response.data.task;
+//         console.log(222, response.data.task)
+//     } catch (error) {
+//         console.error("Failed to load task:", error);
+//     } finally {
+//         isLoading.value = false;
+//     }
+// };
+//
+// fetchTask();
 
 const close = () => {
-    task.value = null;
     emit('close');
 }
 </script>

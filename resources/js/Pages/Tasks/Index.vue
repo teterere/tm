@@ -17,14 +17,15 @@
                     v-for="task in status.tasks"
                     :key="task.id"
                     :task="task"
-                    @click="openTaskDetailsModal(task.id)"
+                    @click="openTaskDetailsModal(task)"
                 />
             </div>
         </div>
+
         <TaskDetailsModal
             v-if="showTaskDetailsModal"
             :show="showTaskDetailsModal"
-            :task-id="selectedTaskId"
+            :task="selectedTask"
             @close="closeTaskDetailsModal"
         />
     </AppLayout>
@@ -36,12 +37,9 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import {
     PlusIcon,
     EllipsisHorizontalIcon,
-    ClockIcon,
-    EnvelopeIcon,
-    CheckCircleIcon
 } from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
-import {computed, ref} from "vue";
+import {ref, watch} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
 
 const props = defineProps({
@@ -50,16 +48,27 @@ const props = defineProps({
     }
 });
 
-const selectedTaskId = ref(null);
+const selectedTask = ref(null);
 const showTaskDetailsModal = ref(false);
 
-const openTaskDetailsModal = (taskId) => {
-    selectedTaskId.value = taskId;
+const openTaskDetailsModal = (task) => {
+    selectedTask.value = task;
     showTaskDetailsModal.value = true;
 };
 
 const closeTaskDetailsModal = () => {
-    selectedTaskId.value = null;
+    selectedTask.value = null;
     showTaskDetailsModal.value = false;
 };
+
+watch(() => props.statuses.data, (newStatuses) => {
+    // Iterē pa visiem statusiem un atrodi uzdevumus, kas varētu būt mainījušies
+    const updatedTask = newStatuses
+        .flatMap(status => status.tasks)
+        .find(task => task.id === selectedTask.value?.id);
+
+    if (updatedTask) {
+        selectedTask.value = updatedTask;  // Atjaunini selectedTask ar izmainīto uzdevumu
+    }
+}, { deep: true });
 </script>

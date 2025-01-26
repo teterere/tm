@@ -4,6 +4,7 @@
             v-model="form.description"
             @focus="showActionButtons = true"
             @blur="showActionButtons = false"
+            @keyup.enter="submitForm"
             type="text"
             class="block w-full rounded-xs bg-white pl-3 pr-16 py-1 text-base text-gray-900 outline-1 outline-gray-200 border-gray-200 focus:ring-0 focus:border-0 placeholder:text-gray-400 sm:text-sm/5"
             placeholder="Pievienot ierakstu" />
@@ -39,9 +40,8 @@ const resetInput = () => {
 
 const submitForm = () => {
     form.post(route('tasks.checklist-items.store', { task: props.task.id }), {
+        preserveScroll: true,
         onSuccess: () => {
-            // props.task.checklist_items = task.checklist_items; // Checklist items
-            // props.task.total_checklist_items = task.checklist_items.length; // Skaits (ja nepieciešams)
             form.reset();
         },
     });
