@@ -16,7 +16,7 @@
             </DisclosureButton>
             <DisclosurePanel class="text-gray-500">
                 <div class="space-y-1 ml-6">
-                    <input type="text" class="block w-full rounded-xs bg-white px-3 py-1 text-base text-gray-900 outline-1 outline-gray-200 border-gray-200 focus:border-outline-200 placeholder:text-gray-400 sm:text-sm/5 mb-3" placeholder="Pievienot ierakstu" />
+                    <NewChecklistItemInput />
                     <TaskListItem v-if="task.checklist_items.length" v-for="item in task.checklist_items" :item="item" />
                 </div>
             </DisclosurePanel>
@@ -29,6 +29,7 @@ import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import TaskListItem from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklistItem.vue";
 import {ChevronDownIcon} from "@heroicons/vue/24/outline/index.js";
 import TaskProgressbar from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskProgressbar.vue";
+import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskChecklist/NewChecklistItemInput.vue";
 
 defineProps({
     task: Object
