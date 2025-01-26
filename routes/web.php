@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TaskChecklistItemController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -21,3 +22,5 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [TaskController::class, 'index'])->name('dashboard');
 });
+
+Route::post('/tasks/{task}/checklist-items', [TaskChecklistItemController::class, 'store'])->name('tasks.checklist-items.store');

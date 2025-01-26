@@ -16,7 +16,7 @@
             </DisclosureButton>
             <DisclosurePanel class="text-gray-500">
                 <div class="space-y-1 ml-6">
-                    <NewChecklistItemInput />
+                    <NewChecklistItemInput :task="task" />
                     <TaskListItem v-if="task.checklist_items.length" v-for="item in task.checklist_items" :item="item" />
                 </div>
             </DisclosurePanel>

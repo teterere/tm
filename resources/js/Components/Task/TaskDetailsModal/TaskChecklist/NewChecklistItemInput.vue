@@ -8,7 +8,7 @@
             class="block w-full rounded-xs bg-white pl-3 pr-16 py-1 text-base text-gray-900 outline-1 outline-gray-200 border-gray-200 focus:ring-0 focus:border-0 placeholder:text-gray-400 sm:text-sm/5"
             placeholder="Pievienot ierakstu" />
         <div v-show="showActionButtons" class="absolute right-1 bottom-0.75 flex gap-x-1">
-            <button class="bg-gray-100 hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
+            <button @mousedown.prevent="submitForm" class="bg-gray-100 hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
                 <CheckIcon class="w-4 h-4" />
             </button>
             <button @mousedown.prevent="resetInput" class="bg-gray-100 hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
@@ -23,6 +23,10 @@ import {CheckIcon, XMarkIcon} from "@heroicons/vue/24/outline/index.js";
 import {ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 
+const props = defineProps({
+   task: Object
+});
+
 const showActionButtons = ref(false);
 
 const form = useForm({
@@ -32,4 +36,14 @@ const form = useForm({
 const resetInput = () => {
     form.description = '';
 }
+
+const submitForm = () => {
+    form.post(route('tasks.checklist-items.store', { task: props.task.id }), {
+        onSuccess: () => {
+            // props.task.checklist_items = task.checklist_items; // Checklist items
+            // props.task.total_checklist_items = task.checklist_items.length; // Skaits (ja nepieciešams)
+            form.reset();
+        },
+    });
+};
 </script>

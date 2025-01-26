@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TaskResource;
+use App\Models\Task;
 use App\Models\TaskChecklistItem;
 use Illuminate\Http\Request;
 
@@ -26,9 +28,16 @@ class TaskChecklistItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Task $task)
     {
-        //
+        TaskChecklistItem::create([
+            'task_id'     => $task->id,
+            'description' => $request->get('description')
+        ]);
+
+        $task->load('checklistItems');
+
+        return redirect()->route('tasks.show', $task->id)->with('success', 'Checklist item pievienots.');
     }
 
     /**
