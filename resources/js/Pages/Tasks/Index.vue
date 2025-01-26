@@ -13,10 +13,20 @@
                     </div>
                 </div>
 
-                <Task @click="openTaskDetailsModal(task)" v-for="task in status.tasks" :task="task" />
+                <Task
+                    v-for="task in status.tasks"
+                    :key="task.id"
+                    :task="task"
+                    @click="openTaskDetailsModal(task.id)"
+                />
             </div>
         </div>
-        <TaskDetailsModal v-if="selectedTask" :show="showTaskDetailsModal" :task="selectedTask" @close="closeTaskDetailsModal" />
+        <TaskDetailsModal
+            v-if="showTaskDetailsModal"
+            :show="showTaskDetailsModal"
+            :task-id="selectedTaskId"
+            @close="closeTaskDetailsModal"
+        />
     </AppLayout>
 </template>
 
@@ -40,17 +50,16 @@ const props = defineProps({
     }
 });
 
-const selectedTask = ref(null);
-
+const selectedTaskId = ref(null);
 const showTaskDetailsModal = ref(false);
 
-const openTaskDetailsModal = (task) => {
-    selectedTask.value = task;
+const openTaskDetailsModal = (taskId) => {
+    selectedTaskId.value = taskId;
     showTaskDetailsModal.value = true;
-}
+};
 
 const closeTaskDetailsModal = () => {
-    selectedTask.value = null;
+    selectedTaskId.value = null;
     showTaskDetailsModal.value = false;
-}
+};
 </script>

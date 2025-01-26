@@ -18,7 +18,14 @@
                                     <XMarkIcon class="w-6 h-6"></XMarkIcon>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-6 space-x-8">
+
+                            {{ taskId }}
+
+                            <div v-if="isLoading" class="text-center">
+                                <p>Ielādē...</p>
+                            </div>
+
+                            <div v-else-if="task" class="grid grid-cols-6 space-x-8">
                                 <div class="col-span-4">
                                     <div class="border-b border-gray-200 pb-4">
                                         <h2 class="text-xl font-medium mb-4">
@@ -35,6 +42,10 @@
                                 </div>
                                 <TaskInfoPanel :task="task" />
                             </div>
+
+                            <div v-else class="text-center">
+                                <p>Kļūda ielādējot uzdevuma datus.</p>
+                            </div>
                         </DialogPanel>
                     </TransitionChild>
                 </div>
@@ -49,18 +60,46 @@ import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from "@headlessui/
 import {XMarkIcon, LinkIcon} from "@heroicons/vue/24/outline/index.js";
 import TaskInfoPanel from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoPanel.vue";
 import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComments.vue";
+import {ref, watch, watchEffect} from "vue";
 
 const emit = defineEmits(['close']);
 
-defineProps({
+const props = defineProps({
     show: {
         type: Boolean,
         default: false
     },
-    task: {
-        type: Object
+    taskId: {
+        type: Number
     }
 });
+
+const task = ref(null);
+const isLoading = ref(false);
+
+watchEffect(
+    () => props.taskId,
+    async (newTaskId) => {
+        console.log('trying to load')
+
+        if (!newTaskId) {
+            return;
+        }
+
+        isLoading.value = true;
+        task.value = null;
+
+        try {
+            const response = await axios.get(route('tasks.show', { id: newTaskId }));
+            task.value = response.data; // Pieņemot, ka atgriež uzdevuma datus
+            console.log(task.value);
+        } catch (error) {
+            console.error("Failed to load task:", error);
+        } finally {
+            isLoading.value = false;
+        }
+    }
+);
 
 const close = () => {
     emit('close');
