@@ -19,8 +19,6 @@
                                 </div>
                             </div>
 
-                            {{ taskId }}
-
                             <div v-if="isLoading" class="text-center">
                                 <p>Ielādē...</p>
                             </div>
@@ -60,7 +58,7 @@ import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from "@headlessui/
 import {XMarkIcon, LinkIcon} from "@heroicons/vue/24/outline/index.js";
 import TaskInfoPanel from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoPanel.vue";
 import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComments.vue";
-import {ref, watch, watchEffect} from "vue";
+import {ref} from "vue";
 
 const emit = defineEmits(['close']);
 
@@ -77,31 +75,24 @@ const props = defineProps({
 const task = ref(null);
 const isLoading = ref(false);
 
-watchEffect(
-    () => props.taskId,
-    async (newTaskId) => {
-        console.log('trying to load')
+const fetchTask = async () => {
+    isLoading.value = true;
+    task.value = null;
 
-        if (!newTaskId) {
-            return;
-        }
-
-        isLoading.value = true;
-        task.value = null;
-
-        try {
-            const response = await axios.get(route('tasks.show', { id: newTaskId }));
-            task.value = response.data; // Pieņemot, ka atgriež uzdevuma datus
-            console.log(task.value);
-        } catch (error) {
-            console.error("Failed to load task:", error);
-        } finally {
-            isLoading.value = false;
-        }
+    try {
+        const response = await axios.get(route('tasks.show', { id: props.taskId }));
+        task.value = response.data.task; // Pieņemot, ka atgriež uzdevuma datus
+    } catch (error) {
+        console.error("Failed to load task:", error);
+    } finally {
+        isLoading.value = false;
     }
-);
+};
+
+fetchTask();
 
 const close = () => {
+    task.value = null;
     emit('close');
 }
 </script>

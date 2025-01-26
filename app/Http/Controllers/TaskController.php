@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskStatusResource;
 use App\Models\Task;
 use App\Models\TaskStatus;
@@ -45,8 +46,10 @@ class TaskController extends Controller
      */
     public function show(Task $task): JsonResponse
     {
+        $task->load(['priority', 'assignee', 'status', 'labels', 'checklistItems']);
+
         return response()->json([
-            'task' => new TaskStatusResource($task)
+            'task' => new TaskResource($task)
         ]);
     }
 

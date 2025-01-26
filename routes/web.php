@@ -23,4 +23,5 @@ Route::middleware([
     Route::get('/dashboard', [TaskController::class, 'index'])->name('dashboard');
 });
 
+Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
 Route::post('/tasks/{task}/checklist-items', [TaskChecklistItemController::class, 'store'])->name('tasks.checklist-items.store');
