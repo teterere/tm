@@ -31,7 +31,7 @@
                                         </p>
                                     </div>
 
-                                    <TaskChecklist :task="task" />
+                                    <TaskChecklist :task="task"  />
                                     <TaskComments />
                                 </div>
                                 <TaskInfoPanel :task="task" />
@@ -50,8 +50,6 @@ import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from "@headlessui/
 import {XMarkIcon, LinkIcon} from "@heroicons/vue/24/outline/index.js";
 import TaskInfoPanel from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoPanel.vue";
 import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComments.vue";
-import {ref} from "vue";
-import {router} from "@inertiajs/vue3";
 
 const emit = defineEmits(['close']);
 
@@ -64,24 +62,6 @@ const props = defineProps({
         type: Object
     }
 });
-
-// const fetchTask = async () => {
-//     isLoading.value = true;
-//     task.value = null;
-//     console.log('fetching task..')
-//
-//     try {
-//         const response = await axios.get(route('tasks.show', { id: props.taskId }));
-//         task.value = response.data.task;
-//         console.log(222, response.data.task)
-//     } catch (error) {
-//         console.error("Failed to load task:", error);
-//     } finally {
-//         isLoading.value = false;
-//     }
-// };
-//
-// fetchTask();
 
 const close = () => {
     emit('close');

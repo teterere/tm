@@ -28,12 +28,18 @@ class TaskChecklistItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Task $task)
+    public function store(Request $request, Task $task): void
     {
         TaskChecklistItem::create([
             'task_id'     => $task->id,
             'description' => $request->get('description')
         ]);
+    }
+
+    public function toggleComplete(Task $task, TaskChecklistItem $item): void
+    {
+        $item->completed = !$item->completed;
+        $item->save();
     }
 
     /**

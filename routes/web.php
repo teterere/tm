@@ -25,3 +25,4 @@ Route::middleware([
 
 Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
 Route::post('/tasks/{task}/checklist-items', [TaskChecklistItemController::class, 'store'])->name('tasks.checklist-items.store');
+Route::post('/tasks/{task}/checklist-items/{item}/toggle-complete', [TaskChecklistItemController::class, 'toggleComplete'])->name('tasks.checklist-items.toggle-complete');
