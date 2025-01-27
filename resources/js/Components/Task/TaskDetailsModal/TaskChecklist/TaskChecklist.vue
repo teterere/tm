@@ -12,17 +12,21 @@
                         <TaskProgressbar :task="task" />
                     </div>
                 </div>
-
             </DisclosureButton>
+
             <DisclosurePanel class="text-gray-500">
                 <div class="ml-6">
                     <NewChecklistItemInput :task="task" />
-                    <div class="space-y-1 max-h-72 overflow-y-auto">
-                        <TaskListItem
-                            v-if="task.checklist_items.length"
-                            v-for="item in task.checklist_items"
-                            :item="item" />
-                    </div>
+
+                    <draggable
+                        v-model="task.checklist_items"
+                        group="people"
+                        item-key="id"
+                        class="space-y-1 max-h-72 overflow-y-auto" >
+                        <template #item="{element}">
+                            <TaskListItem :item="element" />
+                        </template>
+                    </draggable>
                 </div>
             </DisclosurePanel>
         </Disclosure>
@@ -35,6 +39,7 @@ import TaskListItem from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskC
 import {ChevronDownIcon} from "@heroicons/vue/24/outline/index.js";
 import TaskProgressbar from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskProgressbar.vue";
 import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskChecklist/NewChecklistItemInput.vue";
+import draggable from 'vuedraggable'
 
 defineProps({
     task: Object
