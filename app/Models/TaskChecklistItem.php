@@ -15,8 +15,21 @@ class TaskChecklistItem extends Model
     protected $fillable = [
         'task_id',
         'description',
-        'completed'
+        'completed',
+        'order'
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function ($item) {
+            // Automatically assign an incremented order index
+            $lastItem = TaskChecklistItem::where('task_id', $item->task_id)
+                ->orderBy('order', 'desc')
+                ->first();
+
+            $item->order = $lastItem ? $lastItem->order + 1 : 1;
+        });
+    }
 
     public function task(): BelongsTo
     {

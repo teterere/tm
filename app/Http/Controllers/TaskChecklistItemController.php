@@ -42,6 +42,13 @@ class TaskChecklistItemController extends Controller
         $item->save();
     }
 
+    public function updateOrder(Request $request, Task $task): void
+    {
+        foreach($request->get('items') as $index => $item) {
+            TaskChecklistItem::where('id', $item['id'])->update(['order' => $index]);
+        }
+    }
+
     /**
      * Display the specified resource.
      */

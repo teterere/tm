@@ -59,7 +59,7 @@ class Task extends Model
 
     public function checklistItems(): HasMany
     {
-        return $this->hasMany(TaskChecklistItem::class);
+        return $this->hasMany(TaskChecklistItem::class)->orderBy('order');
     }
 
     public function getFormattedEstimateAttribute(): string

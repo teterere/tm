@@ -16,7 +16,6 @@
 import {useForm} from "@inertiajs/vue3";
 import {Bars3Icon} from "@heroicons/vue/24/outline/index.js";
 
-
 const emit = defineEmits(['update:complete-status-changed']);
 
 const props = defineProps({

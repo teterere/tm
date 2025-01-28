@@ -19,10 +19,11 @@
                     <NewChecklistItemInput :task="task" />
 
                     <draggable
-                        v-model="task.checklist_items"
-                        group="people"
+                        v-model="form.items"
+                        group="checklist-items"
                         item-key="id"
-                        class="space-y-1 max-h-72 overflow-y-auto" >
+                        class="space-y-1 max-h-72 overflow-y-auto"
+                        @end="updateOrder" >
                         <template #item="{element}">
                             <TaskListItem :item="element" />
                         </template>
@@ -40,8 +41,19 @@ import {ChevronDownIcon} from "@heroicons/vue/24/outline/index.js";
 import TaskProgressbar from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskProgressbar.vue";
 import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskChecklist/NewChecklistItemInput.vue";
 import draggable from 'vuedraggable'
+import {useForm} from "@inertiajs/vue3";
 
-defineProps({
+const props = defineProps({
     task: Object
-})
+});
+
+const form = useForm({
+    items: props.task.checklist_items
+});
+
+const updateOrder = (event) => {
+    form.post(route('tasks.checklist-items.update-order', { task: props.task.id }), {
+        preserveScroll: true
+    });
+};
 </script>

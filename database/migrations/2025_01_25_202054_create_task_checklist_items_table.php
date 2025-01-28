@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('task_id');
             $table->text('description');
             $table->boolean('completed')->default(false);
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }
