@@ -42,15 +42,10 @@ const deleteItem = () => {
     });
 }
 
-const emit = defineEmits(['update']);
-
-const completionStatusForm = useForm({});
 const toggleCompleted = () => {
-    completionStatusForm.post(route('tasks.checklist-items.toggle-complete', { task: props.item.task_id, item: props.item.id }), {
+    router.post(route('tasks.checklist-items.toggle-complete', { task: props.item.task_id, item: props.item.id }), {}, {
         preserveScroll: true
     });
-
-    emit('update')
 };
 </script>
 
