@@ -76,8 +76,8 @@ class TaskChecklistItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TaskChecklistItem $taskChecklistItem)
+    public function destroy(Task $task, TaskChecklistItem $item): void
     {
-        //
+        $item->delete();
     }
 }

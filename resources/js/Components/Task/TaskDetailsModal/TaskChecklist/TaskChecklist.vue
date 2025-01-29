@@ -23,9 +23,9 @@
                         group="checklist-items"
                         item-key="id"
                         class="space-y-1 max-h-72 overflow-y-auto"
-                        @end="updateOrder" >
+                        @end="updateOrder">
                         <template #item="{element}">
-                            <TaskListItem :item="element" />
+                            <TaskListItem :item="element" :key="element.id" />
                         </template>
                     </draggable>
                 </div>
@@ -42,6 +42,7 @@ import TaskProgressbar from "@/Components/Task/TaskDetailsModal/TaskChecklist/Ta
 import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskChecklist/NewChecklistItemInput.vue";
 import draggable from 'vuedraggable'
 import {useForm} from "@inertiajs/vue3";
+import {watchEffect} from "vue";
 
 const props = defineProps({
     task: Object
@@ -56,4 +57,8 @@ const updateOrder = (event) => {
         preserveScroll: true
     });
 };
+
+watchEffect(() => {
+    form.items = [...props.task.checklist_items];
+});
 </script>
