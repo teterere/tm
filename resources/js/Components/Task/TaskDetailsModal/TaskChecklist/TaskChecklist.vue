@@ -52,7 +52,7 @@ const form = useForm({
     items: props.task.checklist_items
 });
 
-const updateOrder = (event) => {
+const updateOrder = () => {
     form.post(route('tasks.checklist-items.update-order', { task: props.task.id }), {
         preserveScroll: true
     });
