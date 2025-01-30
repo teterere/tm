@@ -68,9 +68,11 @@ class TaskChecklistItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TaskChecklistItem $taskChecklistItem)
+    public function update(Request $request, Task $task, TaskChecklistItem $item): void
     {
-        //
+        $item->update([
+            'description' => $request->get('description')
+        ]);
     }
 
     /**

@@ -19,13 +19,14 @@
                     <NewChecklistItemInput :task="task" />
 
                     <draggable
+                        :disabled="draggingStatus"
                         v-model="form.items"
                         group="checklist-items"
                         item-key="id"
                         class="space-y-1 max-h-72 overflow-y-auto"
                         @end="updateOrder">
                         <template #item="{element}">
-                            <TaskListItem :item="element" :key="element.id" />
+                            <TaskListItem :item="element" :key="element.id" @edit-status-changed="updateDraggingStatus" />
                         </template>
                     </draggable>
                 </div>
@@ -42,11 +43,13 @@ import TaskProgressbar from "@/Components/Task/TaskDetailsModal/TaskChecklist/Ta
 import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskChecklist/NewChecklistItemInput.vue";
 import draggable from 'vuedraggable'
 import {useForm} from "@inertiajs/vue3";
-import {watchEffect} from "vue";
+import {ref, watchEffect} from "vue";
 
 const props = defineProps({
     task: Object
 });
+
+const draggingStatus = ref(true);
 
 const form = useForm({
     items: props.task.checklist_items
@@ -57,6 +60,10 @@ const updateOrder = () => {
         preserveScroll: true
     });
 };
+
+const updateDraggingStatus = (newValue) => {
+    draggingStatus.value = newValue;
+}
 
 watchEffect(() => {
     form.items = [...props.task.checklist_items];
