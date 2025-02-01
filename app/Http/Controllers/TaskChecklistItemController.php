@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TaskResource;
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemStoreRequest;
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemUpdateOrderRequest;
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemUpdateRequest;
 use App\Models\Task;
 use App\Models\TaskChecklistItem;
 use Illuminate\Http\Request;
@@ -10,25 +12,11 @@ use Illuminate\Http\Request;
 class TaskChecklistItemController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @param TaskChecklistItemStoreRequest $request
+     * @param Task $task
+     * @return void
      */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request, Task $task): void
+    public function store(TaskChecklistItemStoreRequest $request, Task $task): void
     {
         TaskChecklistItem::create([
             'task_id'     => $task->id,
@@ -36,13 +24,24 @@ class TaskChecklistItemController extends Controller
         ]);
     }
 
+    /**
+     * @param Task $task
+     * @param TaskChecklistItem $item
+     * @return void
+     */
     public function toggleComplete(Task $task, TaskChecklistItem $item): void
     {
-        $item->completed = !$item->completed;
-        $item->save();
+        $item->update([
+            'completed' => !$item->completed
+        ]);
     }
 
-    public function updateOrder(Request $request, Task $task): void
+    /**
+     * @param TaskChecklistItemUpdateOrderRequest $request
+     * @param Task $task
+     * @return void
+     */
+    public function updateOrder(TaskChecklistItemUpdateOrderRequest $request, Task $task): void
     {
         foreach($request->get('items') as $index => $item) {
             TaskChecklistItem::where('id', $item['id'])->update(['order' => $index]);
@@ -50,25 +49,12 @@ class TaskChecklistItemController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @param TaskChecklistItemUpdateRequest $request
+     * @param Task $task
+     * @param TaskChecklistItem $item
+     * @return void
      */
-    public function show(TaskChecklistItem $taskChecklistItem)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TaskChecklistItem $taskChecklistItem)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Task $task, TaskChecklistItem $item): void
+    public function update(TaskChecklistItemUpdateRequest $request, Task $task, TaskChecklistItem $item): void
     {
         $item->update([
             'description' => $request->get('description')
@@ -76,7 +62,9 @@ class TaskChecklistItemController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param Task $task
+     * @param TaskChecklistItem $item
+     * @return void
      */
     public function destroy(Task $task, TaskChecklistItem $item): void
     {
