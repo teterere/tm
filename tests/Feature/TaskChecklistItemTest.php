@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Task;
+use App\Models\TaskChecklistItem;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -39,11 +40,35 @@ class TaskChecklistItemTest extends TestCase
         ]);
     }
 
-//    public function test_can_be_updated()
-//    {
-//
-//    }
-//
+    public function test_can_be_updated()
+    {
+        $user = User::factory()->create();
+        $task = Task::factory()->create();
+
+        $this->actingAs($user);
+
+        $checklistItem = TaskChecklistItem::create([
+            'task_id'     => $task->id,
+            'description' => 'Original description',
+        ]);
+
+        $data = [
+            'description' => 'Updated description'
+        ];
+
+        $response = $this->patchJson(route('tasks.checklist-items.update', [
+            'task' => $checklistItem->task_id,
+            'item' => $checklistItem->id]
+        ), $data);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('task_checklist_items', [
+            'id'          => $checklistItem->id,
+            'description' => $data['description']
+        ]);
+    }
+
 //    public function test_completed_status_can_be_changed()
 //    {
 //
