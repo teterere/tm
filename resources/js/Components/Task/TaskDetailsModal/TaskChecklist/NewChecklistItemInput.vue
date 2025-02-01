@@ -5,10 +5,15 @@
             @focus="showActionButtons = true"
             @blur="showActionButtons = false"
             @keyup.enter="submitForm"
+            @input="form.clearErrors('description')"
             type="text"
-            class="block w-full rounded-xs bg-white pl-3 pr-16 py-1 text-base text-gray-900 outline-1 outline-gray-200 border-gray-200 focus:ring-0 focus:border-0 placeholder:text-gray-400 sm:text-sm/5"
+            class="block w-full rounded-xs bg-white pl-3 pr-16 py-1 text-base text-gray-900 outline-1 border-gray-200 focus:ring-0 focus:border-0 placeholder:text-gray-400 sm:text-sm/5"
+            :class="form.errors.description ? 'outline-red-400' : 'outline-gray-200'"
             placeholder="Pievienot ierakstu" />
-        <div v-show="showActionButtons" class="absolute right-1 bottom-0.75 flex gap-x-1">
+        <p v-if="form.errors.description" class="text-red-500 text-xs mt-3 ml-1">
+            {{ form.errors.description }}
+        </p>
+        <div v-show="showActionButtons" class="absolute right-1 top-0.5 flex gap-x-1">
             <button @mousedown.prevent="submitForm" class="bg-gray-100 hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
                 <CheckIcon class="w-4 h-4" />
             </button>
