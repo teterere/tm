@@ -73,9 +73,7 @@ class TaskChecklistItemTest extends TestCase
     public function test_completed_status_can_be_changed()
     {
         $user = User::factory()->create();
-
         $this->actingAs($user);
-
         $checklistItem = TaskChecklistItem::factory()->create();
 
         $response = $this->patchJson(route('tasks.checklist-items.toggle-complete', [
@@ -104,7 +102,7 @@ class TaskChecklistItemTest extends TestCase
             'task_id' => $task->id
         ]);
 
-        $originalOrder = $items->pluck( 'order', 'id')->toArray();
+        $originalOrder = $items->pluck('order', 'id')->toArray();
 
         $newOrder = $items->shuffle()->values()->map(function ($item, $index) {
             return [
@@ -129,8 +127,21 @@ class TaskChecklistItemTest extends TestCase
         $this->assertNotEquals($originalOrder, $newOrder->pluck('order', 'id')->toArray());
     }
 
-//    public function test_can_be_deleted()
-//    {
-//
-//    }
+    public function test_can_be_deleted()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $task = Task::factory()->create();
+
+        $checklistItem = TaskChecklistItem::factory()->create([
+            'task_id' => $task->id
+        ]);
+
+        $response = $this->deleteJson(route('tasks.checklist-items.delete', [
+            'task' => $checklistItem->task_id,
+            'item' => $checklistItem->id
+        ]));
+
+        $response->assertStatus(200);
+    }
 }
