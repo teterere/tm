@@ -143,5 +143,9 @@ class TaskChecklistItemTest extends TestCase
         ]));
 
         $response->assertStatus(200);
+
+        $this->assertDatabaseMissing('task_checklist_items', [
+            'id' => $checklistItem->id
+        ]);
     }
 }
