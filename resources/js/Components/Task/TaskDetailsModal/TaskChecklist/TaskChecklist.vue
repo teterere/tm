@@ -19,7 +19,7 @@
                     <NewChecklistItemInput :task="task" />
 
                     <draggable
-                        :disabled="draggingStatus"
+                        :disabled="draggingDisabled"
                         v-model="form.items"
                         group="checklist-items"
                         item-key="id"
@@ -49,7 +49,7 @@ const props = defineProps({
     task: Object
 });
 
-const draggingStatus = ref(true);
+const draggingDisabled = ref(false);
 
 const form = useForm({
     items: props.task.checklist_items
