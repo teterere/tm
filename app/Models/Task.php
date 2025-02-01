@@ -74,4 +74,9 @@ class Task extends Model
     {
         return $this->checklistItems()->where('completed', true)->count();
     }
+
+    public function belongsToUserCompany(User $user): bool
+    {
+        return $user->company_id === $this->company_id;
+    }
 }

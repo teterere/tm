@@ -7,7 +7,7 @@ use App\Http\Requests\TaskChecklistItem\TaskChecklistItemUpdateOrderRequest;
 use App\Http\Requests\TaskChecklistItem\TaskChecklistItemUpdateRequest;
 use App\Models\Task;
 use App\Models\TaskChecklistItem;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TaskChecklistItemController extends Controller
 {
@@ -18,6 +18,8 @@ class TaskChecklistItemController extends Controller
      */
     public function store(TaskChecklistItemStoreRequest $request, Task $task): void
     {
+        Gate::authorize('createChecklistItems', $task);
+
         TaskChecklistItem::create([
             'task_id'     => $task->id,
             'description' => $request->get('description')
@@ -31,6 +33,8 @@ class TaskChecklistItemController extends Controller
      */
     public function toggleComplete(Task $task, TaskChecklistItem $item): void
     {
+        Gate::authorize('update', [$item, $task]);
+
         $item->update([
             'completed' => !$item->completed
         ]);
@@ -43,6 +47,8 @@ class TaskChecklistItemController extends Controller
      */
     public function updateOrder(TaskChecklistItemUpdateOrderRequest $request, Task $task): void
     {
+        Gate::authorize('updateChecklistItemOrder', $task);
+
         foreach($request->get('items') as $index => $item) {
             TaskChecklistItem::where('id', $item['id'])->update(['order' => $index]);
         }
@@ -56,6 +62,8 @@ class TaskChecklistItemController extends Controller
      */
     public function update(TaskChecklistItemUpdateRequest $request, Task $task, TaskChecklistItem $item): void
     {
+        Gate::authorize('update', [$item, $task]);
+
         $item->update([
             'description' => $request->get('description')
         ]);
@@ -68,6 +76,8 @@ class TaskChecklistItemController extends Controller
      */
     public function destroy(Task $task, TaskChecklistItem $item): void
     {
+        Gate::authorize('delete', [$item, $task]);
+
         $item->delete();
     }
 }
