@@ -65,7 +65,7 @@ const deleteItem = () => {
 }
 
 const toggleCompleted = () => {
-    router.post(route('tasks.checklist-items.toggle-complete', { task: props.item.task_id, item: props.item.id }), {}, {
+    router.patch(route('tasks.checklist-items.toggle-complete', { task: props.item.task_id, item: props.item.id }), {}, {
         preserveScroll: true
     });
 };

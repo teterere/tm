@@ -56,13 +56,13 @@ const form = useForm({
 });
 
 const updateOrder = () => {
-    form.post(route('tasks.checklist-items.update-order', { task: props.task.id }), {
+    form.patch(route('tasks.checklist-items.update-order', { task: props.task.id }), {
         preserveScroll: true
     });
 };
 
 const updateDraggingStatus = (newValue) => {
-    draggingStatus.value = newValue;
+    draggingDisabled.value = newValue;
 }
 
 watchEffect(() => {
