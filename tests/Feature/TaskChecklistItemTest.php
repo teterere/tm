@@ -5,9 +5,7 @@ namespace Tests\Feature;
 use App\Models\Task;
 use App\Models\TaskChecklistItem;
 use App\Models\User;
-use Database\Factories\TaskChecklistItemFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class TaskChecklistItemTest extends TestCase
@@ -147,5 +145,28 @@ class TaskChecklistItemTest extends TestCase
         $this->assertDatabaseMissing('task_checklist_items', [
             'id' => $checklistItem->id
         ]);
+    }
+
+    public function test_all_task_checklist_items_can_be_deleted()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $task = Task::factory()->create();
+
+        $checklistItems = TaskChecklistItem::factory(5)->create([
+            'task_id' => $task->id
+        ]);
+
+        $response = $this->deleteJson(route('tasks.checklist-items.delete-all-for-task', [
+            'task' => $task->id
+        ]));
+
+        $response->assertStatus(200);
+
+        foreach ($checklistItems as $checklistItem) {
+            $this->assertDatabaseMissing('task_checklist_items', [
+                'id' => $checklistItem->id
+            ]);
+        }
     }
 }

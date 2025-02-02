@@ -16,4 +16,9 @@ class TaskPolicy
     {
         return $task->belongsToUserCompany($user);
     }
+
+    public function deleteAllChecklistItems(User $user, Task $task): bool
+    {
+        return $task->belongsToUserCompany($user);
+    }
 }

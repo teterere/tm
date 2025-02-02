@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemDeleteAllForTaskRequest;
 use App\Http\Requests\TaskChecklistItem\TaskChecklistItemDeleteRequest;
 use App\Http\Requests\TaskChecklistItem\TaskChecklistItemStoreRequest;
 use App\Http\Requests\TaskChecklistItem\TaskChecklistItemToggleCompleteRequest;
@@ -44,5 +45,10 @@ class TaskChecklistItemController extends Controller
     public function destroy(TaskChecklistItemDeleteRequest $request, Task $task, TaskChecklistItem $item): void
     {
         $item->delete();
+    }
+
+    public function deleteAllForTask(TaskChecklistItemDeleteAllForTaskRequest $request, Task $task): void
+    {
+        TaskChecklistItem::where('task_id', $task->id)->delete();
     }
 }

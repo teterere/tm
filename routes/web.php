@@ -31,6 +31,7 @@ Route::prefix('tasks/{task}')->name('tasks.')->group(function () {
         Route::patch('update-order', [TaskChecklistItemController::class, 'updateOrder'])->name('update-order');
         Route::patch('{item}/toggle-complete', [TaskChecklistItemController::class, 'toggleComplete'])->name('toggle-complete');
         Route::patch('{item}', [TaskChecklistItemController::class, 'update'])->name('update');
+        Route::delete('/delete-all-for-task', [TaskChecklistItemController::class, 'deleteAllForTask'])->name('delete-all-for-task');
         Route::delete('{item}', [TaskChecklistItemController::class, 'destroy'])->name('delete');
     });
 });

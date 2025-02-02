@@ -1,18 +1,22 @@
 <template>
     <div class="py-4 border-b border-gray-200">
         <Disclosure v-slot="{ open }" :defaultOpen="true">
-            <DisclosureButton class="outline-0 w-full cursor-pointer">
-                <div class="flex items-start gap-x-2 mb-2">
-                    <button class="bg-gray-100 rounded-sm p-1">
-                        <ChevronDownIcon :class="{ 'rotate-180 transform': open }" class="w-3 h-3" />
-                    </button>
+            <div class="flex items-start justify-between">
+                <DisclosureButton class="outline-0 w-full cursor-pointer">
+                    <div class="flex items-start gap-x-2 mb-2">
+                        <button class="bg-gray-100 rounded-sm p-1">
+                            <ChevronDownIcon :class="{ 'rotate-180 transform': open }" class="w-3 h-3" />
+                        </button>
 
-                    <div class="w-full">
-                        <h5 class="text-sm font-bold text-gray-400 text-start mb-2">Uzdevumā izpildāmie darbi</h5>
-                        <TaskProgressbar :task="task" />
+                        <div class="w-full">
+                            <h5 class="text-sm font-bold text-gray-400 text-start mb-2">Uzdevumā izpildāmie darbi</h5>
+                            <TaskProgressbar :task="task" />
+                        </div>
                     </div>
-                </div>
-            </DisclosureButton>
+                </DisclosureButton>
+
+                <TaskChecklistOptionsDropdown :task="task" />
+            </div>
 
             <DisclosurePanel class="text-gray-500">
                 <div class="ml-6">
@@ -44,6 +48,7 @@ import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskCheckl
 import draggable from 'vuedraggable'
 import {useForm} from "@inertiajs/vue3";
 import {ref, watch} from "vue";
+import TaskChecklistOptionsDropdown from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklistOptionsDropdown.vue";
 
 const props = defineProps({
     task: Object
