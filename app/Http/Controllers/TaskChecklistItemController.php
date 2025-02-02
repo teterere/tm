@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemDeleteRequest;
 use App\Http\Requests\TaskChecklistItem\TaskChecklistItemStoreRequest;
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemToggleCompleteRequest;
 use App\Http\Requests\TaskChecklistItem\TaskChecklistItemUpdateOrderRequest;
 use App\Http\Requests\TaskChecklistItem\TaskChecklistItemUpdateRequest;
 use App\Models\Task;
 use App\Models\TaskChecklistItem;
-use Illuminate\Support\Facades\Gate;
 
 class TaskChecklistItemController extends Controller
 {
@@ -18,8 +19,6 @@ class TaskChecklistItemController extends Controller
      */
     public function store(TaskChecklistItemStoreRequest $request, Task $task): void
     {
-        Gate::authorize('createChecklistItems', $task);
-
         TaskChecklistItem::create([
             'task_id'     => $task->id,
             'description' => $request->get('description')
@@ -27,14 +26,13 @@ class TaskChecklistItemController extends Controller
     }
 
     /**
+     * @param TaskChecklistItemToggleCompleteRequest $request
      * @param Task $task
      * @param TaskChecklistItem $item
      * @return void
      */
-    public function toggleComplete(Task $task, TaskChecklistItem $item): void
+    public function toggleComplete(TaskChecklistItemToggleCompleteRequest $request, Task $task, TaskChecklistItem $item): void
     {
-        Gate::authorize('update', [$item, $task]);
-
         $item->update([
             'completed' => !$item->completed
         ]);
@@ -47,8 +45,6 @@ class TaskChecklistItemController extends Controller
      */
     public function updateOrder(TaskChecklistItemUpdateOrderRequest $request, Task $task): void
     {
-        Gate::authorize('updateChecklistItemOrder', $task);
-
         foreach($request->get('items') as $index => $item) {
             TaskChecklistItem::where('id', $item['id'])->update(['order' => $index]);
         }
@@ -62,22 +58,19 @@ class TaskChecklistItemController extends Controller
      */
     public function update(TaskChecklistItemUpdateRequest $request, Task $task, TaskChecklistItem $item): void
     {
-        Gate::authorize('update', [$item, $task]);
-
         $item->update([
             'description' => $request->get('description')
         ]);
     }
 
     /**
+     * @param TaskChecklistItemDeleteRequest $request
      * @param Task $task
      * @param TaskChecklistItem $item
      * @return void
      */
-    public function destroy(Task $task, TaskChecklistItem $item): void
+    public function destroy(TaskChecklistItemDeleteRequest $request, Task $task, TaskChecklistItem $item): void
     {
-        Gate::authorize('delete', [$item, $task]);
-
         $item->delete();
     }
 }

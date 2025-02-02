@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class TaskChecklistItemUpdateRequest extends FormRequest
+class TaskChecklistItemDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +16,7 @@ class TaskChecklistItemUpdateRequest extends FormRequest
         $task = $this->route('task');
         $item = $this->route('item');
 
-        return Gate::allows('update', [$item, $task]);
+        return Gate::allows('delete', [$item, $task]);
     }
 
     /**
@@ -26,8 +26,6 @@ class TaskChecklistItemUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'description' => ['required', 'string', 'max:255']
-        ];
+        return [];
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="py-4 border-b border-gray-200">
         <Disclosure v-slot="{ open }" :defaultOpen="true">
-            <DisclosureButton class="outline-0 w-full">
+            <DisclosureButton class="outline-0 w-full cursor-pointer">
                 <div class="flex items-start gap-x-2 mb-2">
                     <button class="bg-gray-100 rounded-sm p-1">
                         <ChevronDownIcon :class="open && 'rotate-180 transform'" class="w-3 h-3" />
