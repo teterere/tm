@@ -15,18 +15,18 @@
                 </label>
             </div>
             <div v-if="editStatus" class="flex gap-x-1">
-                <button @mousedown.prevent="editStatus = false" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
+                <button @click.prevent="editStatus = false" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
                     <XMarkIcon class="w-4 h-4" />
                 </button>
-                <button @mousedown.prevent="updateItem" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
+                <button @click.prevent="updateItem" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
                     <CheckIcon class="w-4 h-4" />
                 </button>
             </div>
             <div v-else v-if="showActionButtons" class="flex gap-x-1">
-                <button @mousedown.prevent="editStatus = true" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
+                <button @click.prevent="editStatus = true" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
                     <PencilIcon class="w-4 h-4" />
                 </button>
-                <button @mousedown.prevent="deleteItem" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
+                <button @click.prevent="deleteItem" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
                     <TrashIcon class="w-4 h-4" />
                 </button>
             </div>
