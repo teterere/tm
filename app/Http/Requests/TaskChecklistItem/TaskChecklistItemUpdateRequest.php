@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Gate;
 
 class TaskChecklistItemUpdateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         $task = $this->route('task');
@@ -20,8 +17,6 @@ class TaskChecklistItemUpdateRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
