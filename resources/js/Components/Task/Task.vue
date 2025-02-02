@@ -53,9 +53,9 @@
 </template>
 
 <script setup>
-import {CheckCircleIcon, ClockIcon, EllipsisHorizontalIcon, EnvelopeIcon} from "@heroicons/vue/24/outline/index.js";
+import {CheckCircleIcon, ClockIcon, EllipsisHorizontalIcon, EnvelopeIcon} from "@heroicons/vue/24/outline";
 
-const props = defineProps({
+defineProps({
     task: Object
 });
 </script>
