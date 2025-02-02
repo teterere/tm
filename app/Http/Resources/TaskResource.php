@@ -20,7 +20,7 @@ class TaskResource extends JsonResource
             'priority'                        => $this->whenLoaded('priority'),
             'status'                          => $this->whenLoaded('status'),
             'labels'                          => $this->whenLoaded('labels'),
-            'checklist_items'                 => $this->whenLoaded('checklistItems'),
+            'checklist_items'                 => $this->whenLoaded('checklistItems')->values(),
             'completed_checklist_items_count' => $this->completedChecklistItemsCount,
             'title'                           => $this->title,
             'description'                     => $this->description,

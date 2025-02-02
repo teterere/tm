@@ -13,25 +13,30 @@
                     </div>
                 </div>
 
-                <Task @click="openTaskDetailsModal(task)" v-for="task in status.tasks" :task="task" />
+                <Task
+                    v-for="task in status.tasks"
+                    :key="task.id"
+                    :task="task"
+                    @click="openTaskDetailsModal(task)"
+                />
             </div>
         </div>
-        <TaskDetailsModal v-if="selectedTask" :show="showTaskDetailsModal" :task="selectedTask" @close="closeTaskDetailsModal" />
+
+        <TaskDetailsModal
+            v-if="showTaskDetailsModal"
+            :show="showTaskDetailsModal"
+            :task="selectedTask"
+            @close="closeTaskDetailsModal"
+        />
     </AppLayout>
 </template>
 
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 
-import {
-    PlusIcon,
-    EllipsisHorizontalIcon,
-    ClockIcon,
-    EnvelopeIcon,
-    CheckCircleIcon
-} from '@heroicons/vue/24/outline';
+import {PlusIcon, EllipsisHorizontalIcon} from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
-import {computed, ref} from "vue";
+import {ref, watch} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
 
 const props = defineProps({
@@ -41,16 +46,26 @@ const props = defineProps({
 });
 
 const selectedTask = ref(null);
-
 const showTaskDetailsModal = ref(false);
 
 const openTaskDetailsModal = (task) => {
     selectedTask.value = task;
     showTaskDetailsModal.value = true;
-}
+};
 
 const closeTaskDetailsModal = () => {
     selectedTask.value = null;
     showTaskDetailsModal.value = false;
-}
+};
+
+// Watch if any tasks have been updated and refresh selected task value
+watch(() => props.statuses.data, (newStatuses) => {
+    const updatedTask = newStatuses
+        .flatMap(status => status.tasks)
+        .find(task => task.id === selectedTask.value?.id);
+
+    if (updatedTask) {
+        selectedTask.value = updatedTask;
+    }
+}, { deep: true });
 </script>

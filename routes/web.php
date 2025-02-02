@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TaskChecklistItemController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,17 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [TaskController::class, 'index'])->name('dashboard');
+});
+
+Route::prefix('tasks/{task}')->name('tasks.')->group(function () {
+    Route::get('/', [TaskController::class, 'show'])->name('show');
+
+    Route::prefix('checklist-items')->name('checklist-items.')->group(function () {
+        Route::post('/', [TaskChecklistItemController::class, 'store'])->name('store');
+        Route::patch('update-order', [TaskChecklistItemController::class, 'updateOrder'])->name('update-order');
+        Route::patch('{item}/toggle-complete', [TaskChecklistItemController::class, 'toggleComplete'])->name('toggle-complete');
+        Route::patch('{item}', [TaskChecklistItemController::class, 'update'])->name('update');
+        Route::delete('/delete-all-for-task', [TaskChecklistItemController::class, 'deleteAllForTask'])->name('delete-all-for-task');
+        Route::delete('{item}', [TaskChecklistItemController::class, 'destroy'])->name('delete');
+    });
 });
