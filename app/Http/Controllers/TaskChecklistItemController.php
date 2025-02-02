@@ -2,64 +2,53 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemDeleteAllForTaskRequest;
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemDeleteRequest;
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemStoreRequest;
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemToggleCompleteRequest;
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemUpdateOrderRequest;
+use App\Http\Requests\TaskChecklistItem\TaskChecklistItemUpdateRequest;
+use App\Models\Task;
 use App\Models\TaskChecklistItem;
-use Illuminate\Http\Request;
 
 class TaskChecklistItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function store(TaskChecklistItemStoreRequest $request, Task $task): void
     {
-        //
+        TaskChecklistItem::create([
+            'task_id'     => $task->id,
+            'description' => $request->get('description')
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function toggleComplete(TaskChecklistItemToggleCompleteRequest $request, Task $task, TaskChecklistItem $item): void
     {
-        //
+        $item->update([
+            'completed' => !$item->completed
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function updateOrder(TaskChecklistItemUpdateOrderRequest $request, Task $task): void
     {
-        //
+        foreach($request->get('items') as $index => $item) {
+            TaskChecklistItem::where('id', $item['id'])->update(['order' => $index]);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(TaskChecklistItem $taskChecklistItem)
+    public function update(TaskChecklistItemUpdateRequest $request, Task $task, TaskChecklistItem $item): void
     {
-        //
+        $item->update([
+            'description' => $request->get('description')
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(TaskChecklistItem $taskChecklistItem)
+    public function destroy(TaskChecklistItemDeleteRequest $request, Task $task, TaskChecklistItem $item): void
     {
-        //
+        $item->delete();
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, TaskChecklistItem $taskChecklistItem)
+    public function deleteAllForTask(TaskChecklistItemDeleteAllForTaskRequest $request, Task $task): void
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(TaskChecklistItem $taskChecklistItem)
-    {
-        //
+        TaskChecklistItem::where('task_id', $task->id)->delete();
     }
 }

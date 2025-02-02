@@ -59,7 +59,7 @@ class Task extends Model
 
     public function checklistItems(): HasMany
     {
-        return $this->hasMany(TaskChecklistItem::class);
+        return $this->hasMany(TaskChecklistItem::class)->orderBy('order');
     }
 
     public function getFormattedEstimateAttribute(): string
@@ -73,5 +73,10 @@ class Task extends Model
     public function getCompletedChecklistItemsCountAttribute(): int
     {
         return $this->checklistItems()->where('completed', true)->count();
+    }
+
+    public function belongsToUserCompany(User $user): bool
+    {
+        return $user->company_id === $this->company_id;
     }
 }

@@ -18,6 +18,7 @@
                                     <XMarkIcon class="w-6 h-6"></XMarkIcon>
                                 </div>
                             </div>
+
                             <div class="grid grid-cols-6 space-x-8">
                                 <div class="col-span-4">
                                     <div class="border-b border-gray-200 pb-4">
