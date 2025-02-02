@@ -14,10 +14,10 @@
             {{ form.errors.description }}
         </p>
         <div v-show="showActionButtons" class="absolute right-1 top-0.5 flex gap-x-1">
-            <button @mousedown.prevent="submitForm" class="bg-gray-100 hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
+            <button @mousedown.prevent="submitForm" class="bg-gray-100 hover:bg-gray-200 p-1 rounded-sm cursor-pointer" aria-label="Apstiprināt">
                 <CheckIcon class="w-4 h-4" />
             </button>
-            <button @mousedown.prevent="resetInput" class="bg-gray-100 hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
+            <button @mousedown.prevent="resetInput" class="bg-gray-100 hover:bg-gray-200 p-1 rounded-sm cursor-pointer" aria-label="Atcelt">
                 <XMarkIcon class="w-4 h-4" />
             </button>
         </div>
