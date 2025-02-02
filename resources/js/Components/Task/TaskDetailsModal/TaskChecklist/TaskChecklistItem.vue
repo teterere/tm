@@ -2,7 +2,7 @@
     <div class="flex -ml-2">
         <div @mouseover="showActionButtons = true"
              @mouseleave="showActionButtons = false"
-             :class="showActionButtons || editStatus ? 'bg-gray-100' : ''"
+             :class="{ 'bg-gray-100': showActionButtons || editStatus }"
              class="flex w-full items-center justify-between px-1">
             <div class="flex items-center w-full">
                 <div class="flex items-center justify-center text-gray-300 hover:text-gray-400 cursor-pointer p-2 mr-1">
@@ -62,7 +62,7 @@ const deleteItem = () => {
     router.delete(route('tasks.checklist-items.delete', { task: props.item.task_id, item: props.item.id }), {
         preserveScroll: true
     });
-}
+};
 
 const toggleCompleted = () => {
     router.patch(route('tasks.checklist-items.toggle-complete', { task: props.item.task_id, item: props.item.id }), {}, {
@@ -81,7 +81,7 @@ const updateItem = () => {
             editStatus.value = false;
         }
     });
-}
+};
 </script>
 
 <style scoped>
