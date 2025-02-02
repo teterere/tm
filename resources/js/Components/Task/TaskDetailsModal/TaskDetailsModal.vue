@@ -31,7 +31,7 @@
                                         </p>
                                     </div>
 
-                                    <TaskChecklist :task="task"  />
+                                    <TaskChecklist :task="task" />
                                     <TaskComments />
                                 </div>
                                 <TaskInfoPanel :task="task" />
@@ -53,7 +53,7 @@ import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskCo
 
 const emit = defineEmits(['close']);
 
-const props = defineProps({
+defineProps({
     show: {
         type: Boolean,
         default: false
