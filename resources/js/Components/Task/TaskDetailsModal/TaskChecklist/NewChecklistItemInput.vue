@@ -41,6 +41,7 @@ const form = useForm({
 
 const resetInput = () => {
     form.description = '';
+    form.clearErrors('description');
 }
 
 const submitForm = () => {
