@@ -34,10 +34,7 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 
-import {
-    PlusIcon,
-    EllipsisHorizontalIcon,
-} from '@heroicons/vue/24/outline';
+import {PlusIcon, EllipsisHorizontalIcon} from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
 import {ref, watch} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
@@ -61,14 +58,14 @@ const closeTaskDetailsModal = () => {
     showTaskDetailsModal.value = false;
 };
 
+// Watch if any tasks have been updated and refresh selected task value
 watch(() => props.statuses.data, (newStatuses) => {
-    // Iterē pa visiem statusiem un atrodi uzdevumus, kas varētu būt mainījušies
     const updatedTask = newStatuses
         .flatMap(status => status.tasks)
         .find(task => task.id === selectedTask.value?.id);
 
     if (updatedTask) {
-        selectedTask.value = updatedTask;  // Atjaunini selectedTask ar izmainīto uzdevumu
+        selectedTask.value = updatedTask;
     }
 }, { deep: true });
 </script>
