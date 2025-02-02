@@ -43,7 +43,7 @@ import TaskProgressbar from "@/Components/Task/TaskDetailsModal/TaskChecklist/Ta
 import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskChecklist/NewChecklistItemInput.vue";
 import draggable from 'vuedraggable'
 import {useForm} from "@inertiajs/vue3";
-import {ref, watchEffect} from "vue";
+import {ref, watch} from "vue";
 
 const props = defineProps({
     task: Object
@@ -55,17 +55,19 @@ const form = useForm({
     items: props.task.checklist_items
 });
 
-const updateOrder = () => {
-    form.patch(route('tasks.checklist-items.update-order', { task: props.task.id }), {
-        preserveScroll: true
-    });
+const updateOrder = (event) => {
+    if (event.oldIndex !== event.newIndex) {
+        form.patch(route('tasks.checklist-items.update-order', { task: props.task.id }), {
+            preserveScroll: true
+        });
+    }
 };
 
 const updateDraggingStatus = (newValue) => {
     draggingDisabled.value = newValue;
-}
+};
 
-watchEffect(() => {
-    form.items = [...props.task.checklist_items];
+watch(() => props.task.checklist_items, (newItems) => {
+    form.items = [...newItems];
 });
 </script>
