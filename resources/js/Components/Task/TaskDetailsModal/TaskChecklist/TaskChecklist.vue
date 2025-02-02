@@ -4,7 +4,7 @@
             <DisclosureButton class="outline-0 w-full cursor-pointer">
                 <div class="flex items-start gap-x-2 mb-2">
                     <button class="bg-gray-100 rounded-sm p-1">
-                        <ChevronDownIcon :class="open && 'rotate-180 transform'" class="w-3 h-3" />
+                        <ChevronDownIcon :class="{ 'rotate-180 transform': open }" class="w-3 h-3" />
                     </button>
 
                     <div class="w-full">
