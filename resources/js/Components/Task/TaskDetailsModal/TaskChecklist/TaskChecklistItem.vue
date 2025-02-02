@@ -36,7 +36,7 @@
 
 <script setup>
 import {router, useForm} from "@inertiajs/vue3";
-import {Bars3Icon, PencilIcon, TrashIcon, CheckIcon, XMarkIcon} from "@heroicons/vue/24/outline/index.js";
+import {Bars3Icon, PencilIcon, TrashIcon, CheckIcon, XMarkIcon} from "@heroicons/vue/24/outline";
 import {nextTick, ref, watch} from "vue";
 
 const props = defineProps({
