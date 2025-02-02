@@ -12,11 +12,6 @@ use App\Models\TaskChecklistItem;
 
 class TaskChecklistItemController extends Controller
 {
-    /**
-     * @param TaskChecklistItemStoreRequest $request
-     * @param Task $task
-     * @return void
-     */
     public function store(TaskChecklistItemStoreRequest $request, Task $task): void
     {
         TaskChecklistItem::create([
@@ -25,12 +20,6 @@ class TaskChecklistItemController extends Controller
         ]);
     }
 
-    /**
-     * @param TaskChecklistItemToggleCompleteRequest $request
-     * @param Task $task
-     * @param TaskChecklistItem $item
-     * @return void
-     */
     public function toggleComplete(TaskChecklistItemToggleCompleteRequest $request, Task $task, TaskChecklistItem $item): void
     {
         $item->update([
@@ -38,11 +27,6 @@ class TaskChecklistItemController extends Controller
         ]);
     }
 
-    /**
-     * @param TaskChecklistItemUpdateOrderRequest $request
-     * @param Task $task
-     * @return void
-     */
     public function updateOrder(TaskChecklistItemUpdateOrderRequest $request, Task $task): void
     {
         foreach($request->get('items') as $index => $item) {
@@ -50,12 +34,6 @@ class TaskChecklistItemController extends Controller
         }
     }
 
-    /**
-     * @param TaskChecklistItemUpdateRequest $request
-     * @param Task $task
-     * @param TaskChecklistItem $item
-     * @return void
-     */
     public function update(TaskChecklistItemUpdateRequest $request, Task $task, TaskChecklistItem $item): void
     {
         $item->update([
@@ -63,12 +41,6 @@ class TaskChecklistItemController extends Controller
         ]);
     }
 
-    /**
-     * @param TaskChecklistItemDeleteRequest $request
-     * @param Task $task
-     * @param TaskChecklistItem $item
-     * @return void
-     */
     public function destroy(TaskChecklistItemDeleteRequest $request, Task $task, TaskChecklistItem $item): void
     {
         $item->delete();
