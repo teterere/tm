@@ -23,9 +23,14 @@ Route::middleware([
     Route::get('/dashboard', [TaskController::class, 'index'])->name('dashboard');
 });
 
-Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
-Route::post('/tasks/{task}/checklist-items', [TaskChecklistItemController::class, 'store'])->name('tasks.checklist-items.store');
-Route::patch('/tasks/{task}/checklist-items/update-order', [TaskChecklistItemController::class, 'updateOrder'])->name('tasks.checklist-items.update-order');
-Route::patch('/tasks/{task}/checklist-items/{item}/toggle-complete', [TaskChecklistItemController::class, 'toggleComplete'])->name('tasks.checklist-items.toggle-complete');
-Route::patch('/tasks/{task}/checklist-items/{item}', [TaskChecklistItemController::class, 'update'])->name('tasks.checklist-items.update');
-Route::delete('/tasks/{task}/checklist-items/{item}', [TaskChecklistItemController::class, 'destroy'])->name('tasks.checklist-items.delete');
+Route::prefix('tasks/{task}')->name('tasks.')->group(function () {
+    Route::get('/', [TaskController::class, 'show'])->name('show');
+
+    Route::prefix('checklist-items')->name('checklist-items.')->group(function () {
+        Route::post('/', [TaskChecklistItemController::class, 'store'])->name('store');
+        Route::patch('update-order', [TaskChecklistItemController::class, 'updateOrder'])->name('update-order');
+        Route::patch('{item}/toggle-complete', [TaskChecklistItemController::class, 'toggleComplete'])->name('toggle-complete');
+        Route::patch('{item}', [TaskChecklistItemController::class, 'update'])->name('update');
+        Route::delete('{item}', [TaskChecklistItemController::class, 'destroy'])->name('delete');
+    });
+});
