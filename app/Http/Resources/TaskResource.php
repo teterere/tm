@@ -21,6 +21,7 @@ class TaskResource extends JsonResource
             'status'                          => $this->whenLoaded('status'),
             'labels'                          => $this->whenLoaded('labels'),
             'checklist_items'                 => $this->whenLoaded('checklistItems')->values(),
+            'identifier'                      => $this->identifier,
             'completed_checklist_items_count' => $this->completedChecklistItemsCount,
             'title'                           => $this->title,
             'description'                     => $this->description,
