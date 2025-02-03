@@ -12,7 +12,7 @@
                             <div class="flex justify-between items-center border-b border-gray-200 pb-2 mb-4">
                                 <div class="flex items-center gap-x-1 text-xs font-medium text-gray-900 bg-gray-100 hover:bg-gray-200 p-2 rounded-sm cursor-pointer">
                                     <LinkIcon class="h-4 w-4" />
-                                    <h5>DEV-123</h5>
+                                    <h5>{{ task.identifier }}</h5>
                                 </div>
                                 <div @click="show = false; $emit('close')" class="cursor-pointer p-2">
                                     <XMarkIcon class="w-6 h-6"></XMarkIcon>
@@ -65,5 +65,5 @@ defineProps({
 
 const close = () => {
     emit('close');
-}
+};
 </script>

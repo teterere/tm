@@ -34,8 +34,6 @@ class Task extends Model
         ];
     }
 
-    protected $appends = ['identifier'];
-
     protected static function booted(): void
     {
         static::creating(function (Task $task) {
@@ -99,5 +97,14 @@ class Task extends Model
     public function belongsToUserCompany(User $user): bool
     {
         return $user->company_id === $this->company_id;
+    }
+
+    public static function findByIdentifier(string $identifier) {
+        [$prefix, $number] = explode('-', $identifier);
+
+        return self::where('identifier_prefix', $prefix)
+            ->where('identifier_number', $number)
+            ->where('company_id', auth()->user()?->company_id)
+            ->firstOrFail();
     }
 }

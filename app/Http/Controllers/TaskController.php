@@ -6,7 +6,7 @@ use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskStatusResource;
 use App\Models\Task;
 use App\Models\TaskStatus;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,12 +16,21 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(string $taskIdentifier = null): Response
     {
         $statuses = TaskStatus::withTasksForCompany();
 
+        $task = null;
+        if ($taskIdentifier) {
+            $task = Task::findByIdentifier($taskIdentifier);
+            $task?->load(['priority', 'assignee', 'status', 'labels', 'checklistItems']);
+            $task = $task ? new TaskResource($task) : null;
+        }
+
+
         return Inertia::render('Tasks/Index', [
-            'statuses' => TaskStatusResource::collection($statuses)
+            'statuses' => TaskStatusResource::collection($statuses),
+            'task'     => $task
         ]);
     }
 
@@ -41,10 +50,7 @@ class TaskController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Task $task): JsonResponse
+    public function show(Task $task): RedirectResponse
     {
         $task->load(['priority', 'assignee', 'status', 'labels', 'checklistItems']);
 
