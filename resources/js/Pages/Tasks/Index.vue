@@ -1,7 +1,7 @@
 <template>
     <AppLayout>
         <div class="grid grid-cols-4 px-4 sm:px-6 lg:px-8 space-x-4">
-            <div v-for="status in statuses.data" class="col-span-1 bg-slate-100 rounded p-3">
+            <div v-for="status in statuses" class="col-span-1 bg-slate-100 rounded p-3">
                 <div class="border-b-2 mb-4 pb-2 border-indigo-200 flex items-center justify-between">
                     <div class="flex items-center">
                         <h3 class="uppercase font-semibold text-sm text-gray-700 mr-2">{{ status.title }}</h3>
@@ -36,30 +36,48 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 import {PlusIcon, EllipsisHorizontalIcon} from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
-import {ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
 
 const props = defineProps({
     statuses: {
         type: Object
+    },
+    task: {
+        type: Object
     }
 });
 
-const selectedTask = ref(null);
+const selectedTask = ref(props.task);
+
 const showTaskDetailsModal = ref(false);
 
 const openTaskDetailsModal = (task) => {
+    if (!task) {
+        return;
+    }
+
     selectedTask.value = task;
     showTaskDetailsModal.value = true;
+
+    window.history.replaceState({}, '', `/uzdevumi/${task.identifier}`);
 };
 
 const closeTaskDetailsModal = () => {
     selectedTask.value = null;
     showTaskDetailsModal.value = false;
+
+    window.history.replaceState({}, '', '/uzdevumi');
 };
 
+onMounted(() => {
+    if (props.task) {
+        openTaskDetailsModal(props.task);
+    }
+});
+
 // Watch if any tasks have been updated and refresh selected task value
-watch(() => props.statuses.data, (newStatuses) => {
+watch(() => props.statuses, (newStatuses) => {
     const updatedTask = newStatuses
         .flatMap(status => status.tasks)
         .find(task => task.id === selectedTask.value?.id);

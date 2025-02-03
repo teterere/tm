@@ -17,6 +17,9 @@ return new class extends Migration
             $table->foreignId('status_id')->default(1);
             $table->foreignId('assignee_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('priority_id')->default(1);
+            $table->string('identifier_prefix')->default('UZD');
+            $table->unsignedBigInteger('identifier_number')->default(1);
+            $table->unique(['company_id', 'identifier_prefix', 'identifier_number']);
             $table->string('title');
             $table->text('description')->nullable();
             $table->date('due_date')->nullable();
