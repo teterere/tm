@@ -13,12 +13,15 @@
                     </div>
                 </div>
 
-                <Task
-                    v-for="task in status.tasks"
-                    :key="task.id"
-                    :task="task"
-                    @click="openTaskDetailsModal(task)"
-                />
+                <draggable :list="status.tasks" group="tasks" itemKey="id">
+                    <template #item="{ element }">
+                        <Task
+                            :key="element.id"
+                            :task="element"
+                            @click="openTaskDetailsModal(task)"
+                        />
+                    </template>
+                </draggable>
             </div>
         </div>
 
@@ -38,6 +41,7 @@ import {PlusIcon, EllipsisHorizontalIcon} from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
 import {onMounted, ref, watch} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
+import draggable from 'vuedraggable'
 
 const props = defineProps({
     statuses: {
