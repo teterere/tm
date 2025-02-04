@@ -1,10 +1,9 @@
 <template>
-    <div class="flex -ml-2">
         <div @mouseover="showActionButtons = true"
              @mouseleave="showActionButtons = false"
              :class="{ 'bg-gray-100': showActionButtons || editStatus }"
-             class="flex w-full items-center justify-between px-1">
-            <div class="flex items-center w-full">
+             class="grid grid-cols-10 -ml-2 flex w-full items-center justify-between pl-1 pr-2 py-0.5">
+            <div class="col-span-9 flex items-center w-full">
                 <div class="flex items-center justify-center text-gray-300 hover:text-gray-400 cursor-pointer p-2 mr-1">
                     <Bars3Icon class="h-4 w-4" />
                 </div>
@@ -14,24 +13,25 @@
                     {{ item.description }}
                 </label>
             </div>
-            <div v-if="editStatus" class="flex gap-x-1">
-                <button @click.prevent="editStatus = false" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
-                    <XMarkIcon class="w-4 h-4" />
-                </button>
-                <button @click.prevent="updateItem" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
-                    <CheckIcon class="w-4 h-4" />
-                </button>
-            </div>
-            <div v-else v-if="showActionButtons" class="flex gap-x-1">
-                <button @click.prevent="editStatus = true" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
-                    <PencilIcon class="w-4 h-4" />
-                </button>
-                <button @click.prevent="deleteItem" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
-                    <TrashIcon class="w-4 h-4" />
-                </button>
+            <div class="flex justify-center">
+                <div v-if="editStatus" class="flex gap-x-1">
+                    <button @click.prevent="editStatus = false" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
+                        <XMarkIcon class="w-4 h-4" />
+                    </button>
+                    <button @click.prevent="updateItem" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
+                        <CheckIcon class="w-4 h-4" />
+                    </button>
+                </div>
+                <div v-else v-if="showActionButtons" class="flex gap-x-1">
+                    <button @click.prevent="editStatus = true" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
+                        <PencilIcon class="w-4 h-4" />
+                    </button>
+                    <button @click.prevent="deleteItem" class="bg-white hover:bg-gray-200 p-1 rounded-sm cursor-pointer">
+                        <TrashIcon class="w-4 h-4" />
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script setup>
