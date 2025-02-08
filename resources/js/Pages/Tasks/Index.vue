@@ -1,5 +1,17 @@
 <template>
     <AppLayout>
+<!--        <Test />-->
+
+<!--        <div ref="parent1">-->
+<!--            <div-->
+<!--                v-for="(task, index) in taskList2"-->
+<!--                :index="index"-->
+<!--                class="bg-white p-3 shadow-sm mb-2"-->
+<!--            >{{ task.title }}-->
+<!--            </div>-->
+<!--        </div>-->
+
+
         <div class="grid grid-cols-4 px-4 sm:px-6 lg:px-8 space-x-4">
             <div v-for="status in statuses" class="col-span-1 bg-slate-100 rounded p-3">
                 <div class="border-b-2 mb-4 pb-2 border-indigo-200 flex items-center justify-between">
@@ -13,24 +25,41 @@
                     </div>
                 </div>
 
-                <draggable :list="status.tasks" group="tasks" itemKey="id">
-                    <template #item="{ element }">
-                        <Task
-                            :key="element.id"
-                            :task="element"
-                            @click="openTaskDetailsModal(task)"
-                        />
-                    </template>
-                </draggable>
+                <TaskColumn :tasks="status.tasks" />
+
+
+<!--                <div v-for="status in statuses" :key="status.id">-->
+<!--                    &lt;!&ndash; Pielāgotais parent tiek piešķirts kā ref &ndash;&gt;-->
+<!--                    <div :ref="(el) => getParent(status.id) && (getParent(status.id).value = el)">-->
+<!--                        <div-->
+<!--                            v-for="(task, index) in getTasks(status.id)"-->
+<!--                            :key="task.id"-->
+<!--                            class="bg-white p-3 shadow-sm mb-2"-->
+<!--                        >-->
+<!--                            {{ task.title }}-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+
+<!--                <draggable :list="status.tasks" group="tasks" itemKey="id">-->
+<!--                    <template #item="{ element }">-->
+<!--                        <Task-->
+<!--                            :key="element.id"-->
+<!--                            :task="element"-->
+<!--                            @click="openTaskDetailsModal(task)"-->
+<!--                        />-->
+<!--                    </template>-->
+<!--                </draggable>-->
             </div>
         </div>
 
-        <TaskDetailsModal
-            v-if="showTaskDetailsModal"
-            :show="showTaskDetailsModal"
-            :task="selectedTask"
-            @close="closeTaskDetailsModal"
-        />
+<!--        <TaskDetailsModal-->
+<!--            v-if="showTaskDetailsModal"-->
+<!--            :show="showTaskDetailsModal"-->
+<!--            :task="selectedTask"-->
+<!--            @close="closeTaskDetailsModal"-->
+<!--        />-->
     </AppLayout>
 </template>
 
@@ -39,9 +68,11 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 import {PlusIcon, EllipsisHorizontalIcon} from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
-import {onMounted, ref, watch} from "vue";
-import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
-import draggable from 'vuedraggable'
+// import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
+import Test from "@/Components/Test.vue";
+import {nextTick, onMounted, ref, watch} from "vue";
+import {useDragAndDrop} from "vue-fluid-dnd";
+import TaskColumn from "@/Components/Status/TaskColumn.vue";
 
 const props = defineProps({
     statuses: {
@@ -51,6 +82,45 @@ const props = defineProps({
         type: Object
     }
 });
+
+
+// const taskList1 = ref(props.statuses[0].tasks);
+// const taskList2 = ref(props.statuses[1].tasks);
+// const taskList3 = ref(props.statuses[2].tasks);
+// const taskList4 = ref(props.statuses[3].tasks);
+
+
+
+
+// onMounted(async () => {
+//     await nextTick();
+//     taskList2.value = props.statuses[1].tasks;
+//
+//     const {parent: parent1} = useDragAndDrop(taskList2, {
+//         droppableGroup: "group",
+//         draggingClass: "dragging-pokemon",
+//     });
+// });
+
+
+
+// const { parent: parent2 } = useDragAndDrop(taskList1, {
+//     droppableGroup: "group",
+//     draggingClass: "dragging-pokemon",
+//
+// });
+//
+// const { parent: parent3 } = useDragAndDrop(taskList3, {
+//     droppableGroup: "group",
+//     draggingClass: "dragging-pokemon",
+//
+// });
+//
+// const { parent: parent4 } = useDragAndDrop(taskList4, {
+//     droppableGroup: "group",
+//     draggingClass: "dragging-pokemon",
+//
+// });
 
 const selectedTask = ref(props.task);
 

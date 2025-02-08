@@ -22,6 +22,7 @@
     "dependencies": {
         "@headlessui/vue": "^1.7.23",
         "@heroicons/vue": "^2.2.0",
-        "vuedraggable": "^4.1.0"
+        "@vueuse/core": "^12.5.0",
+        "vue-fluid-dnd": "^0.11.3"
     }
 }
