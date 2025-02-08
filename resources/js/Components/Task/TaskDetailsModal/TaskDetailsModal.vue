@@ -22,9 +22,7 @@
                             <div class="grid grid-cols-6 space-x-8">
                                 <div class="col-span-4">
                                     <div class="border-b border-gray-200 pb-4">
-                                        <h2 class="text-xl font-medium mb-4">
-                                            {{ task.title }}
-                                        </h2>
+                                        <TaskEditTitleInput :task="task" />
 
                                         <p class="text-sm text-gray-700">
                                             {{ task.description }}
@@ -50,6 +48,7 @@ import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from "@headlessui/
 import {XMarkIcon, LinkIcon} from "@heroicons/vue/24/outline/index.js";
 import TaskInfoPanel from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoPanel.vue";
 import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComments.vue";
+import TaskEditTitleInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditTitleInput.vue";
 
 const emit = defineEmits(['close']);
 
