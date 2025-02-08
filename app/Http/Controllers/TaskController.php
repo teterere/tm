@@ -34,9 +34,9 @@ class TaskController extends Controller
         //
     }
 
-    public function update(Request $request, Task $task)
+    public function update(Request $request, Task $task): void
     {
-        //
+        $task->update($request->all());
     }
 
     public function destroy(Task $task)

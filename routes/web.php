@@ -24,6 +24,7 @@ Route::middleware([
     Route::get('/uzdevumi/{taskIdentifier}', [TaskController::class, 'index'])->name('show');
 
     Route::prefix('uzdevumi/{task}')->name('tasks.')->group(function () {
+        Route::patch('/', [TaskController::class, 'update'])->name('update');
 
         Route::prefix('checklist-items')->name('checklist-items.')->group(function () {
             Route::post('/', [TaskChecklistItemController::class, 'store'])->name('store');
