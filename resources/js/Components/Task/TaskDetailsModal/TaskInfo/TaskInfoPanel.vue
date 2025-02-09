@@ -3,13 +3,9 @@
         <TaskInfo title="Statuss">
             <TaskStatusDropdown :task="task" :statuses="statuses" />
         </TaskInfo>
+
         <TaskInfo title="Prioritāte">
-            <span class="inline-flex items-center gap-x-1.5 rounded-md bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-700">
-                <svg class="size-1.5 fill-red-500" viewBox="0 0 6 6" aria-hidden="true">
-                  <circle cx="3" cy="3" r="3"/>
-                </svg>
-                {{ task.priority.title }}
-            </span>
+            <TaskEditPriorityDropdown :task="task" :priorities="priorities" />
         </TaskInfo>
         <TaskInfo title="Birkas">
             <div v-if="task.labels.length" class="flex items-center space-x-1">
@@ -40,10 +36,13 @@
 <script setup>
 import TaskInfo from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoItem.vue";
 import TaskStatusDropdown from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskStatusDropdown.vue";
+import TaskEditPriorityDropdown
+    from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditPriorityDropdown.vue";
 
 defineProps({
     task: Object,
-    statuses: Object
+    statuses: Object,
+    priorities: Object
 })
 </script>
 

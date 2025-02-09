@@ -6,13 +6,14 @@
         </MenuButton>
 
         <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-            <MenuItems class="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden">
+            <MenuItems class="absolute left-0 z-10 mt-2 w-46 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden">
                 <div class="py-1 space-y-1">
                     <MenuItem v-for="status in statuses" v-slot="{ active }">
-                        <button @click="updateStatus(status)" :class="[active ? 'outline-hidden bg-gray-100' : 'text-gray-700', 'block px-3 py-2 text-sm w-full cursor-pointer text-start']">
+                        <button @click="updateStatus(status)" :class="[active ? 'outline-hidden bg-gray-100' : 'text-gray-700', 'flex items-center justify-between px-3 py-2 text-sm w-full cursor-pointer text-start']">
                             <span :class="['px-3 py-1.5 font-semibold uppercase text-xs rounded-xs', statusBackgroundColors[status.key]]">
                                 {{ status.title }}
                             </span>
+                            <CheckIcon v-if="task.status.id === status.id" class="w-4 h-4 text-green-600" />
                         </button>
                     </MenuItem>
                 </div>
@@ -25,6 +26,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import { ChevronDownIcon } from '@heroicons/vue/20/solid';
 import {router} from "@inertiajs/vue3";
+import {CheckIcon} from "@heroicons/vue/24/outline/index.js";
 
 const props = defineProps({
     task: Object,

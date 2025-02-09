@@ -2,12 +2,7 @@
     <div class="bg-white rounded p-3 mb-3 shadow-sm cursor-pointer hover:shadow-md">
         <div class="flex justify-between">
             <div class="flex space-x-2">
-                <span class="inline-flex items-center gap-x-1.5 rounded-md bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-700">
-                <svg class="size-1.5 fill-red-500" viewBox="0 0 6 6" aria-hidden="true">
-                  <circle cx="3" cy="3" r="3"/>
-                </svg>
-                {{ task.priority.title }}
-              </span>
+                <TaskPriorityLabel :priority="task.priority" />
 
                 <div v-if="task.labels.length" class="flex items-center space-x-1">
                     <span v-for="label in task.labels"
@@ -54,6 +49,7 @@
 
 <script setup>
 import {CheckCircleIcon, ClockIcon, EllipsisHorizontalIcon, EnvelopeIcon} from "@heroicons/vue/24/outline";
+import TaskPriorityLabel from "@/Components/Task/TaskPriority/TaskPriorityLabel.vue";
 
 defineProps({
     task: Object

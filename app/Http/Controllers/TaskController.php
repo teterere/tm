@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskStatusResource;
 use App\Models\Task;
+use App\Models\TaskPriority;
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,6 +16,8 @@ class TaskController extends Controller
     public function index(string $taskIdentifier = null): Response
     {
         $statuses = TaskStatus::withTasksForCompany();
+        $priorities = TaskPriority::all();
+        $employees = auth()->user()->company->employees;
 
         $task = null;
         if ($taskIdentifier) {
@@ -24,8 +27,10 @@ class TaskController extends Controller
         }
 
         return Inertia::render('Tasks/Index', [
-            'statuses' => TaskStatusResource::collection($statuses),
-            'task'     => $task
+            'statuses'   => TaskStatusResource::collection($statuses),
+            'task'       => $task,
+            'priorities' => $priorities,
+            'employees'  => $employees
         ]);
     }
 
@@ -43,6 +48,13 @@ class TaskController extends Controller
     {
         $task->update([
             'status_id' => $status->id
+        ]);
+    }
+
+    public function updatePriority(Task $task, TaskStatus $priority): void
+    {
+        $task->update([
+            'priority_id' => $priority->id
         ]);
     }
 

@@ -15,4 +15,9 @@ class Company extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function employees(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
 }
