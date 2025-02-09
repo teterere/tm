@@ -30,7 +30,7 @@
                                     <TaskChecklist :task="task" />
                                     <TaskComments />
                                 </div>
-                                <TaskInfoPanel :task="task" />
+                                <TaskInfoPanel :task="task" :statuses="statuses" />
                             </div>
                         </DialogPanel>
                     </TransitionChild>
@@ -58,6 +58,9 @@ defineProps({
         default: false
     },
     task: {
+        type: Object
+    },
+    statuses: {
         type: Object
     }
 });

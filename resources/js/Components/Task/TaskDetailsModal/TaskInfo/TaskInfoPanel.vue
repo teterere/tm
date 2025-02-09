@@ -1,9 +1,7 @@
 <template>
     <div class="col-span-2 space-y-4">
         <TaskInfo title="Statuss">
-            <span class="inline-flex items-center gap-x-1.5 rounded-md bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-700">
-                {{ task.status.title }}
-            </span>
+            <TaskStatusDropdown :task="task" :statuses="statuses" />
         </TaskInfo>
         <TaskInfo title="Prioritāte">
             <span class="inline-flex items-center gap-x-1.5 rounded-md bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-700">
@@ -41,9 +39,11 @@
 
 <script setup>
 import TaskInfo from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoItem.vue";
+import TaskStatusDropdown from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskStatusDropdown.vue";
 
 defineProps({
-    task: Object
+    task: Object,
+    statuses: Object
 })
 </script>
 

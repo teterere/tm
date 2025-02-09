@@ -26,6 +26,7 @@
             v-if="showTaskDetailsModal"
             :show="showTaskDetailsModal"
             :task="selectedTask"
+            :statuses="statuses"
             @close="closeTaskDetailsModal"
         />
     </AppLayout>

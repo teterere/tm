@@ -39,6 +39,13 @@ class TaskController extends Controller
         $task->update($request->all());
     }
 
+    public function updateStatus(Task $task, TaskStatus $status): void
+    {
+        $task->update([
+            'status_id' => $status->id
+        ]);
+    }
+
     public function destroy(Task $task)
     {
         //
