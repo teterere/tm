@@ -1,5 +1,5 @@
 <template>
-    <div class="relative mb-4">
+    <div class="relative">
         <OnClickOutside v-if="editStatus" :options="options">
             <input v-if="editStatus" v-model="form.title" ref="titleInput" type="text" class="font-medium block w-full rounded-xs bg-white p-2 text-xl text-gray-900 outline-1 outline-offset-0 outline-gray-200 border-gray-200 focus:outline-1 focus:-outline-offset-0 focus:outline-gray-200 focus:ring-gray-200 focus:border-gray-200" />
         </OnClickOutside>
@@ -23,7 +23,7 @@
 import {nextTick, ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import {OnClickOutside} from '@vueuse/components';
-import {CheckIcon, XMarkIcon} from "@heroicons/vue/24/outline/index.js";
+import {CheckIcon, XMarkIcon} from "@heroicons/vue/24/outline";
 
 const props = defineProps({
     task: Object

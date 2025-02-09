@@ -24,9 +24,7 @@
                                     <div class="border-b border-gray-200 pb-4">
                                         <TaskEditTitleInput :task="task" />
 
-                                        <p class="text-sm text-gray-700">
-                                            {{ task.description }}
-                                        </p>
+                                        <TaskEditDescriptionInput :task="task" />
                                     </div>
 
                                     <TaskChecklist :task="task" />
@@ -49,6 +47,8 @@ import {XMarkIcon, LinkIcon} from "@heroicons/vue/24/outline/index.js";
 import TaskInfoPanel from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoPanel.vue";
 import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComments.vue";
 import TaskEditTitleInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditTitleInput.vue";
+import TaskEditDescriptionInput
+    from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditDescriptionInput.vue";
 
 const emit = defineEmits(['close']);
 
