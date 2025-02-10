@@ -30,7 +30,7 @@
                                     <TaskChecklist :task="task" />
                                     <TaskComments />
                                 </div>
-                                <TaskInfoPanel :task="task" :statuses="statuses" :priorities="priorities" />
+                                <TaskInfoPanel :task="task" :statuses="statuses" :priorities="priorities" :labels="labels" />
                             </div>
                         </DialogPanel>
                     </TransitionChild>
@@ -59,7 +59,8 @@ defineProps({
     },
     task: Object,
     statuses: Object,
-    priorities: Object
+    priorities: Object,
+    labels: Object
 });
 
 const copyToClipboard = (text) => {

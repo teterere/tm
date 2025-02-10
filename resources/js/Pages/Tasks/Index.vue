@@ -28,6 +28,7 @@
             :task="selectedTask"
             :statuses="statuses"
             :priorities="priorities"
+            :labels="labels"
             @close="closeTaskDetailsModal"
         />
     </AppLayout>
@@ -44,7 +45,8 @@ import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModa
 const props = defineProps({
     statuses: Object,
     task: Object,
-    priorities: Object
+    priorities: Object,
+    labels: Object
 });
 
 const selectedTask = ref(props.task);

@@ -4,13 +4,8 @@
             <div class="flex space-x-2">
                 <TaskPriorityLabel :priority="task.priority" />
 
-                <div v-if="task.labels.length" class="flex items-center space-x-1">
-                    <span v-for="label in task.labels"
-                          class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium text-blue-700"
-                          :style="{ backgroundColor: label.color }"
-                    >
-                        <span :style="{ color: label.color, filter: 'brightness(30%)'}">{{ label.title }}</span>
-                    </span>
+                <div v-if="task.labels.length" class="flex items-center space-1">
+                    <TaskLabel v-for="label in task.labels" :label="label" />
                 </div>
             </div>
 
@@ -50,6 +45,7 @@
 <script setup>
 import {CheckCircleIcon, ClockIcon, EllipsisHorizontalIcon, EnvelopeIcon} from "@heroicons/vue/24/outline";
 import TaskPriorityLabel from "@/Components/Task/TaskPriority/TaskPriorityLabel.vue";
+import TaskLabel from "@/Components/Task/TaskLabel/TaskLabel.vue";
 
 defineProps({
     task: Object

@@ -8,13 +8,7 @@
             <TaskEditPriorityDropdown :task="task" :priorities="priorities" />
         </TaskInfo>
         <TaskInfo title="Birkas">
-            <div v-if="task.labels.length" class="flex items-center space-x-1">
-                <span v-for="label in task.labels"
-                      class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium text-blue-700"
-                      :style="{ backgroundColor: label.color }">
-                    <span :style="{ color: label.color, filter: 'brightness(30%)'}">{{ label.title }}</span>
-                </span>
-            </div>
+            <TaskEditLabelsSelect :labels="labels" :task="task" />
         </TaskInfo>
         <TaskInfo title="Termiņš">
             <span class="text-sm text-gray-600">{{ task.due_date }}</span>
@@ -38,11 +32,13 @@ import TaskInfo from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoItem.v
 import TaskStatusDropdown from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskStatusDropdown.vue";
 import TaskEditPriorityDropdown
     from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditPriorityDropdown.vue";
+import TaskEditLabelsSelect from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditLabelsSelect.vue";
 
 defineProps({
     task: Object,
     statuses: Object,
-    priorities: Object
+    priorities: Object,
+    labels: Object
 })
 </script>
 

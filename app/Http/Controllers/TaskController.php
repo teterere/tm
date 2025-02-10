@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskStatusResource;
 use App\Models\Task;
+use App\Models\TaskLabel;
 use App\Models\TaskPriority;
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class TaskController extends Controller
         $statuses = TaskStatus::withTasksForCompany();
         $priorities = TaskPriority::all();
         $employees = auth()->user()->company->employees;
+        $labels = TaskLabel::all(); // todo: for company of where company id null
 
         $task = null;
         if ($taskIdentifier) {
@@ -30,6 +32,7 @@ class TaskController extends Controller
             'statuses'   => TaskStatusResource::collection($statuses),
             'task'       => $task,
             'priorities' => $priorities,
+            'labels'     => $labels,
             'employees'  => $employees
         ]);
     }
