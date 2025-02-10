@@ -84,7 +84,12 @@ const toggleDropdown = () => {
 
 const removeLabel = (label) => {
     router.delete(route('tasks.labels.remove', { task: props.task.id, label: label.id }), {
-        preserveScroll: true
+        preserveScroll: true,
+        onSuccess: () => {
+            if (!props.task.labels.length) {
+                isOpen.value = false;
+            }
+        },
     });
 }
 </script>
