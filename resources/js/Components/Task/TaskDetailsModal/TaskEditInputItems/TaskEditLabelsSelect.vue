@@ -1,23 +1,23 @@
 <template>
-    <Combobox as="div" v-model="selectedLabel" @update:modelValue="query = ''" class="w-full">
+    <Combobox as="div" v-model="selectedLabel" :open="isOpen" @update:modelValue="query = ''" class="w-full">
         <div class="relative w-full mt-2">
             <!-- Sākotnēji izvēlēto labelu saraksts -->
             <ComboboxButton
-                @click="isOpen = !isOpen"
+                @click="toggleDropdown"
                 class="w-full hover:bg-gray-100 rounded-xs text-sm px-2 py-1 text-gray-900 cursor-pointer flex flex-wrap gap-2 items-center">
                 <template v-if="task.labels.length > 0">
-                    <div>
-                        <TaskLabel v-for="label in task.labels" :key="label.id" :label="label" :removeButton="isOpen" />
+                    <div ref="taskLabelRef">
+                        <TaskLabel v-for="label in task.labels" :key="label.id" :label="label" :removeButton="isOpen" @remove.stop="removeLabel(label)" />
                     </div>
                 </template>
-                <span v-else class="text-gray-600">Pievienot</span>
+                <span v-else-if="!task.labels.length && !isOpen" class="text-gray-600">Pievienot</span>
             </ComboboxButton>
 
             <!-- Meklēšanas lauks parādās tikai, ja combobox ir atvērts -->
             <ComboboxInput v-if="isOpen"
                            class="block w-full rounded-xs bg-white py-1 pr-12 pl-3 mt-1 text-sm text-gray-900 focus:border-gray-300 focus:ring-gray-300 placeholder:text-gray-400 sm:text-sm"
                            @change="query = $event.target.value"
-                           @blur="isOpen = false"
+                           @blur="handleBlur($event)"
                            :display-value="(label) => label?.name"
             />
 
@@ -43,25 +43,48 @@ import {computed, ref, watchEffect} from 'vue'
 import {CheckIcon} from '@heroicons/vue/20/solid'
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from '@headlessui/vue'
 import TaskLabel from "@/Components/Task/TaskLabel/TaskLabel.vue";
+import {router} from "@inertiajs/vue3";
 
 const props = defineProps({
     labels: Array,
     task: Object
-})
+});
 
-const query = ref('')
-const selectedLabel = ref(null)
-const isOpen = ref(false)
+const query = ref('');
+const selectedLabel = ref(null);
+const isOpen = ref(false);
+const taskLabelRef = ref(null);
 
 const filteredLabels = computed(() =>
     query.value === ''
         ? props.labels
         : props.labels.filter((label) => label.title.toLowerCase().includes(query.value.toLowerCase()))
-)
+);
 
 watchEffect(() => {
     if (selectedLabel.value) {
         isOpen.value = false
     }
-})
+});
+
+const handleBlur = (event) => {
+    const taskLabelElement = taskLabelRef.value;
+
+    if (taskLabelElement && taskLabelElement.contains(event.explicitOriginalTarget)) {
+        // Do not blur when clicking on a label remove button
+        return;
+    }
+
+    isOpen.value = false
+}
+
+const toggleDropdown = () => {
+    isOpen.value = !isOpen.value;
+};
+
+const removeLabel = (label) => {
+    router.delete(route('tasks.labels.remove', { task: props.task.id, label: label.id }), {
+        preserveScroll: true
+    });
+}
 </script>

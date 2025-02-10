@@ -61,6 +61,11 @@ class TaskController extends Controller
         ]);
     }
 
+    public function removeLabel(Task $task, TaskLabel $label): void
+    {
+        $task->labels()->detach($label->id);
+    }
+
     public function destroy(Task $task)
     {
         //

@@ -8,10 +8,10 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
+        'canLogin'       => Route::has('login'),
+        'canRegister'    => Route::has('register'),
         'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'phpVersion'     => PHP_VERSION,
     ]);
 });
 
@@ -27,6 +27,10 @@ Route::middleware([
         Route::patch('/', [TaskController::class, 'update'])->name('update');
         Route::patch('/update-status/{status}', [TaskController::class, 'updateStatus'])->name('update-status');
         Route::patch('/update-priority/{priority}', [TaskController::class, 'updatePriority'])->name('update-priority');
+
+        Route::prefix('labels')->name('labels.')->group(function () {
+            Route::delete('{label}', [TaskController::class, 'removeLabel'])->name('remove');
+        });
 
         Route::prefix('checklist-items')->name('checklist-items.')->group(function () {
             Route::post('/', [TaskChecklistItemController::class, 'store'])->name('store');
