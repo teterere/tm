@@ -61,6 +61,13 @@ class TaskController extends Controller
         ]);
     }
 
+    public function addLabels(Request $request, Task $task): void
+    {
+        $labelIds = array_column($request->get('selectedLabels'), 'id');
+
+        $task->labels()->syncWithoutDetaching($labelIds);
+    }
+
     public function removeLabel(Task $task, TaskLabel $label): void
     {
         $task->labels()->detach($label->id);

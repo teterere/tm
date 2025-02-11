@@ -29,6 +29,7 @@ Route::middleware([
         Route::patch('/update-priority/{priority}', [TaskController::class, 'updatePriority'])->name('update-priority');
 
         Route::prefix('labels')->name('labels.')->group(function () {
+            Route::post('/', [TaskController::class, 'addLabels'])->name('add');
             Route::delete('{label}', [TaskController::class, 'removeLabel'])->name('remove');
         });
 

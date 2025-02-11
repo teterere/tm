@@ -1,12 +1,12 @@
 <template>
-    <Combobox as="div" v-model="selectedLabel" :open="isOpen" @update:modelValue="query = ''" class="w-full">
+    <Combobox as="div" v-model="form.selectedLabels" :open="isOpen" @update:modelValue="query = ''" class="w-full" multiple>
         <div class="relative w-full mt-2">
             <!-- Sākotnēji izvēlēto labelu saraksts -->
             <ComboboxButton
                 @click="toggleDropdown"
                 class="w-full hover:bg-gray-100 rounded-xs text-sm px-2 py-1 text-gray-900 cursor-pointer flex flex-wrap gap-2 items-center">
                 <template v-if="task.labels.length > 0">
-                    <div ref="taskLabelRef">
+                    <div ref="taskLabelRef" class="flex flex-wrap gap-1.5">
                         <TaskLabel v-for="label in task.labels" :key="label.id" :label="label" :removeButton="isOpen" @remove.stop="removeLabel(label)" />
                     </div>
                 </template>
@@ -27,7 +27,7 @@
                 <ComboboxOption v-for="label in filteredLabels" :key="label.id" :value="label" as="template" v-slot="{ active, selected }">
                     <li :class="['relative cursor-default py-2 pr-9 pl-3 select-none', active ? 'bg-indigo-600 text-white' : 'text-gray-900']">
                         <span :class="['block truncate', selected && 'font-semibold']">{{ label.title }}</span>
-                        <span v-if="selected || label.id === task.label_id"
+                        <span v-if="selected"
                               :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-indigo-600']">
                             <CheckIcon class="size-5" aria-hidden="true"/>
                         </span>
@@ -39,32 +39,33 @@
 </template>
 
 <script setup>
-import {computed, ref, watchEffect} from 'vue'
+import {computed, ref, watch} from 'vue'
 import {CheckIcon} from '@heroicons/vue/20/solid'
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from '@headlessui/vue'
 import TaskLabel from "@/Components/Task/TaskLabel/TaskLabel.vue";
-import {router} from "@inertiajs/vue3";
+import {router, useForm} from "@inertiajs/vue3";
 
 const props = defineProps({
     labels: Array,
     task: Object
 });
 
+const form = useForm({
+    selectedLabels: props.task.labels
+});
+
 const query = ref('');
-const selectedLabel = ref(null);
 const isOpen = ref(false);
 const taskLabelRef = ref(null);
 
 const filteredLabels = computed(() =>
     query.value === ''
-        ? props.labels
-        : props.labels.filter((label) => label.title.toLowerCase().includes(query.value.toLowerCase()))
+        ? props.labels.filter(label => !props.task.labels.some(taskLabel => taskLabel.id === label.id))
+        : props.labels.filter((label) => label.title.toLowerCase().includes(query.value.toLowerCase()) && !props.task.labels.some(taskLabel => taskLabel.id === label.id))
 );
 
-watchEffect(() => {
-    if (selectedLabel.value) {
-        isOpen.value = false
-    }
+watch(() => form.selectedLabels, () => {
+    addLabels();
 });
 
 const handleBlur = (event) => {
@@ -75,11 +76,20 @@ const handleBlur = (event) => {
         return;
     }
 
-    isOpen.value = false
-}
+    isOpen.value = false;
+};
 
 const toggleDropdown = () => {
     isOpen.value = !isOpen.value;
+};
+
+const addLabels = () => {
+    form.post(route('tasks.labels.add', { task: props.task.id }), {
+        preserveScroll: true,
+        onSuccess: () => {
+            query.value = '';
+        },
+    });
 };
 
 const removeLabel = (label) => {
@@ -91,5 +101,5 @@ const removeLabel = (label) => {
             }
         },
     });
-}
+};
 </script>
