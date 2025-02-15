@@ -1,5 +1,5 @@
 <template>
-    <Menu as="div" class="relative inline-block text-left">
+    <Menu as="div" class="relative inline-block text-left pl-2">
         <MenuButton :class="['inline-flex w-full justify-center gap-x-1.5 rounded-xs px-3 py-1 text-sm font-medium shadow-xs cursor-pointer', statusBackgroundColors[task.status.key]]">
             {{ task.status.title }}
             <ChevronDownIcon class="-mr-1 size-5" aria-hidden="true" />

@@ -16,12 +16,12 @@
                             <div class="flex items-center">
                                 <img :src="employee.avatar_path" alt="" class="size-7 shrink-0 rounded-full" />
                                 <span :class="['ml-3 truncate', selected && 'font-semibold']">
-                    {{ employee.name }}
-                  </span>
+                                    {{ employee.name }}
+                                  </span>
                             </div>
                             <span v-if="selected" :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-indigo-600']">
-                  <CheckIcon class="size-5" aria-hidden="true" />
-                </span>
+                              <CheckIcon class="size-5" aria-hidden="true" />
+                            </span>
                         </li>
                     </ComboboxOption>
                 </ComboboxOptions>

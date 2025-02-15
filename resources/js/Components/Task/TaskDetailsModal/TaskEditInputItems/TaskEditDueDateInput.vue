@@ -1,7 +1,7 @@
 <template>
     <VueDatePicker v-model="form.due_date" auto-apply :enable-time-picker="false" @update:model-value="submit">
         <template #trigger>
-            <span class="w-full block hover:bg-gray-100 cursor-pointer p-1 rounded-xs text-sm text-gray-600">{{ task.due_date }}</span>
+            <span class="w-full block hover:bg-gray-100 cursor-pointer p-1 pl-2 rounded-xs text-sm text-gray-600">{{ task.due_date }}</span>
         </template>
     </VueDatePicker>
 </template>

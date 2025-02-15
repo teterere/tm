@@ -1,26 +1,26 @@
 <template>
-<span :class="['inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-xs font-medium', backgroundColors[priority.key]]">
-    <svg :class="['size-1.5', circleColors[priority.key]]" viewBox="0 0 6 6" aria-hidden="true">
-      <circle cx="3" cy="3" r="3"/>
-    </svg>
-    {{ priority.title }}
-  </span>
+    <div :class="['inline-flex items-center gap-x-1 rounded-md px-1.5 py-0.5 text-xs font-medium']">
+        <component :is="taskIcons[priority.key]" :class="['h-4 w-4', iconColors[priority.key]]" />
+        <span class="text-gray-600">{{ priority.title }}</span>
+    </div>
 </template>
 
 <script setup>
+import {ChevronDoubleUpIcon, ChevronDoubleDownIcon, Bars3Icon} from "@heroicons/vue/24/outline";
+
 defineProps({
     priority: Object
 });
 
-const backgroundColors = {
-    low: 'bg-blue-100 text-blue-700',
-    medium: 'bg-orange-200 text-orange-700',
-    high: 'bg-red-100 text-red-700'
+const iconColors = {
+    low: 'text-blue-500',
+    medium: 'text-amber-500',
+    high: 'text-red-500'
 };
 
-const circleColors = {
-    low: 'fill-blue-500',
-    medium: 'fill-orange-500',
-    high: 'fill-red-500'
+const taskIcons = {
+    low: ChevronDoubleDownIcon,
+    medium: Bars3Icon,
+    high: ChevronDoubleUpIcon
 }
 </script>
