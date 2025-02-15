@@ -14,12 +14,7 @@
             <TaskEditDueDateInput :task="task" />
         </TaskInfo>
         <TaskInfo title="Izpildītājs">
-            <div class="flex items-center space-x-2">
-                <img class="inline-block size-8 rounded-full"
-                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                     alt=""/>
-                <span class="text-sm text-gray-600">{{ task.assignee.name }}</span>
-            </div>
+            <TaskEditAssigneeSelect :task="task" :employees="employees" />
         </TaskInfo>
         <TaskInfo title="Izpildes novērtējums">
             <TaskEditTimeEstimateInput :task="task" />
@@ -36,12 +31,14 @@ import TaskEditLabelsSelect from "@/Components/Task/TaskDetailsModal/TaskEditInp
 import TaskEditDueDateInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditDueDateInput.vue";
 import TaskEditTimeEstimateInput
     from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditTimeEstimateInput.vue";
+import TaskEditAssigneeSelect from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditAssigneeSelect.vue";
 
 defineProps({
     task: Object,
     statuses: Object,
     priorities: Object,
-    labels: Object
+    labels: Object,
+    employees: Object
 })
 </script>
 

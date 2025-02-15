@@ -29,6 +29,7 @@
             :statuses="statuses"
             :priorities="priorities"
             :labels="labels"
+            :employees="employees"
             @close="closeTaskDetailsModal"
         />
     </AppLayout>
@@ -46,7 +47,8 @@ const props = defineProps({
     statuses: Object,
     task: Object,
     priorities: Object,
-    labels: Object
+    labels: Object,
+    employees: Object
 });
 
 const selectedTask = ref(props.task);

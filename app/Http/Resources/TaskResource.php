@@ -16,7 +16,9 @@ class TaskResource extends JsonResource
     {
         return [
             'id'                              => $this->id,
-            'assignee'                        => $this->whenLoaded('assignee'),
+            'assignee'                        => $this->whenLoaded('assignee', function () {
+                return EmployeeResource::make($this->assignee);
+            }),
             'priority'                        => $this->whenLoaded('priority'),
             'status'                          => $this->whenLoaded('status'),
             'labels'                          => $this->whenLoaded('labels'),

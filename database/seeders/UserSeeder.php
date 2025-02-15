@@ -16,25 +16,28 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::factory()->create([
-            'name'       => 'Andris Bērziņš',
-            'email'      => 'andris.berzins@example.com',
-            'password'   => Hash::make('parole123')
+            'name'     => 'Andris Bērziņš',
+            'email'    => 'andris.berzins@example.com',
+            'password' => Hash::make('parole123'),
+            'avatar'   => 'andris-berzins.jpg'
         ]);
 
         $users = [
-            'Jānis Kalniņš',
-            'Anna Ozola',
-            'Pēteris Pētersone',
-            'Māra Meiere',
-            'Dainis Vilsons',
-            'Ilze Jākobsone',
-            'Rūdolfs Krūmiņš',
-            'Zane Rudzīte'
+            'Jānis Kalniņš'    => 'janis-kalnins.jpg',
+            'Anna Ozola'       => 'anna-ozola.jpg',
+            'Pēteris Adamsons' => 'peteris-adamsons.jpg',
+            'Māra Meiere'      => 'mara-meiere.jpg',
+            'Dainis Vilsons'   => 'dainis-vilsons.jpg',
+            'Ilze Jākobsone'   => 'ilze-jakabsone.jpg',
+            'Rūdolfs Krūmiņš'  => 'rudolfs-krumins.jpg',
+            'Zane Rudzīte'     => 'zane-rudzite.jpg',
+            'Helēna Grīnberga' => 'helena-grinberga.jpg'
         ];
 
-        foreach ($users as $user) {
+        foreach ($users as $name => $avatar) {
             User::factory()->create([
-                'name' => $user
+                'name'   => $name,
+                'avatar' => $avatar
             ]);
         }
     }

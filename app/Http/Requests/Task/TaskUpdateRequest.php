@@ -4,6 +4,7 @@ namespace App\Http\Requests\Task;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 class TaskUpdateRequest extends FormRequest
 {
@@ -16,11 +17,18 @@ class TaskUpdateRequest extends FormRequest
 
     public function rules(): array
     {
+        $task = $this->route('task');
+
         return [
             'title'       => ['sometimes', 'required', 'max:255'],
             'description' => ['nullable', 'max:1000'],
             'due_date'    => ['nullable', 'date'],
-            'estimate'    => ['nullable', 'string']
+            'estimate'    => ['nullable', 'string'],
+            'assignee_id' => [
+                'nullable',
+                'exists:users,id',
+                Rule::exists('users', 'id')->where('company_id', $task->company_id)
+            ],
         ];
     }
 }

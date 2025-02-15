@@ -7,6 +7,7 @@ use App\Http\Requests\Task\TaskUpdateRequest;
 use App\Http\Requests\Task\TaskUpdateStatusRequest;
 use App\Http\Requests\TaskLabels\AddLabelsRequest;
 use App\Http\Requests\TaskLabels\RemoveLabelsRequest;
+use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskStatusResource;
 use App\Models\Task;
@@ -25,7 +26,7 @@ class TaskController extends Controller
     {
         $statuses = TaskStatus::withTasksForCompany();
         $priorities = TaskPriority::all();
-        $employees = User::forAuthorizedCompany();
+        $employees = User::forAuthorizedCompany()->get();
         $labels = TaskLabel::all();
 
         $task = null;
@@ -40,7 +41,7 @@ class TaskController extends Controller
             'task'       => $task,
             'priorities' => $priorities,
             'labels'     => $labels,
-            'employees'  => $employees
+            'employees'  => EmployeeResource::collection($employees)
         ]);
     }
 
