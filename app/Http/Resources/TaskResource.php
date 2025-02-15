@@ -25,6 +25,7 @@ class TaskResource extends JsonResource
             'completed_checklist_items_count' => $this->completedChecklistItemsCount,
             'title'                           => $this->title,
             'description'                     => $this->description,
+            'due_date_raw'                    => $this->due_date,
             'due_date'                        => $this->due_date->locale('lv')->translatedFormat('j. F'),
             'estimate'                        => $this->formattedEstimate,
             'created_at'                      => $this->created_at->diffForHumans(),

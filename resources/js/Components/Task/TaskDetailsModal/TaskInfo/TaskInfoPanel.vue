@@ -11,7 +11,7 @@
             <TaskEditLabelsSelect :labels="labels" :task="task" />
         </TaskInfo>
         <TaskInfo title="Termiņš">
-            <span class="text-sm text-gray-600">{{ task.due_date }}</span>
+            <TaskEditDueDateInput :task="task" />
         </TaskInfo>
         <TaskInfo title="Izpildītājs">
             <div class="flex items-center space-x-2">
@@ -33,6 +33,7 @@ import TaskStatusDropdown from "@/Components/Task/TaskDetailsModal/TaskEditInput
 import TaskEditPriorityDropdown
     from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditPriorityDropdown.vue";
 import TaskEditLabelsSelect from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditLabelsSelect.vue";
+import TaskEditDueDateInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditDueDateInput.vue";
 
 defineProps({
     task: Object,

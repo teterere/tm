@@ -49,7 +49,7 @@ import TaskLabel from "@/Components/Task/TaskLabel/TaskLabel.vue";
 import {router, useForm} from "@inertiajs/vue3";
 
 const props = defineProps({
-    labels: Array,
+    labels: Object,
     task: Object
 });
 
