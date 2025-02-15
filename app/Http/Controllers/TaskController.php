@@ -63,9 +63,16 @@ class TaskController extends Controller
 
     public function addLabels(Request $request, Task $task): void
     {
-        $labelIds = array_column($request->get('selectedLabels'), 'id');
+        [$existingLabelIds, $newLabelsData] = collect($request->get('selectedLabels'))
+            ->partition(fn ($label) => !is_null($label['id']));
 
-        $task->labels()->syncWithoutDetaching($labelIds);
+        if ($existingLabelIds->isNotEmpty()) {
+            $task->labels()->syncWithoutDetaching($existingLabelIds->pluck('id'));
+        }
+
+        $newLabels = auth()->user()->company->labels()->createMany($newLabelsData);
+
+        $task->labels()->syncWithoutDetaching($newLabels->pluck('id'));
     }
 
     public function removeLabel(Task $task, TaskLabel $label): void

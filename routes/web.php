@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\TaskChecklistItemController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskLabelController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,8 +29,8 @@ Route::middleware([
         Route::patch('/update-status/{status}', [TaskController::class, 'updateStatus'])->name('update-status');
         Route::patch('/update-priority/{priority}', [TaskController::class, 'updatePriority'])->name('update-priority');
 
-        Route::prefix('labels')->name('labels.')->group(function () {
-            Route::post('/', [TaskController::class, 'addLabels'])->name('add');
+        Route::prefix('birkas')->name('labels.')->group(function () {
+            Route::post('/add', [TaskController::class, 'addLabels'])->name('add');
             Route::delete('{label}', [TaskController::class, 'removeLabel'])->name('remove');
         });
 

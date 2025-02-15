@@ -4,7 +4,7 @@
             <div class="flex space-x-2">
                 <TaskPriorityLabel :priority="task.priority" />
 
-                <div v-if="task.labels.length" class="flex items-center space-1">
+                <div v-if="task.labels.length" class="flex items-center gap-1.5">
                     <TaskLabel v-for="label in task.labels" :label="label" />
                 </div>
             </div>

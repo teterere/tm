@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('company_id')->nullable();
             $table->string('title');
-            $table->string('key')->unique();
             $table->string('color')->default('#94b8a3');
             $table->timestamps();
         });

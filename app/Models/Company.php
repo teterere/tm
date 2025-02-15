@@ -20,4 +20,9 @@ class Company extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function labels(): HasMany
+    {
+        return $this->hasMany(TaskLabel::class);
+    }
 }

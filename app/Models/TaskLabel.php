@@ -9,7 +9,6 @@ class TaskLabel extends Model
 {
     protected $fillable = [
         'title',
-        'key',
         'color'
     ];
 
