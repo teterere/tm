@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\TaskLabel;
 use App\Models\TaskPriority;
 use App\Models\TaskStatus;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,8 +19,8 @@ class TaskController extends Controller
     {
         $statuses = TaskStatus::withTasksForCompany();
         $priorities = TaskPriority::all();
-        $employees = auth()->user()->company->employees;
-        $labels = TaskLabel::all(); // todo: for company of where company id null
+        $employees = User::forAuthorizedCompany();
+        $labels = TaskLabel::all();
 
         $task = null;
         if ($taskIdentifier) {

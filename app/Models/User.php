@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class, 'assignee_id');
     }
+
+    public function scopeForAuthorizedCompany($query)
+    {
+        return $query->where('company_id', auth()->user()->company_id);
+    }
 }
