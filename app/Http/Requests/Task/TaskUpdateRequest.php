@@ -19,7 +19,8 @@ class TaskUpdateRequest extends FormRequest
         return [
             'title'       => ['sometimes', 'required', 'max:255'],
             'description' => ['nullable', 'max:1000'],
-            'due_date'    => ['nullable', 'date']
+            'due_date'    => ['nullable', 'date'],
+            'estimate'    => ['nullable', 'string']
         ];
     }
 }

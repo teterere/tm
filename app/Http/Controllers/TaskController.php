@@ -14,6 +14,7 @@ use App\Models\TaskLabel;
 use App\Models\TaskPriority;
 use App\Models\TaskStatus;
 use App\Models\User;
+use App\TaskEstimateService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -50,7 +51,17 @@ class TaskController extends Controller
 
     public function update(TaskUpdateRequest $request, Task $task): void
     {
-        $task->update($request->all());
+        $data = $request->validated();
+
+        if ($request->has('estimate')) {
+            $task->update([
+                'estimate' => TaskEstimateService::calculateEstimate($request->get('estimate'))
+            ]);
+
+            unset($data['estimate']);
+        }
+
+        $task->update($data);
     }
 
     public function updateStatus(TaskUpdateStatusRequest $request, Task $task, TaskStatus $status): void
@@ -70,7 +81,7 @@ class TaskController extends Controller
     public function addLabels(AddLabelsRequest $request, Task $task): void
     {
         [$existingLabelIds, $newLabelsData] = collect($request->get('selectedLabels'))
-            ->partition(fn ($label) => !is_null($label['id']));
+            ->partition(fn($label) => !is_null($label['id']));
 
         if ($existingLabelIds->isNotEmpty()) {
             $task->labels()->syncWithoutDetaching($existingLabelIds->pluck('id'));

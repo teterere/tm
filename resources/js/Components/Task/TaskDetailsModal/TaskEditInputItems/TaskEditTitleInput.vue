@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
         <OnClickOutside v-if="editStatus" :options="options" @trigger="disableEditStatus">
-            <input v-if="editStatus" v-model="form.title" ref="titleInput" type="text" class="font-medium block w-full rounded-xs bg-white p-2 text-xl text-gray-900 outline-1 outline-offset-0 outline-gray-200 border-gray-200 focus:outline-1 focus:-outline-offset-0 focus:outline-gray-200 focus:ring-gray-200 focus:border-gray-200" />
+            <input v-model="form.title" ref="titleInput" type="text" class="font-medium block w-full rounded-xs bg-white p-2 text-xl text-gray-900 outline-1 outline-offset-0 outline-gray-200 border-gray-200 focus:outline-1 focus:-outline-offset-0 focus:outline-gray-200 focus:ring-gray-200 focus:border-gray-200" />
         </OnClickOutside>
 
         <h2 v-else @click="enableEditStatus" class="text-xl font-medium hover:bg-gray-100 p-2 border-1 border-transparent hover:cursor-text">
@@ -53,7 +53,7 @@ const enableEditStatus = () => {
 
 const disableEditStatus = () => {
     editStatus.value = false;
-}
+};
 
 const submit = () => {
     if (form.title === props.task.title) {

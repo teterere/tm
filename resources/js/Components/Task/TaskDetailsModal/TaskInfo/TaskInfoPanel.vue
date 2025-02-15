@@ -22,7 +22,7 @@
             </div>
         </TaskInfo>
         <TaskInfo title="Izpildes novērtējums">
-            <span class="text-sm text-gray-600">{{ task.estimate }}</span>
+            <TaskEditTimeEstimateInput :task="task" />
         </TaskInfo>
     </div>
 </template>
@@ -34,6 +34,8 @@ import TaskEditPriorityDropdown
     from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditPriorityDropdown.vue";
 import TaskEditLabelsSelect from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditLabelsSelect.vue";
 import TaskEditDueDateInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditDueDateInput.vue";
+import TaskEditTimeEstimateInput
+    from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditTimeEstimateInput.vue";
 
 defineProps({
     task: Object,
