@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Task\TaskUpdatePriorityRequest;
+use App\Http\Requests\Task\TaskUpdateRequest;
+use App\Http\Requests\Task\TaskUpdateStatusRequest;
+use App\Http\Requests\TaskLabels\AddLabelsRequest;
+use App\Http\Requests\TaskLabels\RemoveLabelsRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskStatusResource;
 use App\Models\Task;
@@ -43,26 +48,26 @@ class TaskController extends Controller
         //
     }
 
-    public function update(Request $request, Task $task): void
+    public function update(TaskUpdateRequest $request, Task $task): void
     {
         $task->update($request->all());
     }
 
-    public function updateStatus(Task $task, TaskStatus $status): void
+    public function updateStatus(TaskUpdateStatusRequest $request, Task $task, TaskStatus $status): void
     {
         $task->update([
             'status_id' => $status->id
         ]);
     }
 
-    public function updatePriority(Task $task, TaskStatus $priority): void
+    public function updatePriority(TaskUpdatePriorityRequest $request, Task $task, TaskPriority $priority): void
     {
         $task->update([
             'priority_id' => $priority->id
         ]);
     }
 
-    public function addLabels(Request $request, Task $task): void
+    public function addLabels(AddLabelsRequest $request, Task $task): void
     {
         [$existingLabelIds, $newLabelsData] = collect($request->get('selectedLabels'))
             ->partition(fn ($label) => !is_null($label['id']));
@@ -76,12 +81,12 @@ class TaskController extends Controller
         $task->labels()->syncWithoutDetaching($newLabels->pluck('id'));
     }
 
-    public function removeLabel(Task $task, TaskLabel $label): void
+    public function removeLabel(RemoveLabelsRequest $request, Task $task, TaskLabel $label): void
     {
         $task->labels()->detach($label->id);
     }
 
-    public function removeAllLabels(Task $task): void
+    public function removeAllLabels(RemoveLabelsRequest $request, Task $task): void
     {
         $task->labels()->detach();
     }

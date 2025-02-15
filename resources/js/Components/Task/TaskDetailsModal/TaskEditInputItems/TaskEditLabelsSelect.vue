@@ -13,10 +13,15 @@
                 <span v-else-if="!task.labels.length && !isOpen" class="text-gray-600">Pievienot</span>
             </ComboboxButton>
 
+            <p v-if="form.errors" v-for="error in form.errors" class="text-red-500 text-xs mt-3 ml-1">
+                {{ error }}
+            </p>
+
             <ComboboxInput v-if="isOpen"
                            class="block w-full rounded-xs bg-white py-1 pr-12 pl-3 mt-1 text-sm text-gray-900 focus:border-gray-300 focus:ring-gray-300 placeholder:text-gray-400 sm:text-sm"
                            @change="query = $event.target.value"
                            @blur="handleBlur($event)"
+                           @input="form.clearErrors()"
                            :display-value="() => query"
             />
 

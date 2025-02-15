@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\TaskChecklistItem;
+namespace App\Http\Requests\TaskLabels;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class TaskChecklistItemStoreRequest extends FormRequest
+class RemoveLabelsRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -16,8 +16,6 @@ class TaskChecklistItemStoreRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
-            'description' => ['required', 'string', 'max:255']
-        ];
+        return [];
     }
 }
