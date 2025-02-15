@@ -8,6 +8,7 @@
                     <div ref="taskLabelRef" class="flex flex-wrap gap-1.5">
                         <TaskLabel v-for="label in task.labels" :key="label.id" :label="label" :removeButton="isOpen" @remove.stop="removeLabel(label)" />
                     </div>
+                    <span v-if="isOpen" @click="removeAllLabels" class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset ring-gray-200 hover:text-rose-700 text-gray-700">noņemt visas birkas</span>
                 </template>
                 <span v-else-if="!task.labels.length && !isOpen" class="text-gray-600">Pievienot</span>
             </ComboboxButton>
@@ -104,4 +105,15 @@ const removeLabel = (label) => {
         },
     });
 };
+
+const removeAllLabels = () => {
+    router.delete(route('tasks.labels.remove-all', { task: props.task.id }), {
+        preserveScroll: true,
+        onSuccess: () => {
+            if (!props.task.labels.length) {
+                isOpen.value = false;
+            }
+        },
+    });
+}
 </script>

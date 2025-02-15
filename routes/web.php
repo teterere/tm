@@ -31,6 +31,7 @@ Route::middleware([
 
         Route::prefix('birkas')->name('labels.')->group(function () {
             Route::post('/add', [TaskController::class, 'addLabels'])->name('add');
+            Route::delete('/remove-all', [TaskController::class, 'removeAllLabels'])->name('remove-all');
             Route::delete('{label}', [TaskController::class, 'removeLabel'])->name('remove');
         });
 
