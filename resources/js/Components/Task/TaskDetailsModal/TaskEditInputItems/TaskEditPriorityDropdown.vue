@@ -1,5 +1,5 @@
 <template>
-    <Menu as="div" class="relative inline-block text-left pl-2">
+    <Menu as="div" class="relative inline-block text-left pl-1">
         <MenuButton :class="['inline-flex w-full justify-center gap-x-1.5 rounded-xs py-1 text-sm font-medium cursor-pointer']">
             <TaskPriorityLabel :priority="task.priority" />
         </MenuButton>
