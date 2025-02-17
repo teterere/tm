@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\TaskLabels;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -16,12 +15,14 @@ class AddLabelsRequest extends FormRequest
             return false;
         }
 
-        $selectedLabels = $this->get('selectedLabels', []);
-        $invalidLabels = collect($selectedLabels)->filter(function ($label) use ($task) {
-            return isset($label['company_id']) && $label['company_id'] !== $task->company_id;
-        });
+        // Check if label belongs to the same company as task
+        foreach ($this->get('selectedLabels', []) as $label) {
+            if (isset($label['company_id']) && $label['company_id'] !== $task->company_id) {
+                return false;
+            }
+        }
 
-        return $invalidLabels->isEmpty();
+        return true;
     }
 
     public function rules(): array
