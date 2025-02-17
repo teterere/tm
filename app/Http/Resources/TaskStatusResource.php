@@ -17,6 +17,7 @@ class TaskStatusResource extends JsonResource
         return [
             'id'    => $this->id,
             'title' => $this->title,
+            'key'   => $this->key,
             'tasks' => TaskResource::collection($this->whenLoaded('tasks'))
         ];
     }

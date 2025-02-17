@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\TaskChecklistItem;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -12,12 +11,9 @@ class TaskChecklistItemUpdateOrderRequest extends FormRequest
     {
         $task = $this->route('task');
 
-        return Gate::allows('updateChecklistItemOrder', $task);
+        return Gate::allows('modify', $task);
     }
 
-    /**
-     * @return array<string, ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [

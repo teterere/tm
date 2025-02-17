@@ -2,20 +2,10 @@
     <div class="bg-white rounded p-3 mb-3 shadow-sm cursor-pointer hover:shadow-md">
         <div class="flex justify-between">
             <div class="flex space-x-2">
-                <span class="inline-flex items-center gap-x-1.5 rounded-md bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-700">
-                <svg class="size-1.5 fill-red-500" viewBox="0 0 6 6" aria-hidden="true">
-                  <circle cx="3" cy="3" r="3"/>
-                </svg>
-                {{ task.priority.title }}
-              </span>
+                <TaskPriorityLabel :priority="task.priority" />
 
-                <div v-if="task.labels.length" class="flex items-center space-x-1">
-                    <span v-for="label in task.labels"
-                          class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium text-blue-700"
-                          :style="{ backgroundColor: label.color }"
-                    >
-                        <span :style="{ color: label.color, filter: 'brightness(30%)'}">{{ label.title }}</span>
-                    </span>
+                <div v-if="task.labels.length" class="flex items-center gap-1.5">
+                    <TaskLabel v-for="label in task.labels" :label="label" />
                 </div>
             </div>
 
@@ -31,7 +21,10 @@
             <span class="text-gray-500 text-xs">{{ task.due_date }}</span>
         </div>
         <div class="flex justify-between items-center">
-            <img class="inline-block size-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+            <div class="flex-items-center space-x-2">
+                <img class="inline-block size-7 rounded-full" :src="task.assignee.avatar_path" alt="" />
+                <span class="text-xs text-gray-600">{{ task.assignee.name }}</span>
+            </div>
 
             <div class="flex items-center space-x-3">
                 <div class="flex items-center">
@@ -54,6 +47,8 @@
 
 <script setup>
 import {CheckCircleIcon, ClockIcon, EllipsisHorizontalIcon, EnvelopeIcon} from "@heroicons/vue/24/outline";
+import TaskPriorityLabel from "@/Components/Task/TaskPriority/TaskPriorityLabel.vue";
+import TaskLabel from "@/Components/Task/TaskLabel/TaskLabel.vue";
 
 defineProps({
     task: Object

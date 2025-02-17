@@ -26,6 +26,10 @@
             v-if="showTaskDetailsModal"
             :show="showTaskDetailsModal"
             :task="selectedTask"
+            :statuses="statuses"
+            :priorities="priorities"
+            :labels="labels"
+            :employees="employees"
             @close="closeTaskDetailsModal"
         />
     </AppLayout>
@@ -40,12 +44,11 @@ import {onMounted, ref, watch} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
 
 const props = defineProps({
-    statuses: {
-        type: Object
-    },
-    task: {
-        type: Object
-    }
+    statuses: Object,
+    task: Object,
+    priorities: Object,
+    labels: Object,
+    employees: Object
 });
 
 const selectedTask = ref(props.task);
