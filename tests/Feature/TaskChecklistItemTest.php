@@ -19,7 +19,7 @@ class TaskChecklistItemTest extends TestCase
         $this->seed();
     }
 
-    public function test_can_be_created()
+    public function test_can_be_created(): void
     {
         $user = User::factory()->create();
         $task = Task::factory()->create();
@@ -39,7 +39,7 @@ class TaskChecklistItemTest extends TestCase
         ]);
     }
 
-    public function test_can_be_updated()
+    public function test_can_be_updated(): void
     {
         $user = User::factory()->create();
         $task = Task::factory()->create();
@@ -68,7 +68,7 @@ class TaskChecklistItemTest extends TestCase
         ]);
     }
 
-    public function test_completed_status_can_be_changed()
+    public function test_completed_status_can_be_changed(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -87,7 +87,7 @@ class TaskChecklistItemTest extends TestCase
         ]);
     }
 
-    public function test_order_can_be_changed()
+    public function test_order_can_be_changed(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -125,7 +125,7 @@ class TaskChecklistItemTest extends TestCase
         $this->assertNotEquals($originalOrder, $newOrder->pluck('order', 'id')->toArray());
     }
 
-    public function test_can_be_deleted()
+    public function test_can_be_deleted(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -147,7 +147,7 @@ class TaskChecklistItemTest extends TestCase
         ]);
     }
 
-    public function test_all_task_checklist_items_can_be_deleted()
+    public function test_all_task_checklist_items_can_be_deleted(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);

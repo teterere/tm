@@ -8,7 +8,7 @@
             <div class="fixed inset-0 z-10 overflow-y-auto">
                 <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
                     <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                        <DialogPanel class="relative transform sm:max-w-4xl rounded bg-white px-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:px-6 sm:pt-5 sm:pb-6">
+                        <DialogPanel class="relative transform sm:max-w-5xl rounded bg-white px-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:px-6 sm:pt-5 sm:pb-6">
                             <div class="flex justify-between items-center border-b border-gray-200 pb-2 mb-4">
                                 <div @click="copyToClipboard(task.identifier)" class="flex items-center gap-x-1 text-xs font-medium text-gray-900 bg-gray-100 hover:bg-gray-200 p-2 rounded-sm cursor-pointer">
                                     <LinkIcon class="h-4 w-4" />
@@ -22,19 +22,15 @@
                             <div class="grid grid-cols-6 space-x-8">
                                 <div class="col-span-4">
                                     <div class="border-b border-gray-200 pb-4">
-                                        <h2 class="text-xl font-medium mb-4">
-                                            {{ task.title }}
-                                        </h2>
+                                        <TaskEditTitleInput :task="task" />
 
-                                        <p class="text-sm text-gray-700">
-                                            {{ task.description }}
-                                        </p>
+                                        <TaskEditDescriptionInput :task="task" />
                                     </div>
 
                                     <TaskChecklist :task="task" />
                                     <TaskComments />
                                 </div>
-                                <TaskInfoPanel :task="task" />
+                                <TaskInfoPanel :task="task" :statuses="statuses" :priorities="priorities" :labels="labels" :employees="employees" />
                             </div>
                         </DialogPanel>
                     </TransitionChild>
@@ -47,21 +43,25 @@
 <script setup>
 import TaskChecklist from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklist.vue";
 import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from "@headlessui/vue";
-import {XMarkIcon, LinkIcon} from "@heroicons/vue/24/outline/index.js";
+import {XMarkIcon, LinkIcon} from "@heroicons/vue/24/outline";
 import TaskInfoPanel from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoPanel.vue";
 import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComments.vue";
-
-const emit = defineEmits(['close']);
+import TaskEditTitleInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditTitleInput.vue";
+import TaskEditDescriptionInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditDescriptionInput.vue";
 
 defineProps({
     show: {
         type: Boolean,
         default: false
     },
-    task: {
-        type: Object
-    }
+    task: Object,
+    statuses: Object,
+    priorities: Object,
+    labels: Object,
+    employees: Object
 });
+
+const emit = defineEmits(['close']);
 
 const copyToClipboard = (text) => {
     if (navigator.clipboard) {

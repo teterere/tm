@@ -42,7 +42,7 @@
 <script setup>
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import TaskListItem from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklistItem.vue";
-import {ChevronDownIcon} from "@heroicons/vue/24/outline/index.js";
+import {ChevronDownIcon} from "@heroicons/vue/24/outline";
 import TaskProgressbar from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskProgressbar.vue";
 import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskChecklist/NewChecklistItemInput.vue";
 import draggable from 'vuedraggable'

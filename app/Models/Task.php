@@ -83,11 +83,26 @@ class Task extends Model
 
     public function getFormattedEstimateAttribute(): string
     {
-        $hours = floor($this->estimate);
-        $minutes = round(($this->estimate - $hours) * 60);
+        $totalHours = $this->estimate;
+        $days = floor($totalHours / 24);
+        $remainingHours = floor($totalHours % 24);
+        $minutes = round(($totalHours - floor($totalHours)) * 60);
 
-        return "{$hours}h {$minutes}min";
+        $parts = [];
+
+        if ($days > 0) {
+            $parts[] = "{$days}d";
+        }
+
+        if ($remainingHours > 0) {
+            $parts[] = "{$remainingHours}h";
+        }
+
+        $parts[] = "{$minutes}m";
+
+        return implode(' ', $parts);
     }
+
 
     public function getCompletedChecklistItemsCountAttribute(): int
     {

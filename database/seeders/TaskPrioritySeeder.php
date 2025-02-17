@@ -14,9 +14,9 @@ class TaskPrioritySeeder extends Seeder
     public function run(): void
     {
         $priorities = [
-            'low'    => 'Zema',
+            'high'   => 'Augsta',
             'medium' => 'Vidēja',
-            'high'   => 'Augsta'
+            'low'    => 'Zema'
         ];
 
         foreach ($priorities as $key => $title) {

@@ -16,7 +16,9 @@ class TaskResource extends JsonResource
     {
         return [
             'id'                              => $this->id,
-            'assignee'                        => $this->whenLoaded('assignee'),
+            'assignee'                        => $this->whenLoaded('assignee', function () {
+                return EmployeeResource::make($this->assignee);
+            }),
             'priority'                        => $this->whenLoaded('priority'),
             'status'                          => $this->whenLoaded('status'),
             'labels'                          => $this->whenLoaded('labels'),
@@ -25,7 +27,9 @@ class TaskResource extends JsonResource
             'completed_checklist_items_count' => $this->completedChecklistItemsCount,
             'title'                           => $this->title,
             'description'                     => $this->description,
+            'due_date_raw'                    => $this->due_date,
             'due_date'                        => $this->due_date->locale('lv')->translatedFormat('j. F'),
+            'estimate_raw'                    => $this->estimate,
             'estimate'                        => $this->formattedEstimate,
             'created_at'                      => $this->created_at->diffForHumans(),
         ];

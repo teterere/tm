@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\TaskChecklistItem;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -12,14 +11,9 @@ class TaskChecklistItemDeleteAllForTaskRequest extends FormRequest
     {
         $task = $this->route('task');
 
-        return Gate::allows('deleteAllChecklistItems', $task);
+        return Gate::allows('modify', $task);
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array|string>
-     */
     public function rules(): array
     {
         return [];

@@ -8,10 +8,10 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
+        'canLogin'       => Route::has('login'),
+        'canRegister'    => Route::has('register'),
         'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'phpVersion'     => PHP_VERSION,
     ]);
 });
 
@@ -24,6 +24,15 @@ Route::middleware([
     Route::get('/uzdevumi/{taskIdentifier}', [TaskController::class, 'index'])->name('show');
 
     Route::prefix('uzdevumi/{task}')->name('tasks.')->group(function () {
+        Route::patch('/', [TaskController::class, 'update'])->name('update');
+        Route::patch('/update-status/{status}', [TaskController::class, 'updateStatus'])->name('update-status');
+        Route::patch('/update-priority/{priority}', [TaskController::class, 'updatePriority'])->name('update-priority');
+
+        Route::prefix('birkas')->name('labels.')->group(function () {
+            Route::post('/add', [TaskController::class, 'addLabels'])->name('add');
+            Route::delete('/remove-all', [TaskController::class, 'removeAllLabels'])->name('remove-all');
+            Route::delete('{label}', [TaskController::class, 'removeLabel'])->name('remove');
+        });
 
         Route::prefix('checklist-items')->name('checklist-items.')->group(function () {
             Route::post('/', [TaskChecklistItemController::class, 'store'])->name('store');
