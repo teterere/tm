@@ -16,7 +16,6 @@ use App\Models\TaskPriority;
 use App\Models\TaskStatus;
 use App\Models\User;
 use App\TaskEstimateService;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -43,11 +42,6 @@ class TaskController extends Controller
             'labels'     => $labels,
             'employees'  => EmployeeResource::collection($employees)
         ]);
-    }
-
-    public function store(Request $request)
-    {
-        //
     }
 
     public function update(TaskUpdateRequest $request, Task $task): void
@@ -101,10 +95,5 @@ class TaskController extends Controller
     public function removeAllLabels(RemoveLabelsRequest $request, Task $task): void
     {
         $task->labels()->detach();
-    }
-
-    public function destroy(Task $task)
-    {
-        //
     }
 }

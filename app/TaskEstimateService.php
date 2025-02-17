@@ -4,8 +4,12 @@ namespace App;
 
 class TaskEstimateService
 {
-    public static function calculateEstimate(string $estimateString)
+    public static function calculateEstimate(string|null $estimateString)
     {
+        if (is_null($estimateString)) {
+            return 0;
+        }
+
         $timeParts = explode(' ', $estimateString);
         $estimate = 0;
 

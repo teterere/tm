@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Task;
 
+use App\Rules\ValidEstimateFormat;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -23,7 +24,7 @@ class TaskUpdateRequest extends FormRequest
             'title'       => ['sometimes', 'required', 'max:255'],
             'description' => ['nullable', 'max:1000'],
             'due_date'    => ['nullable', 'date'],
-            'estimate'    => ['nullable', 'string'],
+            'estimate'    => ['nullable', 'string', 'regex:/[dhm]/', new ValidEstimateFormat()],
             'assignee_id' => [
                 'nullable',
                 'exists:users,id',

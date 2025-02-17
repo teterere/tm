@@ -40,9 +40,11 @@ const disableEditStatus = () => {
 
 const filterInput = () => {
     form.estimate = form.estimate
-        .replace(/[^0-9dhm\s]/gi, '') // Izņem visus neatļautos simbolus
-        .replace(/(?<!\d)[dhm]/gi, '') // Noņem "d", "h", "m", ja tie nav pēc cipara
-        .replace(/([dhm])(?!\s|$)/gi, '$1 '); // Pievieno atstarpi aiz "d", "h", "m", ja tās nav beigās vai jau nav atstarpe
+
+    // form.estimate = form.estimate
+    //     .replace(/[^0-9dhm\s]/gi, '') // Izņem visus neatļautos simbolus
+    //     .replace(/(?<!\d)[dhm]/gi, '') // Noņem "d", "h", "m", ja tie nav pēc cipara
+    //     .replace(/([dhm])(?!\s|$)/gi, '$1 '); // Pievieno atstarpi aiz "d", "h", "m", ja tās nav beigās vai jau nav atstarpe
 };
 
 const submit = () => {
