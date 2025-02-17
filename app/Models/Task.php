@@ -93,6 +93,7 @@ class Task extends Model
         if ($days > 0) {
             $parts[] = "{$days}d";
         }
+
         if ($remainingHours > 0) {
             $parts[] = "{$remainingHours}h";
         }

@@ -32,7 +32,7 @@ const props = defineProps({
 const titleInput = ref(null);
 const actionButtons = ref(null);
 
-const options = { ignore: [actionButtons] }
+const options = { ignore: [actionButtons] };
 
 const form = useForm({
     title: props.task.title
@@ -68,5 +68,5 @@ const submit = () => {
             editStatus.value = false;
         },
     });
-}
+};
 </script>

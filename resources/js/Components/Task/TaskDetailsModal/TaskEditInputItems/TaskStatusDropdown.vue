@@ -26,9 +26,7 @@
 
 <script setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
-import { ChevronDownIcon } from '@heroicons/vue/20/solid';
 import {router} from "@inertiajs/vue3";
-import {CheckIcon} from "@heroicons/vue/24/outline/index.js";
 
 const props = defineProps({
     task: Object,
@@ -46,5 +44,5 @@ const updateStatus = (status) => {
     router.patch(route('tasks.update-status', { task: props.task.id, status: status.id }), {}, {
         preserveScroll: true
     });
-}
+};
 </script>

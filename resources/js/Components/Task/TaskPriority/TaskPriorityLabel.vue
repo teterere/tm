@@ -22,5 +22,5 @@ const taskIcons = {
     low: ChevronDoubleDownIcon,
     medium: Bars3Icon,
     high: ChevronDoubleUpIcon
-}
+};
 </script>

@@ -120,5 +120,5 @@ const removeAllLabels = () => {
             }
         },
     });
-}
+};
 </script>

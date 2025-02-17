@@ -21,7 +21,10 @@
             <span class="text-gray-500 text-xs">{{ task.due_date }}</span>
         </div>
         <div class="flex justify-between items-center">
-            <img class="inline-block size-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+            <div class="flex-items-center space-x-2">
+                <img class="inline-block size-7 rounded-full" :src="task.assignee.avatar_path" alt="" />
+                <span class="text-xs text-gray-600">{{ task.assignee.name }}</span>
+            </div>
 
             <div class="flex items-center space-x-3">
                 <div class="flex items-center">

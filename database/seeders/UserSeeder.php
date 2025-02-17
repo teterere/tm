@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -23,21 +24,21 @@ class UserSeeder extends Seeder
         ]);
 
         $users = [
-            'Jānis Kalniņš'    => 'janis-kalnins.jpg',
-            'Anna Ozola'       => 'anna-ozola.jpg',
-            'Pēteris Adamsons' => 'peteris-adamsons.jpg',
-            'Māra Meiere'      => 'mara-meiere.jpg',
-            'Dainis Vilsons'   => 'dainis-vilsons.jpg',
-            'Ilze Jākobsone'   => 'ilze-jakabsone.jpg',
-            'Rūdolfs Krūmiņš'  => 'rudolfs-krumins.jpg',
-            'Zane Rudzīte'     => 'zane-rudzite.jpg',
-            'Helēna Grīnberga' => 'helena-grinberga.jpg'
+            'Jānis Kalniņš',
+            'Anna Ozola',
+            'Pēteris Adamsons',
+            'Māra Meiere',
+            'Dainis Vilsons',
+            'Ilze Jākobsone',
+            'Rūdolfs Krūmiņš',
+            'Zane Rudzīte',
+            'Helēna Grīnberga'
         ];
 
-        foreach ($users as $name => $avatar) {
+        foreach ($users as $name) {
             User::factory()->create([
                 'name'   => $name,
-                'avatar' => $avatar
+                'avatar' => Str::slug($name) . '.jpg'
             ]);
         }
     }

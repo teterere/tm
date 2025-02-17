@@ -43,14 +43,11 @@
 <script setup>
 import TaskChecklist from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklist.vue";
 import {Dialog, DialogPanel, TransitionChild, TransitionRoot} from "@headlessui/vue";
-import {XMarkIcon, LinkIcon} from "@heroicons/vue/24/outline/index.js";
+import {XMarkIcon, LinkIcon} from "@heroicons/vue/24/outline";
 import TaskInfoPanel from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoPanel.vue";
 import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComments.vue";
 import TaskEditTitleInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditTitleInput.vue";
-import TaskEditDescriptionInput
-    from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditDescriptionInput.vue";
-
-const emit = defineEmits(['close']);
+import TaskEditDescriptionInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditDescriptionInput.vue";
 
 defineProps({
     show: {
@@ -63,6 +60,8 @@ defineProps({
     labels: Object,
     employees: Object
 });
+
+const emit = defineEmits(['close']);
 
 const copyToClipboard = (text) => {
     if (navigator.clipboard) {

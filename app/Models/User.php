@@ -81,6 +81,6 @@ class User extends Authenticatable
 
     public function scopeForAuthorizedCompany($query)
     {
-        return $query->where('company_id', auth()->user()->company_id);
+        return $query->where('company_id', auth()->user()?->company_id);
     }
 }

@@ -16,8 +16,7 @@ class TaskLabel extends Model
     protected static function booted(): void
     {
         // Always filter task by authorized user company_id.
-        // If filtering is ever not needed, use withoutGlobalScope()
-
+        // If filtering is ever not needed, use TaskLabel::withoutGlobalScope()
         static::addGlobalScope('companyScope', function (Builder $query) {
             $companyId = auth()->user()?->company_id;
             $query->whereNull('company_id')

@@ -20,8 +20,8 @@
 import {nextTick, ref} from "vue";
 import { useTextareaAutosize } from '@vueuse/core'
 import {useForm} from "@inertiajs/vue3";
-import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
 import OutlineButton from "@/Components/shared/Buttons/OutlineButton.vue";
+import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
 
 const props = defineProps({
     task: Object
@@ -66,6 +66,5 @@ const submit = () => {
             editStatus.value = false;
         },
     });
-}
+};
 </script>
-
