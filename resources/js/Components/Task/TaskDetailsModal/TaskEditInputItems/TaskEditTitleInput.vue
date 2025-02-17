@@ -9,10 +9,10 @@
         </h2>
 
         <div ref="actionButtons" v-if="editStatus" class="absolute right-1 top-1/2 transform -translate-y-1/2 flex gap-2">
-            <button @mousedown.stop="submit" class="bg-gray-100 hover:bg-gray-200 p-1.5 rounded-sm cursor-pointer">
+            <button @mousedown.stop="submit" class="action-button p-1.5">
                 <CheckIcon class="w-4 h-4" />
             </button>
-            <button @click="disableEditStatus" class="bg-gray-100 hover:bg-gray-200 p-1.5 rounded-sm cursor-pointer">
+            <button @click="disableEditStatus" class="action-button p-1.5">
                 <XMarkIcon class="w-4 h-4" />
             </button>
         </div>

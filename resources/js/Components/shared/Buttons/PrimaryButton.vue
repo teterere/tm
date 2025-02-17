@@ -1,7 +1,7 @@
 <template>
     <button
         type="button"
-        :class="['rounded-sm bg-indigo-600 text-white font-semibold shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 cursor-pointer', sizeClasses[size]]">
+        :class="['btn bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-indigo-600', sizeClasses[size]]">
         <slot />
     </button>
 </template>
