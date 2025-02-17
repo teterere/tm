@@ -19,7 +19,7 @@ class TaskAssigneeTest extends TestCase
         $this->seed();
     }
 
-    public function test_can_update_assignee_with_valid_user()
+    public function test_can_update_assignee_with_valid_user(): void
     {
         $company = Company::factory()->create();
         $user = User::factory()->create(['company_id' => $company->id]);
@@ -36,7 +36,7 @@ class TaskAssigneeTest extends TestCase
         ]);
     }
 
-    public function test_cannot_update_assignee_with_nonexistent_user()
+    public function test_cannot_update_assignee_with_nonexistent_user(): void
     {
         $task = Task::factory()->create();
 
@@ -45,7 +45,7 @@ class TaskAssigneeTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function test_cannot_update_assignee_with_user_from_different_company()
+    public function test_cannot_update_assignee_with_user_from_different_company(): void
     {
         $company1 = Company::factory()->create();
         $company2 = Company::factory()->create();
@@ -63,7 +63,7 @@ class TaskAssigneeTest extends TestCase
         $response->assertJsonValidationErrors('assignee_id');
     }
 
-    public function test_can_update_assignee_to_null()
+    public function test_can_update_assignee_to_null(): void
     {
         $company = Company::factory()->create();
         $user = User::factory()->create(['company_id' => $company->id]);

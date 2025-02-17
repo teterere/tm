@@ -20,7 +20,7 @@ class TaskStatusTest extends TestCase
         $this->seed();
     }
 
-    public function test_can_update_task_status_with_valid_status()
+    public function test_can_update_task_status_with_valid_status(): void
     {
         $company = Company::factory()->create();
         $user = User::factory()->create(['company_id' => $company->id]);
@@ -38,7 +38,7 @@ class TaskStatusTest extends TestCase
         ]);
     }
 
-    public function test_cannot_update_task_status_with_nonexistent_status()
+    public function test_cannot_update_task_status_with_nonexistent_status(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);

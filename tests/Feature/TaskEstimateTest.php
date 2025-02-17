@@ -19,7 +19,7 @@ class TaskEstimateTest extends TestCase
         $this->seed();
     }
 
-    public function test_can_update_estimate_with_valid_formats()
+    public function test_can_update_estimate_with_valid_formats(): void
     {
         $user = User::factory()->create();
         $task = Task::factory()->create(['estimate' => 5]);
@@ -42,7 +42,7 @@ class TaskEstimateTest extends TestCase
         }
     }
 
-    public function test_cannot_update_estimate_with_invalid_formats()
+    public function test_cannot_update_estimate_with_invalid_formats(): void
     {
         $user = User::factory()->create();
         $task = Task::factory()->create(['estimate' => 5]);

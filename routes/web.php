@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\TaskChecklistItemController;
 use App\Http\Controllers\TaskController;
-use App\Http\Controllers\TaskLabelController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
