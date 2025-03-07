@@ -10,17 +10,16 @@
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import {useForm} from "@inertiajs/vue3";
+import {inject} from "vue";
 
-const props = defineProps({
-    task: Object
-});
+const task = inject('task');
 
 const form = useForm({
-    due_date: props.task.due_date_raw
+    due_date: task.due_date_raw
 });
 
 const submit = () => {
-    form.patch(route('tasks.update', props.task.id), {
+    form.patch(route('tasks.update', task.id), {
         preserveScroll: true
     });
 };

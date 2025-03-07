@@ -37,10 +37,9 @@
 
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-
 import {PlusIcon, EllipsisHorizontalIcon} from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
-import {onMounted, ref, watch} from "vue";
+import {onMounted, provide, ref, watch} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
 
 const props = defineProps({
@@ -50,6 +49,11 @@ const props = defineProps({
     labels: Object,
     employees: Object
 });
+
+provide('statuses', props.statuses);
+provide('priorities', props.priorities);
+provide('labels', props.labels);
+provide('employees', props.employees);
 
 const selectedTask = ref(props.task);
 

@@ -24,20 +24,18 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import {router} from "@inertiajs/vue3";
 import TaskPriorityLabel from "@/Components/Task/TaskPriority/TaskPriorityLabel.vue";
 import {CheckIcon} from "@heroicons/vue/24/outline";
-import {computed} from "vue";
+import {computed, inject} from "vue";
 
-const props = defineProps({
-    task: Object,
-    priorities: Object
-});
+const task = inject('task');
+const priorities = inject('priorities');
 
 const updatePriority = (priority) => {
-    router.patch(route('tasks.update-priority', { task: props.task.id, priority: priority.id }), {}, {
+    router.patch(route('tasks.update-priority', { task: task.id, priority: priority.id }), {}, {
         preserveScroll: true
     });
 };
 
 const filteredPriorities = computed(() => {
-    return props.priorities.filter(priority => priority.id !== props.task.priority.id);
+    return priorities.filter(priority => priority.id !== task.priority.id);
 });
 </script>

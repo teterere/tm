@@ -43,15 +43,13 @@
 </template>
 
 <script setup>
-import {computed, ref, watch} from 'vue';
+import {computed, inject, ref, watch} from 'vue';
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from '@headlessui/vue';
 import TaskLabel from "@/Components/Task/TaskLabel/TaskLabel.vue";
 import {router, useForm} from "@inertiajs/vue3";
 
-const props = defineProps({
-    labels: Object,
-    task: Object
-});
+const labels = inject('labels');
+const task = inject('task');
 
 const form = useForm({
     selectedLabels: []
@@ -63,7 +61,7 @@ const taskLabelRef = ref(null);
 
 const filteredLabels = computed(() => {
     const normalizedQuery = query.value.trim().toLowerCase();
-    const labelsNotAssignedToTask = props.labels.filter(label => !props.task.labels.some(taskLabel => taskLabel.id === label.id));
+    const labelsNotAssignedToTask = labels.filter(label => !task.labels.some(taskLabel => taskLabel.id === label.id));
 
     return normalizedQuery
         ? labelsNotAssignedToTask.filter(label => label.title.toLowerCase().includes(normalizedQuery))
@@ -92,7 +90,7 @@ const newLabel = computed(() => {
 });
 
 const addLabels = () => {
-    form.post(route('tasks.labels.add', { task: props.task.id }), {
+    form.post(route('tasks.labels.add', { task: task.id }), {
         preserveScroll: true,
         onSuccess: () => {
             query.value = '';
@@ -101,10 +99,10 @@ const addLabels = () => {
 };
 
 const removeLabel = (label) => {
-    router.delete(route('tasks.labels.remove', { task: props.task.id, label: label.id }), {
+    router.delete(route('tasks.labels.remove', { task: task.id, label: label.id }), {
         preserveScroll: true,
         onSuccess: () => {
-            if (!props.task.labels.length) {
+            if (!task.labels.length) {
                 isOpen.value = false;
             }
         },
@@ -112,10 +110,10 @@ const removeLabel = (label) => {
 };
 
 const removeAllLabels = () => {
-    router.delete(route('tasks.labels.remove-all', { task: props.task.id }), {
+    router.delete(route('tasks.labels.remove-all', { task: task.id }), {
         preserveScroll: true,
         onSuccess: () => {
-            if (!props.task.labels.length) {
+            if (!task.labels.length) {
                 isOpen.value = false;
             }
         },

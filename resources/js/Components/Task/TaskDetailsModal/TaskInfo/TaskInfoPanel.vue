@@ -1,23 +1,23 @@
 <template>
     <div class="col-span-2 space-y-4">
         <TaskInfo title="Statuss">
-            <TaskStatusDropdown :task="task" :statuses="statuses" />
+            <TaskStatusDropdown />
         </TaskInfo>
 
         <TaskInfo title="Prioritāte">
-            <TaskEditPriorityDropdown :task="task" :priorities="priorities" />
+            <TaskEditPriorityDropdown />
         </TaskInfo>
         <TaskInfo title="Birkas">
-            <TaskEditLabelsSelect :labels="labels" :task="task" />
+            <TaskEditLabelsSelect />
         </TaskInfo>
         <TaskInfo title="Termiņš">
-            <TaskEditDueDateInput :task="task" />
+            <TaskEditDueDateInput />
         </TaskInfo>
         <TaskInfo title="Izpildītājs">
-            <TaskEditAssigneeSelect :task="task" :employees="employees" />
+            <TaskEditAssigneeSelect />
         </TaskInfo>
         <TaskInfo title="Izpildes novērtējums">
-            <TaskEditTimeEstimateInput :task="task" />
+            <TaskEditTimeEstimateInput />
         </TaskInfo>
     </div>
 </template>
@@ -30,13 +30,6 @@ import TaskEditLabelsSelect from "@/Components/Task/TaskDetailsModal/TaskEditInp
 import TaskEditDueDateInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditDueDateInput.vue";
 import TaskEditTimeEstimateInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditTimeEstimateInput.vue";
 import TaskEditAssigneeSelect from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditAssigneeSelect.vue";
-
-defineProps({
-    task: Object,
-    statuses: Object,
-    priorities: Object,
-    labels: Object,
-    employees: Object
-});
+import {inject} from "vue";
 </script>
 
