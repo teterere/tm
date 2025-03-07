@@ -35,22 +35,20 @@
 </template>
 
 <script setup>
-import {computed, ref, watch} from 'vue'
+import {computed, inject, ref, watch} from 'vue'
 import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from '@headlessui/vue'
 import { ChevronUpDownIcon } from '@heroicons/vue/16/solid'
 import { CheckIcon } from '@heroicons/vue/20/solid'
 import {useForm} from "@inertiajs/vue3";
 
-const props = defineProps({
-    task: Object,
-    employees: Object
-});
+const employees = inject('employees');
+const task = inject('task');
 
 const query = ref('')
 const filteredPeople = computed(() =>
     query.value === ''
-        ? props.employees
-        : props.employees.filter((person) => {
+        ? employees
+        : employees.filter((person) => {
             return person.name.toLowerCase().includes(query.value.toLowerCase())
         }),
 );
@@ -66,13 +64,13 @@ const enableEditStatus = () => {
 
 const editStatus = ref(false);
 
-const selectedAssignee = ref(props.task.assignee);
+const selectedAssignee = ref(task.assignee);
 const form = useForm({
-    assignee_id: props.task.assignee_id
+    assignee_id: task.assignee_id
 });
 
 watch(selectedAssignee, () => {
-    if (selectedAssignee.id === props.task.assignee_id) {
+    if (selectedAssignee.id === task.assignee_id) {
         return;
     }
 
@@ -83,7 +81,7 @@ const submit = () => {
     form.transform(data => ({
         ...data,
         assignee_id: selectedAssignee.value.id,
-    })).patch(route('tasks.update', props.task.id), {
+    })).patch(route('tasks.update', task.id), {
         preserveScroll: true,
         onSuccess: () => {
             editStatus.value = false;

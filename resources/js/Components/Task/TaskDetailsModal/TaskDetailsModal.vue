@@ -30,7 +30,7 @@
                                     <TaskChecklist :task="task" />
                                     <TaskComments />
                                 </div>
-                                <TaskInfoPanel :task="task" :statuses="statuses" :priorities="priorities" :labels="labels" :employees="employees" />
+                                <TaskInfoPanel :statuses="statuses" :priorities="priorities" :labels="labels" :employees="employees" />
                             </div>
                         </DialogPanel>
                     </TransitionChild>
@@ -48,8 +48,9 @@ import TaskInfoPanel from "@/Components/Task/TaskDetailsModal/TaskInfo/TaskInfoP
 import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComments.vue";
 import TaskEditTitleInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditTitleInput.vue";
 import TaskEditDescriptionInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditDescriptionInput.vue";
+import {provide} from "vue";
 
-defineProps({
+const props = defineProps({
     show: {
         type: Boolean,
         default: false
@@ -60,6 +61,8 @@ defineProps({
     labels: Object,
     employees: Object
 });
+
+provide('task', props.task);
 
 const emit = defineEmits(['close']);
 

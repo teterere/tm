@@ -8,24 +8,22 @@
 
 <script setup>
 import {OnClickOutside} from "@vueuse/components";
-import {nextTick, ref} from "vue";
+import {inject, nextTick, ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 
-const props = defineProps({
-    task: Object
-});
+const task = inject('task');
 
 const editStatus = ref(false);
 
 const form = useForm({
-    estimate: props.task.estimate
+    estimate: task.estimate
 });
 
 const estimateInput = ref(null);
 
 const enableEditStatus = () => {
     editStatus.value = true;
-    form.title = props.task.title;
+    form.title = task.title;
 
     nextTick(() => {
         if (estimateInput) {
@@ -46,11 +44,11 @@ const filterInput = () => {
 };
 
 const submit = () => {
-    form.patch(route('tasks.update', props.task.id), {
+    form.patch(route('tasks.update', task.id), {
         preserveScroll: true,
         onSuccess: () => {
             disableEditStatus();
-            form.estimate = props.task.estimate;
+            form.estimate = task.estimate;
         }
     });
 };

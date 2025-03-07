@@ -27,11 +27,10 @@
 <script setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import {router} from "@inertiajs/vue3";
+import {inject} from "vue";
 
-const props = defineProps({
-    task: Object,
-    statuses: Object
-});
+const statuses = inject('statuses');
+const task = inject('task');
 
 const statusBackgroundColors = {
     todo: 'bg-zinc-300',
@@ -41,7 +40,7 @@ const statusBackgroundColors = {
 };
 
 const updateStatus = (status) => {
-    router.patch(route('tasks.update-status', { task: props.task.id, status: status.id }), {}, {
+    router.patch(route('tasks.update-status', { task: task.id, status: status.id }), {}, {
         preserveScroll: true
     });
 };
