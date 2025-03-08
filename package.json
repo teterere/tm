@@ -25,6 +25,6 @@
         "@vuepic/vue-datepicker": "^11.0.1",
         "@vueuse/components": "^12.5.0",
         "@vueuse/core": "^12.5.0",
-        "vuedraggable": "^4.1.0"
+        "vue-draggable-plus": "^0.6.0"
     }
 }
