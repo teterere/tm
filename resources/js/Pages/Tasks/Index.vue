@@ -1,16 +1,10 @@
 <template>
     <AppLayout>
         <div class="grid grid-cols-4 px-4 sm:px-6 lg:px-8 space-x-4">
-            <VueDraggable
+            <div
                 v-for="status in statuses"
                 :key="status.id"
-                v-model="status.tasks"
-                ghostClass="ghost"
-                animation="150"
-                group="tasks"
-                @add="updateTaskStatus"
                 class="col-span-1 bg-slate-100 rounded p-3"
-                :data-status-id="status.id"
             >
                 <div class="border-b-2 mb-4 pb-2 border-indigo-200 flex items-center justify-between">
                     <div class="flex items-center">
@@ -25,14 +19,24 @@
                     </div>
                 </div>
 
-                <div v-for="task in status.tasks" :key="task.id">
+                <VueDraggable
+                    v-model="status.tasks"
+                    @add="updateTaskStatus"
+                    :data-status-id="status.id"
+                    :key="status.id"
+                    ghostClass="ghost"
+                    animation="150"
+                    group="statuses"
+                    class="min-h-full"
+                >
                     <Task
+                        v-for="task in status.tasks"
+                        :key="task.id"
                         :task="task"
-                        :data-task-id="task.id"
                         @click="openTaskDetailsModal(task)"
                     />
-                </div>
-            </VueDraggable>
+                </VueDraggable>
+            </div>
         </div>
 
         <TaskDetailsModal
@@ -52,7 +56,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { PlusIcon, EllipsisHorizontalIcon } from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
-import { ref, provide } from "vue";
+import {ref, provide} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
 import {VueDraggable} from "vue-draggable-plus";
 import {router} from "@inertiajs/vue3";
@@ -73,6 +77,11 @@ provide('employees', props.employees);
 const selectedTask = ref(props.task);
 const showTaskDetailsModal = ref(false);
 
+const statusesCopy = ref(props.statuses.map(status => ({
+    ...status,
+    tasks: ref(status.tasks)
+})));
+
 const openTaskDetailsModal = (task) => {
     if (!task) return;
     selectedTask.value = task;
@@ -87,9 +96,11 @@ const closeTaskDetailsModal = () => {
 };
 
 const updateTaskStatus = (event) => {
-    console.log(event.newIndex) // todo
+    // console.log(event.newIndex) // todo
     const movedTask = event.clonedData; // Nokopētais uzdevums (satur pilnu task objektu)
     const newStatusId = event.to.getAttribute("data-status-id"); // Statusa ID, kurā uzdevums tika ielikts
+
+    console.log(event)
 
     if (movedTask && newStatusId) {
         console.log("Task ID:", movedTask.id);
