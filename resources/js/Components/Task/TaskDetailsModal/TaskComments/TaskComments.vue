@@ -24,7 +24,8 @@ import TaskComment from "@/Components/Task/TaskDetailsModal/TaskComments/TaskCom
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import {ChevronDownIcon} from "@heroicons/vue/24/outline/index.js";
 import AddCommentInput from "@/Components/Task/TaskDetailsModal/TaskComments/AddCommentInput.vue";
-import {inject} from "vue";
 
-const task = inject('task');
+defineProps({
+    task: Object
+});
 </script>

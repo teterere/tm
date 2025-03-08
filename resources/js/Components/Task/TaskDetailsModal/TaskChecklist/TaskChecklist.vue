@@ -50,17 +50,19 @@ import {inject, ref, watch} from "vue";
 import TaskChecklistOptionsDropdown from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklistOptionsDropdown.vue";
 import {VueDraggable} from "vue-draggable-plus";
 
-const task = inject('task');
+const props = defineProps({
+    task: Object
+});
 
 const draggingDisabled = ref(false);
 
 const form = useForm({
-    items: task.checklist_items
+    items: props.task.checklist_items
 });
 
 const updateOrder = (event) => {
     if (event.oldIndex !== event.newIndex) {
-        form.patch(route('tasks.checklist-items.update-order', { task: task.id }), {
+        form.patch(route('tasks.checklist-items.update-order', { task: props.task.id }), {
             preserveScroll: true
         });
     }
@@ -70,7 +72,7 @@ const updateDraggingStatus = (newValue) => {
     draggingDisabled.value = newValue;
 };
 
-watch(() => task.checklist_items, (newItems) => {
+watch(() => props.task.checklist_items, (newItems) => {
     form.items = [...newItems];
 });
 </script>

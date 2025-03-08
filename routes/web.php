@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TaskChecklistItemController;
+use App\Http\Controllers\TaskCommentController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,10 @@ Route::middleware([
             Route::patch('{item}', [TaskChecklistItemController::class, 'update'])->name('update');
             Route::delete('/delete-all-for-task', [TaskChecklistItemController::class, 'deleteAllForTask'])->name('delete-all-for-task');
             Route::delete('{item}', [TaskChecklistItemController::class, 'destroy'])->name('delete');
+        });
+
+        Route::prefix('comments')->name('comments.')->group(function () {
+            Route::post('/', [TaskCommentController::class, 'store'])->name('store');
         });
     });
 });

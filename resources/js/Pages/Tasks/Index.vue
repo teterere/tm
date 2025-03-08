@@ -52,7 +52,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { PlusIcon, EllipsisHorizontalIcon } from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
-import {ref, provide} from "vue";
+import {ref, provide, onMounted, watch} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
 import {VueDraggable} from "vue-draggable-plus";
 import {router} from "@inertiajs/vue3";
@@ -99,6 +99,23 @@ const updateTaskStatus = (event) => {
         });
     }
 };
+
+onMounted(() => {
+    if (props.task) {
+        openTaskDetailsModal(props.task);
+    }
+});
+
+// Watch if any tasks have been updated and refresh selected task value
+watch(() => props.statuses, (newStatuses) => {
+    const updatedTask = newStatuses
+        .flatMap(status => status.tasks)
+        .find(task => task.id === selectedTask.value?.id);
+
+    if (updatedTask) {
+        selectedTask.value = updatedTask;
+    }
+}, { deep: true });
 </script>
 
 <style scoped>

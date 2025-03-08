@@ -26,8 +26,8 @@
                                         <TaskEditDescriptionInput />
                                     </div>
 
-                                    <TaskChecklist />
-                                    <TaskComments />
+                                    <TaskChecklist :task="task" />
+                                    <TaskComments :task="task" />
                                 </div>
                                 <TaskInfoPanel />
                             </div>
