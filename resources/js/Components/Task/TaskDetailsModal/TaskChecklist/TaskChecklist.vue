@@ -22,17 +22,16 @@
                 <div class="ml-6">
                     <NewChecklistItemInput :task="task" />
 
-                    <draggable
-                        :disabled="draggingDisabled"
+                    <VueDraggable
                         v-model="form.items"
+                        animation="150"
+                        handle=".handle"
                         group="checklist-items"
-                        item-key="id"
                         class="space-y-1 max-h-72 overflow-y-auto"
-                        @end="updateOrder">
-                        <template #item="{element}">
-                            <TaskListItem :item="element" :key="element.id" @edit-status-changed="updateDraggingStatus" />
-                        </template>
-                    </draggable>
+                        @end="updateOrder"
+                    >
+                        <TaskListItem v-for="item in form.items" :item="item" :key="item.id" @edit-status-changed="updateDraggingStatus" />
+                    </VueDraggable>
                 </div>
             </DisclosurePanel>
         </Disclosure>
@@ -47,22 +46,21 @@ import TaskProgressbar from "@/Components/Task/TaskDetailsModal/TaskChecklist/Ta
 import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskChecklist/NewChecklistItemInput.vue";
 import draggable from 'vuedraggable'
 import {useForm} from "@inertiajs/vue3";
-import {ref, watch} from "vue";
+import {inject, ref, watch} from "vue";
 import TaskChecklistOptionsDropdown from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklistOptionsDropdown.vue";
+import {VueDraggable} from "vue-draggable-plus";
 
-const props = defineProps({
-    task: Object
-});
+const task = inject('task');
 
 const draggingDisabled = ref(false);
 
 const form = useForm({
-    items: props.task.checklist_items
+    items: task.checklist_items
 });
 
 const updateOrder = (event) => {
     if (event.oldIndex !== event.newIndex) {
-        form.patch(route('tasks.checklist-items.update-order', { task: props.task.id }), {
+        form.patch(route('tasks.checklist-items.update-order', { task: task.id }), {
             preserveScroll: true
         });
     }
@@ -72,7 +70,7 @@ const updateDraggingStatus = (newValue) => {
     draggingDisabled.value = newValue;
 };
 
-watch(() => props.task.checklist_items, (newItems) => {
+watch(() => task.checklist_items, (newItems) => {
     form.items = [...newItems];
 });
 </script>
