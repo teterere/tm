@@ -16,6 +16,8 @@ class TaskUpdateStatusRequest extends FormRequest
 
     public function rules(): array
     {
-        return [];
+        return [
+            'order' => ['integer', 'min:0']
+        ];
     }
 }

@@ -21,7 +21,7 @@
 
                 <VueDraggable
                     v-model="status.tasks"
-                    @add="updateTaskStatus"
+                    @sort="updateTaskStatus"
                     :data-status-id="status.id"
                     :key="status.id"
                     ghostClass="ghost"
@@ -91,17 +91,19 @@ const closeTaskDetailsModal = () => {
 };
 
 const updateTaskStatus = (event) => {
-    // console.log(event.newIndex) // todo
+    const newIndex = event.newIndex + 1;
     const movedTask = event.clonedData; // Nokopētais uzdevums (satur pilnu task objektu)
     const newStatusId = event.to.getAttribute("data-status-id"); // Statusa ID, kurā uzdevums tika ielikts
 
-    console.log(event)
+    console.log(newIndex)
 
-    if (movedTask && newStatusId) {
+    if (newIndex || (movedTask && newStatusId)) {
         console.log("Task ID:", movedTask.id);
         console.log("New Status ID:", newStatusId);
 
-        router.patch(route('tasks.update-status', { task: movedTask.id, status: newStatusId }), {}, {
+        router.patch(route('tasks.update-status', { task: movedTask.id, status: newStatusId }), {
+            order: newIndex
+        }, {
             preserveScroll: true
         });
     }

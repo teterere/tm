@@ -61,9 +61,23 @@ class TaskController extends Controller
 
     public function updateStatus(TaskUpdateStatusRequest $request, Task $task, TaskStatus $status): void
     {
+        $newOrder = $request->get('order');
+
+        Task::where('status_id', $task->status_id)
+            ->where('order', '>', $task->order)
+            ->decrement('order');
+
+        // Atjauninām pārvietoto uzdevumu
         $task->update([
-            'status_id' => $status->id
+            'status_id' => $status->id,
+            'order'     => $newOrder
         ]);
+
+        // Pabīdam uzdevumus jaunajā statusā, lai izvairītos no dublikātiem
+        Task::where('status_id', $status->id)
+            ->where('id', '!=', $task->id)
+            ->where('order', '>=', $newOrder)
+            ->increment('order');
     }
 
     public function updatePriority(TaskUpdatePriorityRequest $request, Task $task, TaskPriority $priority): void
