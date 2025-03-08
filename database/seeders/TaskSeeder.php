@@ -107,9 +107,10 @@ class TaskSeeder extends Seeder
 
             foreach ($data['comments'] as $comment) {
                 TaskComment::create([
-                    'task_id'   => $task->id,
-                    'author_id' => $comment['author_id'],
-                    'body'      => $comment['body']
+                    'task_id'    => $task->id,
+                    'author_id'  => $comment['author_id'],
+                    'body'       => $comment['body'],
+                    'created_at' => now()->subMinutes(rand(1, 240))
                 ]);
             }
         }

@@ -31,7 +31,7 @@ class TaskController extends Controller
         $task = null;
         if ($taskIdentifier) {
             $task = Task::findByIdentifier($taskIdentifier);
-            $task?->load(['priority', 'assignee', 'status', 'labels', 'checklistItems']);
+            $task?->load(['priority', 'assignee', 'status', 'labels', 'checklistItems', 'comments']);
             $task = $task ? new TaskResource($task) : null;
         }
 

@@ -43,10 +43,6 @@
             v-if="showTaskDetailsModal"
             :show="showTaskDetailsModal"
             :task="selectedTask"
-            :statuses="statuses"
-            :priorities="priorities"
-            :labels="labels"
-            :employees="employees"
             @close="closeTaskDetailsModal"
         />
     </AppLayout>
@@ -95,12 +91,7 @@ const updateTaskStatus = (event) => {
     const movedTask = event.clonedData; // Nokopētais uzdevums (satur pilnu task objektu)
     const newStatusId = event.to.getAttribute("data-status-id"); // Statusa ID, kurā uzdevums tika ielikts
 
-    console.log(newIndex)
-
     if (newIndex || (movedTask && newStatusId)) {
-        console.log("Task ID:", movedTask.id);
-        console.log("New Status ID:", newStatusId);
-
         router.patch(route('tasks.update-status', { task: movedTask.id, status: newStatusId }), {
             order: newIndex
         }, {
@@ -113,10 +104,5 @@ const updateTaskStatus = (event) => {
 <style scoped>
 .ghost {
     opacity: 0 !important;
-    background: #c8ebfb;
-}
-
-.sortable-ghost {
-    border: 2px solid red;
 }
 </style>

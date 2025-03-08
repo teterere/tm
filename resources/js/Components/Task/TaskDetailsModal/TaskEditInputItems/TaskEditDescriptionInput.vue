@@ -17,18 +17,16 @@
 </template>
 
 <script setup>
-import {nextTick, ref} from "vue";
+import {inject, nextTick, ref} from "vue";
 import { useTextareaAutosize } from '@vueuse/core'
 import {useForm} from "@inertiajs/vue3";
 import OutlineButton from "@/Components/shared/Buttons/OutlineButton.vue";
 import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
 
-const props = defineProps({
-    task: Object
-});
+const task = inject('task');
 
 const form = useForm({
-    description: props.task.description
+    description: task.description
 });
 
 const { textarea, input } = useTextareaAutosize();
@@ -37,7 +35,7 @@ const editStatus = ref(false);
 
 const enableEditStatus = () => {
     editStatus.value = true;
-    input.value = props.task.description;
+    input.value = task.description;
 
     nextTick(() => {
         if (textarea) {
@@ -51,7 +49,7 @@ const disableEditStatus = () => {
 }
 
 const submit = () => {
-    if (input.value === props.task.description) {
+    if (input.value === task.description) {
         editStatus.value = false;
 
         return;
@@ -60,7 +58,7 @@ const submit = () => {
     form.transform((data) => ({
         ...data,
         description: input.value
-    })).patch(route('tasks.update', { task: props.task.id }), {
+    })).patch(route('tasks.update', { task: task.id }), {
         preserveScroll: true,
         onSuccess: () => {
             editStatus.value = false;

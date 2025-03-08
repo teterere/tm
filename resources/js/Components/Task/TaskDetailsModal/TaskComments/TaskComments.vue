@@ -12,9 +12,7 @@
             <DisclosurePanel class="text-gray-500">
                 <div class="space-y-1">
                     <AddCommentInput />
-                    <TaskComment />
-                    <TaskComment />
-                    <TaskComment />
+                    <TaskComment v-for="comment in task.comments" :comment="comment" />
                 </div>
             </DisclosurePanel>
         </Disclosure>
@@ -26,4 +24,7 @@ import TaskComment from "@/Components/Task/TaskDetailsModal/TaskComments/TaskCom
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import {ChevronDownIcon} from "@heroicons/vue/24/outline/index.js";
 import AddCommentInput from "@/Components/Task/TaskDetailsModal/TaskComments/AddCommentInput.vue";
+import {inject} from "vue";
+
+const task = inject('task');
 </script>

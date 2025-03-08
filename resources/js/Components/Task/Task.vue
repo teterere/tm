@@ -37,8 +37,8 @@
                 </div>
 
                 <div class="flex items-center">
-                    <EnvelopeIcon class="h-4 w-4 text-gray-400 mr-1" />
-                    <span class="text-xs text-gray-400">2</span>
+                    <ChatBubbleOvalLeftEllipsisIcon class="h-4 w-4 text-gray-400 mr-1" />
+                    <span class="text-xs text-gray-400">{{ task.comments.length }}</span>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import {CheckCircleIcon, ClockIcon, EllipsisHorizontalIcon, EnvelopeIcon} from "@heroicons/vue/24/outline";
+import {CheckCircleIcon, ClockIcon, EllipsisHorizontalIcon, ChatBubbleOvalLeftEllipsisIcon} from "@heroicons/vue/24/outline";
 import TaskPriorityLabel from "@/Components/Task/TaskPriority/TaskPriorityLabel.vue";
 import TaskLabel from "@/Components/Task/TaskLabel/TaskLabel.vue";
 
