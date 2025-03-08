@@ -18,6 +18,7 @@ class Task extends Model
         'assignee_id',
         'status_id',
         'priority_id',
+        'order',
         'identifier_prefix',
         'identifier_number',
         'title',
@@ -43,6 +44,14 @@ class Task extends Model
                 ->first();
 
             $task->identifier_number = $lastItem ? $lastItem->identifier_number + 1 : 1;
+
+            // Assign order
+            $lastItem = Task::where('company_id', $task->company_id)
+                ->where('status_id', $task->status_id)
+                ->orderBy('order', 'desc')
+                ->first();
+
+            $task->order = $lastItem ? $lastItem->order + 1 : 1;
         });
     }
 

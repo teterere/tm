@@ -77,11 +77,6 @@ provide('employees', props.employees);
 const selectedTask = ref(props.task);
 const showTaskDetailsModal = ref(false);
 
-const statusesCopy = ref(props.statuses.map(status => ({
-    ...status,
-    tasks: ref(status.tasks)
-})));
-
 const openTaskDetailsModal = (task) => {
     if (!task) return;
     selectedTask.value = task;
