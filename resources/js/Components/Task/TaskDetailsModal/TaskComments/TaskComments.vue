@@ -10,11 +10,9 @@
                 </div>
             </DisclosureButton>
             <DisclosurePanel class="text-gray-500">
-                <div class="space-y-1">
-                    <AddCommentInput />
-                    <TaskComment v-for="comment in task.comments.data" :comment="comment" />
-                    <Pagination v-if="task.comments.data.length" :meta="task.comments.meta" />
-                </div>
+                <AddCommentInput ref="addCommentInputRef" />
+                <TaskComment v-for="comment in task.comments.data" :comment="comment" @reply="handleReply" />
+                <Pagination v-if="task.comments.meta.last_page > 1" :meta="task.comments.meta" />
             </DisclosurePanel>
         </Disclosure>
     </div>
@@ -26,8 +24,15 @@ import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import {ChevronDownIcon} from "@heroicons/vue/24/outline/index.js";
 import AddCommentInput from "@/Components/Task/TaskDetailsModal/TaskComments/AddCommentInput.vue";
 import Pagination from "@/Components/shared/Pagination.vue";
+import {ref} from "vue";
 
 const props = defineProps({
     task: Object
 });
+
+const addCommentInputRef = ref(null);
+
+const handleReply = (username) => {
+    addCommentInputRef.value?.focusWithMention?.(username)
+}
 </script>

@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import {ref, inject, watch} from 'vue';
+import {ref, inject, watch, nextTick} from 'vue';
 import {useForm} from "@inertiajs/vue3";
 import {useTextareaAutosize} from "@vueuse/core";
 import OutlineButton from "@/Components/shared/Buttons/OutlineButton.vue";
@@ -49,6 +49,17 @@ const submit = () => {
         },
     });
 };
+
+const focusWithMention = (username) => {
+    input.value = `@${username} `
+    nextTick(() => {
+        textarea.value?.focus()
+    })
+}
+
+defineExpose({
+    focusWithMention
+});
 
 watch(input, () => {
     showButtons.value = input.value.length !== 0;
