@@ -19,7 +19,6 @@ class TaskResource extends JsonResource
             'checklist_items'                 => $this->whenLoaded('checklistItems', fn() => $this->checklistItems->values()),
             'comments' => $this->whenLoaded('comments', function () {
                 $paginatedComments = $this->comments()->paginate(5, ['*'], 'komentari');
-//                $paginatedComments = $this->comments()->paginate(5);
 
                 return (new PaginatedResourceResponse(
                     TaskCommentResource::collection($paginatedComments)
