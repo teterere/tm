@@ -12,7 +12,8 @@
             <DisclosurePanel class="text-gray-500">
                 <div class="space-y-1">
                     <AddCommentInput />
-                    <TaskComment v-for="comment in task.comments" :comment="comment" />
+                    <TaskComment v-for="comment in task.comments.data" :comment="comment" />
+                    <Pagination v-if="task.comments.data.length" :meta="task.comments.meta" />
                 </div>
             </DisclosurePanel>
         </Disclosure>
@@ -24,8 +25,9 @@ import TaskComment from "@/Components/Task/TaskDetailsModal/TaskComments/TaskCom
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import {ChevronDownIcon} from "@heroicons/vue/24/outline/index.js";
 import AddCommentInput from "@/Components/Task/TaskDetailsModal/TaskComments/AddCommentInput.vue";
+import Pagination from "@/Components/shared/Pagination.vue";
 
-defineProps({
+const props = defineProps({
     task: Object
 });
 </script>

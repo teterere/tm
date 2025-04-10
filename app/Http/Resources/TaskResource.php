@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\PaginatedResourceResponse;
 
 class TaskResource extends JsonResource
 {
@@ -16,7 +17,14 @@ class TaskResource extends JsonResource
             'status'                          => $this->whenLoaded('status'),
             'labels'                          => $this->whenLoaded('labels'),
             'checklist_items'                 => $this->whenLoaded('checklistItems', fn() => $this->checklistItems->values()),
-            'comments'                        => $this->whenLoaded('comments', fn() => TaskCommentResource::collection($this->comments)),
+            'comments' => $this->whenLoaded('comments', function () {
+                $paginatedComments = $this->comments()->paginate(5, ['*'], 'komentari');
+//                $paginatedComments = $this->comments()->paginate(5);
+
+                return (new PaginatedResourceResponse(
+                    TaskCommentResource::collection($paginatedComments)
+                ))->toResponse(request())->getData();
+            }),
             'order'                           => $this->order,
             'identifier'                      => $this->identifier,
             'completed_checklist_items_count' => $this->completedChecklistItemsCount,

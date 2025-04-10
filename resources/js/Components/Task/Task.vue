@@ -38,7 +38,7 @@
 
                 <div class="flex items-center">
                     <ChatBubbleOvalLeftEllipsisIcon class="h-4 w-4 text-gray-400 mr-1" />
-                    <span class="text-xs text-gray-400">{{ task.comments.length }}</span>
+                    <span class="text-xs text-gray-400">{{ task.comments.meta.total }}</span>
                 </div>
             </div>
         </div>

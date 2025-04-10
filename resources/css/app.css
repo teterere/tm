@@ -37,6 +37,19 @@
     .action-button {
         @apply bg-gray-100 hover:bg-gray-200 p-1 rounded-sm cursor-pointer
     }
+
+    .pagination-button {
+        @apply relative inline-flex items-center px-3.5 py-2 rounded-xs text-sm font-semibold text-gray-900 hover:bg-blue-100 focus:z-20;
+    }
+
+    .pagination-button.previous,
+    .pagination-button.next {
+        @apply px-2 py-2;
+    }
+
+    .pagination-button.active {
+        @apply bg-blue-100 text-blue-800;
+    }
 }
 
 [x-cloak] {
