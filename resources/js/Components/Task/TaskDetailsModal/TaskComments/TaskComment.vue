@@ -26,7 +26,11 @@
                         <TaskCommentActionButtonDivider />
                         <TaskCommentActionButton @click="enableEditStatus">Labot</TaskCommentActionButton>
                         <TaskCommentActionButtonDivider />
-                        <TaskCommentActionButton>Dzēst</TaskCommentActionButton>
+                        <TaskCommentActionButton @click="showConfirmDeletionDialog = true">Dzēst</TaskCommentActionButton>
+                        <ConfirmDeletionDialog :show="showConfirmDeletionDialog" @confirm="deleteComment" @close="showConfirmDeletionDialog = false">
+                            <template #title>Dzēst komentāru?</template>
+                            <template #description>Apstiprini, ka tiešām vēlies dzēst šo komentāru. Šo darbību nav iespējams atsaukt.</template>
+                        </ConfirmDeletionDialog>
                     </div>
                 </div>
             </div>
@@ -38,14 +42,16 @@
 import TaskCommentActionButton from "@/Components/Task/TaskDetailsModal/TaskComments/TaskCommentActionButton.vue";
 import {nextTick, ref} from "vue";
 import TaskCommentActionButtonDivider from "@/Components/Task/TaskDetailsModal/TaskComments/TaskCommentActionButtonDivider.vue";
-import {useForm} from "@inertiajs/vue3";
+import {router, useForm} from "@inertiajs/vue3";
 import {useTextareaAutosize} from "@vueuse/core";
+import ConfirmDeletionDialog from "@/Components/ConfirmDeletionDialog.vue";
 
 const props = defineProps({
     comment: Object
 });
 
 const editStatus = ref(false);
+const showConfirmDeletionDialog = ref(false);
 
 const form = useForm({
     comment: props.comment.body
@@ -82,6 +88,15 @@ const submit = () => {
         preserveScroll: true,
         onSuccess: () => {
             editStatus.value = false;
+        },
+    });
+};
+
+const deleteComment = () => {
+    router.delete(route('tasks.comments.delete', { task: props.comment.task_id, comment: props.comment.id }), {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmDeletionDialog.value = false;
         },
     });
 };

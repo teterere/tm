@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Task;
+namespace App\Http\Requests\TaskComment;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;

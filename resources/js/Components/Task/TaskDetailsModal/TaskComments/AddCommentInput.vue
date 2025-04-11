@@ -54,7 +54,7 @@ const focusWithMention = (username) => {
     input.value = `@${username} `
     nextTick(() => {
         textarea.value?.focus()
-    })
+    });
 }
 
 defineExpose({

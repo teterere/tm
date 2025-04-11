@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Task\TaskCommentRequest;
-use App\Http\Requests\Task\TaskCommentUpdateRequest;
+use App\Http\Requests\TaskComment\TaskCommentDeleteRequest;
+use App\Http\Requests\TaskComment\TaskCommentRequest;
+use App\Http\Requests\TaskComment\TaskCommentUpdateRequest;
 use App\Models\Task;
 use App\Models\TaskComment;
 
@@ -22,5 +23,10 @@ class TaskCommentController extends Controller
         $comment->update([
             'body' => $request->get('body')
         ]);
+    }
+
+    public function destroy(TaskCommentDeleteRequest $request, Task $task, TaskComment $comment): void
+    {
+        $comment->delete();
     }
 }

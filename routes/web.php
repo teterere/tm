@@ -47,6 +47,7 @@ Route::middleware([
         Route::prefix('comments')->name('comments.')->group(function () {
             Route::post('/', [TaskCommentController::class, 'store'])->name('store');
             Route::patch('/{comment}', [TaskCommentController::class, 'update'])->name('update');
+            Route::delete('{comment}', [TaskCommentController::class, 'destroy'])->name('delete');
         });
     });
 });
