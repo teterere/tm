@@ -6,10 +6,6 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/laravel/jetstream/**/*.blade.php';
 
-@theme {
-  --font-sans: Figtree, ui-sans-serif, system-ui, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-}
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -19,6 +15,12 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
+
+:root {
+    --base-font-family: 'Inter', system-ui, sans-serif;
+    --emoji-font-family: 'Twemoji Mozilla';
+}
+
 @layer base {
   *,
   ::after,
@@ -30,6 +32,14 @@
 }
 
 @layer components {
+    input[type="text"] {
+        @apply block w-full rounded-xs bg-white pl-3 pr-16 py-1 text-base text-gray-900 border-[1.5px] outline-0 border-gray-200 focus:ring-2 placeholder:text-gray-400 sm:text-sm/5 outline-none focus-visible:border-indigo-400 focus-visible:ring-2 focus-visible:ring-indigo-300;
+    }
+
+    input[type="text"].input-md {
+        @apply px-3 py-1.5;
+    }
+
     .btn {
         @apply rounded-sm font-semibold shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 cursor-pointer;
     }
@@ -50,8 +60,37 @@
     .pagination-button.active {
         @apply bg-blue-100 text-blue-800;
     }
+
+    .editor-button {
+        @apply text-sm p-1.5 cursor-pointer text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-xs transition-colors duration-100 ease-in-out;
+    }
+
+    button {
+        @apply transition-colors duration-100 ease-in-out cursor-pointer;
+    }
 }
 
 [x-cloak] {
     display: none;
+}
+
+/* WYSIWYG */
+.wysiwyg ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+}
+
+.wysiwyg ol {
+    list-style-type: decimal;
+    margin-left: 1.5rem;
+}
+
+.wysiwyg li {
+    display: list-item;
+    margin-bottom: 0.25rem;
+}
+
+.wysiwyg,
+.comment-body {
+    font-family: var(--base-font-family), var(--emoji-font-family), sans-serif;
 }

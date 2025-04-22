@@ -4,7 +4,7 @@
             <div class="flex items-start justify-between">
                 <DisclosureButton class="outline-0 w-full cursor-pointer">
                     <div class="flex items-start gap-x-2 mb-2">
-                        <button class="bg-gray-100 rounded-sm p-1">
+                        <button class="bg-gray-100 hover:bg-gray-200 rounded-sm p-1">
                             <ChevronDownIcon :class="{ 'rotate-180 transform': open }" class="w-3 h-3" />
                         </button>
 
@@ -44,7 +44,6 @@ import TaskListItem from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskC
 import {ChevronDownIcon} from "@heroicons/vue/24/outline";
 import TaskProgressbar from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskProgressbar.vue";
 import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskChecklist/NewChecklistItemInput.vue";
-import draggable from 'vuedraggable'
 import {useForm} from "@inertiajs/vue3";
 import {inject, ref, watch} from "vue";
 import TaskChecklistOptionsDropdown from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklistOptionsDropdown.vue";

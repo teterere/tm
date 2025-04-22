@@ -17,7 +17,7 @@ class TaskCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => ['required', 'min:1', 'max:1000']
+            'body' => ['required', 'min:1', 'max:6000']
         ];
     }
 }

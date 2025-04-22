@@ -13,7 +13,7 @@
             >Next</Link>
         </div>
         <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-            <nav class="isolate inline-flex" aria-label="Pagination">
+            <nav class="isolate inline-flex gap-x-1" aria-label="Pagination">
                 <template v-for="(pageData, index) in visiblePages" :key="index">
                     <span v-if="pageData.page === '...'" class="pagination-button disabled">...</span>
                     <Link

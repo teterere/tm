@@ -13,7 +13,7 @@ class EmployeeResource extends JsonResource
             'id'          => $this->id,
             'name'        => $this->name,
             'email'       => $this->email,
-            'avatar_path' => $this->avatar ? asset('storage/users/avatars/' . $this->avatar) : 'https://ui-avatars.com/api/?name=' . $this->name,
+            'avatar_path' => $this->avatar ? asset('storage/uploads/avatars/' . $this->avatar) : 'https://ui-avatars.com/api/?name=' . $this->name,
             'is_auth'     => $this->id === auth()?->id()
         ];
     }

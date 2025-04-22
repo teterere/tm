@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\TaskChecklistItemController;
 use App\Http\Controllers\TaskCommentController;
 use App\Http\Controllers\TaskController;
@@ -23,6 +24,8 @@ Route::middleware([
 ])->group(function () {
     Route::get('/uzdevumi', [TaskController::class, 'index'])->name('tasks.index');
     Route::get('/uzdevumi/{taskIdentifier}', [TaskController::class, 'index'])->name('show');
+
+    Route::post('/upload-image', [ImageUploadController::class, 'upload'])->name('upload-image');
 
     Route::prefix('uzdevumi/{task}')->name('tasks.')->group(function () {
         Route::patch('/', [TaskController::class, 'update'])->name('update');

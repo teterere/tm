@@ -11,20 +11,14 @@
                     <span class="text-xs text-gray-400">{{ comment.created_at }}</span>
                 </div>
 
-                <textarea v-if="editStatus" v-model="input" ref="textarea" class="w-full text-sm block w-full rounded-xs bg-white p-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-200 border-gray-200 placeholder:text-gray-400 sm:text-sm/6 focus:ring-0 focus:ring-gray-200 focus:border-gray-200" />
-                <p v-else class="text-sm/6 text-gray-700 p-1.5">{{ comment.body }}</p>
+                <CommentInput v-if="editStatus" :comment="comment" @close="editStatus = false" />
+                <div v-else v-html="comment.body" class="comment-body text-sm/6 text-gray-700 p-1.5"></div>
 
-                <div v-if="editStatus" class="flex gap-x-2 justify-end items-center w-full mt-1">
-                    <TaskCommentActionButton @click="submit">Saglabāt</TaskCommentActionButton>
-                    <TaskCommentActionButtonDivider />
-                    <TaskCommentActionButton @click="disableEditStatus">Atcelt</TaskCommentActionButton>
-                </div>
-
-                <div v-else class="flex gap-x-2 justify-end w-full opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                <div v-if="!editStatus" class="flex gap-x-2 justify-end w-full opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                     <TaskCommentActionButton @click="$emit('reply', comment.author.name)">Atbildēt</TaskCommentActionButton>
                     <div v-if="comment.author.is_auth" class="flex items-center gap-x-2">
                         <TaskCommentActionButtonDivider />
-                        <TaskCommentActionButton @click="enableEditStatus">Labot</TaskCommentActionButton>
+                        <TaskCommentActionButton @click="editStatus = true">Labot</TaskCommentActionButton>
                         <TaskCommentActionButtonDivider />
                         <TaskCommentActionButton @click="showConfirmDeletionDialog = true">Dzēst</TaskCommentActionButton>
                         <ConfirmDeletionDialog :show="showConfirmDeletionDialog" @confirm="deleteComment" @close="showConfirmDeletionDialog = false">
@@ -40,11 +34,11 @@
 
 <script setup>
 import TaskCommentActionButton from "@/Components/Task/TaskDetailsModal/TaskComments/TaskCommentActionButton.vue";
-import {nextTick, ref} from "vue";
+import {ref} from "vue";
 import TaskCommentActionButtonDivider from "@/Components/Task/TaskDetailsModal/TaskComments/TaskCommentActionButtonDivider.vue";
-import {router, useForm} from "@inertiajs/vue3";
-import {useTextareaAutosize} from "@vueuse/core";
+import {router} from "@inertiajs/vue3";
 import ConfirmDeletionDialog from "@/Components/ConfirmDeletionDialog.vue";
+import CommentInput from "@/Components/Task/TaskDetailsModal/TaskComments/CommentInput.vue";
 
 const props = defineProps({
     comment: Object
@@ -52,45 +46,6 @@ const props = defineProps({
 
 const editStatus = ref(false);
 const showConfirmDeletionDialog = ref(false);
-
-const form = useForm({
-    comment: props.comment.body
-});
-
-const { textarea, input } = useTextareaAutosize();
-
-const enableEditStatus = () => {
-    editStatus.value = true;
-    input.value = props.comment.body;
-
-    nextTick(() => {
-        if (textarea) {
-            textarea.value.focus();
-        }
-    });
-};
-
-const disableEditStatus = () => {
-    editStatus.value = false;
-};
-
-const submit = () => {
-    if (input.value === props.comment.body) {
-        editStatus.value = false;
-
-        return;
-    }
-
-    form.transform((data) => ({
-        ...data,
-        body: input.value
-    })).patch(route('tasks.comments.update', { task: props.comment.task_id, comment: props.comment.id }), {
-        preserveScroll: true,
-        onSuccess: () => {
-            editStatus.value = false;
-        },
-    });
-};
 
 const deleteComment = () => {
     router.delete(route('tasks.comments.delete', { task: props.comment.task_id, comment: props.comment.id }), {
