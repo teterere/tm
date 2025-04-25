@@ -77,13 +77,23 @@ const openTaskDetailsModal = (task) => {
     if (!task) return;
     selectedTask.value = task;
     showTaskDetailsModal.value = true;
-    window.history.replaceState({}, '', `/uzdevumi/${task.identifier}`);
+
+    router.push({
+        url: route('tasks.show', {taskIdentifier: task.identifier}),
+        preserveScroll: true,
+        preserveState: true
+    })
 };
 
 const closeTaskDetailsModal = () => {
     selectedTask.value = null;
     showTaskDetailsModal.value = false;
-    window.history.replaceState({}, '', '/uzdevumi');
+
+    router.push({
+        url: route('tasks.index'),
+        preserveScroll: true,
+        preserveState: true
+    })
 };
 
 const updateTaskStatus = (event) => {

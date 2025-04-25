@@ -23,7 +23,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/uzdevumi', [TaskController::class, 'index'])->name('tasks.index');
-    Route::get('/uzdevumi/{taskIdentifier}', [TaskController::class, 'index'])->name('show');
+    Route::get('/uzdevumi/{taskIdentifier}', [TaskController::class, 'index'])->name('tasks.show');
 
     Route::post('/upload-image', [ImageUploadController::class, 'upload'])->name('upload-image');
 
@@ -48,6 +48,7 @@ Route::middleware([
         });
 
         Route::prefix('comments')->name('comments.')->group(function () {
+            Route::get('/', [TaskCommentController::class, 'index'])->name('index');
             Route::post('/', [TaskCommentController::class, 'store'])->name('store');
             Route::patch('/{comment}', [TaskCommentController::class, 'update'])->name('update');
             Route::delete('{comment}', [TaskCommentController::class, 'destroy'])->name('delete');

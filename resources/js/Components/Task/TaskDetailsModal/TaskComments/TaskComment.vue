@@ -11,8 +11,8 @@
                     <span class="text-xs text-gray-400">{{ comment.created_at }}</span>
                 </div>
 
-                <CommentInput v-if="editStatus" :comment="comment" @close="editStatus = false" />
-                <div v-else v-html="comment.body" class="comment-body text-sm/6 text-gray-700 p-1.5"></div>
+                <CommentInput v-if="editStatus" :comment="comment" @close="editStatus = false" @commentUpdated="$emit('commentUpdated')" />
+                <div v-else v-html="comment.body" class="comment-body text-sm/6 text-gray-600 p-1.5"></div>
 
                 <div v-if="!editStatus" class="flex gap-x-2 justify-end w-full opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                     <TaskCommentActionButton @click="$emit('reply', comment.author.name)">Atbildēt</TaskCommentActionButton>
@@ -44,6 +44,8 @@ const props = defineProps({
     comment: Object
 });
 
+const emit = defineEmits(['commentUpdated']);
+
 const editStatus = ref(false);
 const showConfirmDeletionDialog = ref(false);
 
@@ -52,6 +54,7 @@ const deleteComment = () => {
         preserveScroll: true,
         onSuccess: () => {
             showConfirmDeletionDialog.value = false;
+            emit('commentUpdated')
         },
     });
 };

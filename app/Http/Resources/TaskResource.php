@@ -10,6 +10,8 @@ class TaskResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $commentDirection = $request->get('commentDirection', 'desc');
+
         return [
             'id'                              => $this->id,
             'assignee'                        => $this->whenLoaded('assignee', fn() => EmployeeResource::make($this->assignee)),
@@ -17,8 +19,10 @@ class TaskResource extends JsonResource
             'status'                          => $this->whenLoaded('status'),
             'labels'                          => $this->whenLoaded('labels'),
             'checklist_items'                 => $this->whenLoaded('checklistItems', fn() => $this->checklistItems->values()),
-            'comments' => $this->whenLoaded('comments', function () {
-                $paginatedComments = $this->comments()->paginate(5, ['*'], 'komentari');
+            'comments' => $this->whenLoaded('comments', function () use ($commentDirection) {
+                $paginatedComments = $this->comments()
+                    ->orderBy('created_at', $commentDirection)
+                    ->paginate(5, ['*'], 'komentari');
 
                 return (new PaginatedResourceResponse(
                     TaskCommentResource::collection($paginatedComments)

@@ -87,7 +87,7 @@ class Task extends Model
 
     public function comments(): HasMany
     {
-        return $this->hasMany(TaskComment::class)->orderBy('created_at', 'desc');
+        return $this->hasMany(TaskComment::class);
     }
 
     public function getIdentifierAttribute(): string

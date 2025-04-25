@@ -94,3 +94,11 @@
 .comment-body {
     font-family: var(--base-font-family), var(--emoji-font-family), sans-serif;
 }
+
+.wysiwyg .mention,
+.comment-body .mention {
+    background: #efefef;
+    padding: 2px 4px 2px 4px;
+    border-radius: 4px;
+    font-weight: 600;
+}

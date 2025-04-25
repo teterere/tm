@@ -95,7 +95,7 @@ function updateMentionPosition() {
 }
 
 const props = defineProps({ comment: Object })
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'commentUpdated'])
 const task = inject('task')
 
 const showMentionDropdown = ref(false)
@@ -204,7 +204,7 @@ const editor = useEditor({
     ],
     editorProps: {
         attributes: {
-            class: 'focus:outline-none min-h-24 py-2 px-4',
+            class: 'focus:outline-none min-h-24 py-2 px-4 text-sm text-gray-600',
         },
     },
     onUpdate: ({ editor }) => form.body = editor.getHTML(),
@@ -227,14 +227,18 @@ const submit = () => {
         form.patch(route('tasks.comments.update', { task: task.id, comment: props.comment.id }), {
             preserveScroll: true,
             onSuccess: () => {
-                emit('close')
+                emit('close');
+                emit('commentUpdated');
                 clear()
             },
         })
     } else {
         form.post(route('tasks.comments.store', { task: task.id }), {
             preserveScroll: true,
-            onSuccess: clear,
+            onSuccess: () => {
+                emit('commentUpdated')
+                clear()
+            },
         })
     }
 }
@@ -255,11 +259,3 @@ const focusWithMention = (username) => {
 
 defineExpose({ focusWithMention })
 </script>
-
-<style scoped>
-.wysiwyg {
-    border: 1px solid #ddd;
-    border-radius: 2px 2px 0 0;
-    position: relative;
-}
-</style>
