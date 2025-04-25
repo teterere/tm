@@ -63,7 +63,7 @@
 
 
 <script setup>
-import {ref, inject, computed} from 'vue'
+import {ref, inject, computed, onMounted} from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import PrimaryButton from '@/Components/shared/Buttons/PrimaryButton.vue'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
@@ -187,20 +187,15 @@ const editor = useEditor({
     extensions: [
         StarterKit,
         Suggestion,
-        BulletList,
-        OrderedList,
-        ListItem,
         Underline,
-        Strike,
         ImageResize,
         Link.configure({ openOnClick: false }),
-        Image.configure({ inline: true, allowBase64: false }),
         Mention.configure({
             HTMLAttributes: {
                 class: 'mention',
             },
             suggestion: mentionSuggestion,
-        }),
+        })
     ],
     editorProps: {
         attributes: {
@@ -208,6 +203,12 @@ const editor = useEditor({
         },
     },
     onUpdate: ({ editor }) => form.body = editor.getHTML(),
+})
+
+onMounted(() => {
+    if (props.comment) {
+        editor.value?.commands.focus('end') // vai 'start'
+    }
 })
 
 let lastEditorSelection = null
@@ -250,7 +251,9 @@ const clear = () => {
 
 const focusWithMention = (username) => {
     if (!editor?.value) return
+
     const selection = lastEditorSelection ?? editor.value.state.selection
+
     editor.value.chain().focus().insertContentAt(selection, [
         { type: 'mention', attrs: { id: username.toLowerCase(), label: username } },
         { type: 'text', text: ' ' },
