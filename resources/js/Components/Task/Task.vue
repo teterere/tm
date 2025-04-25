@@ -22,7 +22,7 @@
         </div>
         <div class="flex justify-between items-center">
             <div class="flex-items-center space-x-2">
-                <img class="inline-block size-7 rounded-full" :src="task.assignee.avatar_path" alt="" />
+                <img class="inline-block size-7 rounded-full" :src="task.assignee.avatar_url" alt="" />
                 <span class="text-xs text-gray-600">{{ task.assignee.name }}</span>
             </div>
 
@@ -38,7 +38,7 @@
 
                 <div class="flex items-center">
                     <ChatBubbleOvalLeftEllipsisIcon class="h-4 w-4 text-gray-400 mr-1" />
-                    <span class="text-xs text-gray-400">{{ task.comments.meta.total }}</span>
+                    <span class="text-xs text-gray-400">{{ task.comments_count }}</span>
                 </div>
             </div>
         </div>

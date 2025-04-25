@@ -95,7 +95,7 @@ class TaskSeeder extends Seeder
                 'description' => $data['description']
             ]);
 
-            $task->labels()->sync(TaskLabel::inRandomOrder()->first()->id);
+            $task->labels()->sync(TaskLabel::inRandomOrder()->value('id'));
 
             TaskChecklistItem::factory()->count(rand(2, 8))->create([
                 'task_id' => $task->id
@@ -116,6 +116,6 @@ class TaskSeeder extends Seeder
         }
 
         // Add an extra label to one of the tasks
-        Task::inRandomOrder()->first()->labels()->sync(TaskLabel::inRandomOrder()->first()->id);
+        Task::inRandomOrder()->first()->labels()->sync(TaskLabel::inRandomOrder()->value('id'));
     }
 }

@@ -8,7 +8,7 @@
                             <ChevronDownIcon :class="open && 'rotate-180 transform'" class="w-3 h-3" />
                         </button>
                         <h5 class="text-sm font-bold text-gray-400">Komentāri</h5>
-                        <span class="text-xs font-semibold border bg-gray-50 text-gray-500 py-0.5 px-1.5 rounded">{{ task.comments.meta.total }}</span>
+                        <span class="text-xs font-semibold border bg-gray-50 text-gray-500 py-0.5 px-1.5 rounded">{{ task.comments_count }}</span>
                     </div>
                 </DisclosureButton>
                 <div>
@@ -35,18 +35,22 @@
                     </div>
 
                     <div v-else :class="{ 'opacity-75 pointer-events-none': loading }">
-                        <TaskComment v-for="comment in comments" :comment="comment" @reply="handleReply" @commentUpdated="refreshComments" />
+                        <TaskComment
+                            v-for="comment in comments"
+                            :key="comment.id"
+                            :comment="comment"
+                            :edit-status="editingCommentId === comment.id"
+                            @edit="editingCommentId = comment.id"
+                            @close-edit="editingCommentId = null"
+                            @reply="handleReply"
+                            @commentUpdated="refreshComments"
+                        />
+
                         <div v-if="!loading && comments.length === 0" class="text-gray-400 text-center">Nav komentāru</div>
                     </div>
                 </div>
 
-                <div class="flex justify-center">
-                    <Pagination
-                        v-if="meta.last_page > 1"
-                        :meta="meta"
-                        @changePage="fetchComments"
-                    />
-                </div>
+                <Pagination v-if="meta.last_page > 1" :meta="meta" @changePage="fetchComments"/>
             </DisclosurePanel>
         </Disclosure>
     </div>
@@ -71,6 +75,7 @@ const error = ref(null)
 const direction = ref('desc')
 const meta = ref({})
 const page = ref(1);
+const editingCommentId = ref(null);
 
 onMounted(() => fetchComments());
 

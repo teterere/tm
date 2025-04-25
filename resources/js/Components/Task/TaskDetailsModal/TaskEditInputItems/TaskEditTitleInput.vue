@@ -29,14 +29,12 @@ const task = inject('task');
 
 const titleInput = ref(null);
 const actionButtons = ref(null);
-
+const editStatus = ref(false);
 const options = { ignore: [actionButtons] };
 
 const form = useForm({
     title: task.title
 });
-
-const editStatus = ref(false);
 
 const enableEditStatus = () => {
     editStatus.value = true;

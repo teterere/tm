@@ -13,7 +13,7 @@
                 leave-from-class="transform scale-100 opacity-100"
                 leave-to-class="transform scale-95 opacity-0"
             >
-                <MenuItems class="absolute right-0 mt-2 w-56 origin-top-right">
+                <MenuItems class="absolute right-0 z-10 mt-2 w-56 origin-top-right">
                     <emoji-picker @emoji-click="insertEmoji($event.detail.unicode)"></emoji-picker>
                 </MenuItems>
             </transition>
@@ -25,20 +25,13 @@
 import {Menu, MenuButton, MenuItems} from '@headlessui/vue'
 import 'emoji-picker-element'
 import {FaceSmileIcon} from "@heroicons/vue/24/outline";
-import {useEditorSelection} from "@/Composables/useEditorSelection.js";
 
 const props = defineProps({
     editor: Object
-})
-
-const { restore } = useEditorSelection(props.editor)
+});
 
 const insertEmoji = (emoji) => {
     if (!props.editor) return
-
-    if (!props.editor.isFocused) {
-        restore()
-    }
 
     props.editor.chain().focus().insertContent(emoji + ' ').run()
 }

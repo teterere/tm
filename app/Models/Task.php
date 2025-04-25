@@ -117,7 +117,6 @@ class Task extends Model
         return implode(' ', $parts);
     }
 
-
     public function getCompletedChecklistItemsCountAttribute(): int
     {
         return $this->checklistItems()->where('completed', true)->count();

@@ -45,7 +45,7 @@ import {ChevronDownIcon} from "@heroicons/vue/24/outline";
 import TaskProgressbar from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskProgressbar.vue";
 import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskChecklist/NewChecklistItemInput.vue";
 import {useForm} from "@inertiajs/vue3";
-import {inject, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import TaskChecklistOptionsDropdown from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklistOptionsDropdown.vue";
 import {VueDraggable} from "vue-draggable-plus";
 
@@ -59,6 +59,10 @@ const form = useForm({
     items: props.task.checklist_items
 });
 
+watch(() => props.task.checklist_items, (newItems) => {
+    form.items = [...newItems];
+});
+
 const updateOrder = (event) => {
     if (event.oldIndex !== event.newIndex) {
         form.patch(route('tasks.checklist-items.update-order', { task: props.task.id }), {
@@ -70,8 +74,4 @@ const updateOrder = (event) => {
 const updateDraggingStatus = (newValue) => {
     draggingDisabled.value = newValue;
 };
-
-watch(() => props.task.checklist_items, (newItems) => {
-    form.items = [...newItems];
-});
 </script>

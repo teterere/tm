@@ -2,12 +2,8 @@
     <div v-if="editStatus">
         <textarea ref="textarea" v-model="input" type="text" class="font-medium block w-full rounded-xs bg-white p-2 text-sm text-gray-900 outline-1 outline-offset-0 outline-gray-200 border-gray-200 focus:outline-1 focus:-outline-offset-0 focus:outline-gray-200 focus:ring-gray-200 focus:border-gray-200 resize-none max-h-72 overflow-y-auto mb-4" />
         <div class="flex gap-x-3">
-            <PrimaryButton @click="submit" size="sm">
-                Saglabāt
-            </PrimaryButton>
-            <OutlineButton @click="disableEditStatus" size="sm">
-                Atcelt
-            </OutlineButton>
+            <PrimaryButton @click="submit" size="sm">Saglabāt</PrimaryButton>
+            <OutlineButton @click="disableEditStatus" size="sm">Atcelt</OutlineButton>
         </div>
     </div>
 
@@ -25,13 +21,12 @@ import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
 
 const task = inject('task');
 
+const { textarea, input } = useTextareaAutosize();
+const editStatus = ref(false);
+
 const form = useForm({
     description: task.description
 });
-
-const { textarea, input } = useTextareaAutosize();
-
-const editStatus = ref(false);
 
 const enableEditStatus = () => {
     editStatus.value = true;

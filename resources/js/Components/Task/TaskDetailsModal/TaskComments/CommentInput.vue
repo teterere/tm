@@ -63,18 +63,13 @@
 
 
 <script setup>
-import {ref, inject, computed, onMounted} from 'vue'
+import {ref, inject, computed, onMounted, nextTick} from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import PrimaryButton from '@/Components/shared/Buttons/PrimaryButton.vue'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
-import Strike from '@tiptap/extension-strike'
-import BulletList from '@tiptap/extension-bullet-list'
-import OrderedList from '@tiptap/extension-ordered-list'
-import ListItem from '@tiptap/extension-list-item'
 import Link from '@tiptap/extension-link'
-import Image from '@tiptap/extension-image'
 import EmojiDropdown from '@/Components/shared/wysiwyg/EmojiDropdown.vue'
 import AddLink from '@/Components/shared/wysiwyg/InsertLink.vue'
 import SimpleEditorButton from '@/Components/shared/wysiwyg/SimpleEditorButton.vue'
@@ -84,25 +79,15 @@ import Mention from '@tiptap/extension-mention'
 import Suggestion from '@tiptap/suggestion'
 import { useEventListener } from '@vueuse/core'
 
-useEventListener(window, 'scroll', updateMentionPosition, true)
+const props = defineProps({ comment: Object });
+const emit = defineEmits(['close', 'commentUpdated']);
 
-function updateMentionPosition() {
-    if (mentionBox.value?.clientRect) {
-        const props = mentionBox.value
-        mentionBox.value = null
-        mentionBox.value = props
-    }
-}
-
-const props = defineProps({ comment: Object })
-const emit = defineEmits(['close', 'commentUpdated'])
 const task = inject('task')
+const employees = inject('employees');
 
 const showMentionDropdown = ref(false)
 const mentionBox = ref(null)
 const selectedMentionIndex = ref(0)
-
-const employees = inject('employees');
 
 const selectMentionItem = (item) => {
     mentionBox.value?.command(item)
@@ -121,7 +106,9 @@ const mentionFixedPosition = computed(() => {
         top: `${rect.bottom + window.scrollY}px`,
         left: `${rect.left + window.scrollX}px`,
     }
-})
+});
+
+useEventListener(window, 'scroll', updateMentionPosition, true);
 
 const mentionSuggestion = {
     char: '@',
@@ -205,12 +192,6 @@ const editor = useEditor({
     onUpdate: ({ editor }) => form.body = editor.getHTML(),
 })
 
-onMounted(() => {
-    if (props.comment) {
-        editor.value?.commands.focus('end') // vai 'start'
-    }
-})
-
 let lastEditorSelection = null
 const form = useForm({ body: '' })
 
@@ -221,7 +202,15 @@ const simpleEditButtons = [
     { action: 'toggleStrike', isActive: 'strike', icon: 'StrikethroughIcon' },
     { action: 'toggleBulletList', isActive: 'bulletList', icon: 'ListBulletIcon' },
     { action: 'toggleOrderedList', isActive: 'orderedList', icon: 'NumberedListIcon' }
-]
+];
+
+function updateMentionPosition() {
+    if (mentionBox.value?.clientRect) {
+        const props = mentionBox.value
+        mentionBox.value = null
+        mentionBox.value = props
+    }
+}
 
 const submit = () => {
     if (props.comment) {
@@ -260,5 +249,12 @@ const focusWithMention = (username) => {
     ]).run()
 }
 
-defineExpose({ focusWithMention })
+onMounted(() => {
+    if (props.comment && editor.value) {
+        editor.value.commands.focus();
+        editor.value.commands.setTextSelection(editor.value.state.doc.content.size);
+    }
+});
+
+defineExpose({ focusWithMention });
 </script>

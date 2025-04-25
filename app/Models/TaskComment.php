@@ -10,6 +10,8 @@ class TaskComment extends Model
 {
     use HasFactory;
 
+    public const MAX_BODY_LENGTH = 6000;
+
     protected $fillable = [
         'task_id',
         'author_id',

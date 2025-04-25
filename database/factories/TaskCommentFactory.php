@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Task;
 use App\Models\TaskComment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,15 +11,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TaskCommentFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
-            'task_id'   => 3,
+            'task_id'   => Task::inRandomOrder()->value('id'),
             'author_id' => rand(1, 10),
             'body'      => fake()->sentence
         ];

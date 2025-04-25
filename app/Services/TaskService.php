@@ -33,7 +33,6 @@ class TaskService
         });
     }
 
-
     public static function updateStatus(Task $task, TaskStatus $status, $newOrder): void
     {
         if ($task->status_id === $status->id) {

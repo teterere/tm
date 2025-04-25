@@ -42,7 +42,7 @@
 
                     <div class="flex justify-between">
                         <OutlineButton @click="close">Atcelt</OutlineButton>
-                        <PrimaryButton @click="insertLink">Ievietot</PrimaryButton>
+                        <PrimaryButton @click="insertLink(close)">Ievietot</PrimaryButton>
                     </div>
                 </div>
             </MenuItems>
@@ -51,11 +51,11 @@
 </template>
 
 <script setup>
-import { Menu, MenuButton, MenuItems } from '@headlessui/vue'
-import OutlineButton from "@/Components/shared/Buttons/OutlineButton.vue"
-import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue"
-import { LinkIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { ref } from "vue"
+import { Menu, MenuButton, MenuItems } from '@headlessui/vue';
+import OutlineButton from "@/Components/shared/Buttons/OutlineButton.vue";
+import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
+import { LinkIcon, XMarkIcon } from '@heroicons/vue/24/outline';
+import { ref } from "vue";
 import { useEditorSelection } from '@/composables/useEditorSelection.js'
 
 const props = defineProps({
@@ -68,7 +68,7 @@ const openInNewTab = ref(false)
 
 const { restore } = useEditorSelection(props.editor)
 
-function insertLink() {
+function insertLink(closeMenu) {
     if (!props.editor) return
 
     const href = url.value.trim()
@@ -86,7 +86,10 @@ function insertLink() {
         .extendMarkRange('link')
         .setLink({ href, target })
         .insertContent(text || href)
-        .run()
+        .run();
+
+    props.editor.commands.focus();
+    closeMenu();
 
     url.value = ''
     displayText.value = ''

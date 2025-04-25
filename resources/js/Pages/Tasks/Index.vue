@@ -73,6 +73,23 @@ provide('employees', props.employees);
 const selectedTask = ref(props.task);
 const showTaskDetailsModal = ref(false);
 
+onMounted(() => {
+    if (props.task) {
+        openTaskDetailsModal(props.task);
+    }
+});
+
+// Watch if any tasks have been updated and refresh selected task value
+watch(() => props.statuses, (newStatuses) => {
+    const updatedTask = newStatuses
+        .flatMap(status => status.tasks)
+        .find(task => task.id === selectedTask.value?.id);
+
+    if (updatedTask) {
+        selectedTask.value = updatedTask;
+    }
+}, { deep: true });
+
 const openTaskDetailsModal = (task) => {
     if (!task) return;
     selectedTask.value = task;
@@ -98,8 +115,8 @@ const closeTaskDetailsModal = () => {
 
 const updateTaskStatus = (event) => {
     const newIndex = event.newIndex + 1;
-    const movedTask = event.clonedData; // Nokopētais uzdevums (satur pilnu task objektu)
-    const newStatusId = event.to.getAttribute("data-status-id"); // Statusa ID, kurā uzdevums tika ielikts
+    const movedTask = event.clonedData;
+    const newStatusId = event.to.getAttribute("data-status-id");
 
     if (newIndex || (movedTask && newStatusId)) {
         router.patch(route('tasks.update-status', { task: movedTask.id, status: newStatusId }), {
@@ -109,23 +126,6 @@ const updateTaskStatus = (event) => {
         });
     }
 };
-
-onMounted(() => {
-    if (props.task) {
-        openTaskDetailsModal(props.task);
-    }
-});
-
-// Watch if any tasks have been updated and refresh selected task value
-watch(() => props.statuses, (newStatuses) => {
-    const updatedTask = newStatuses
-        .flatMap(status => status.tasks)
-        .find(task => task.id === selectedTask.value?.id);
-
-    if (updatedTask) {
-        selectedTask.value = updatedTask;
-    }
-}, { deep: true });
 </script>
 
 <style scoped>

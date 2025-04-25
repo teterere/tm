@@ -18,7 +18,7 @@ class TaskChecklistItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'task_id'     => Task::inRandomOrder()->first()->id,
+            'task_id'     => Task::inRandomOrder()->value('id'),
             'description' => $this->faker->sentence,
             'completed'   => $this->faker->boolean()
         ];

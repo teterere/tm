@@ -25,7 +25,8 @@ class TaskStatus extends Model
 
         return self::with([
             'tasks' => function ($query) use ($companyId) {
-                $query->with(['priority', 'assignee', 'status', 'labels', 'checklistItems', 'comments'])
+                $query->with(['priority', 'assignee', 'status', 'labels', 'checklistItems'])
+                    ->withCount('comments')
                     ->where('company_id', $companyId)
                     ->orderBy('order');
             }

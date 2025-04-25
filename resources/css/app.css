@@ -70,8 +70,8 @@
     }
 }
 
-[x-cloak] {
-    display: none;
+input[type="checkbox"] {
+    border-radius: 3px;
 }
 
 /* WYSIWYG */

@@ -32,7 +32,7 @@ class TaskController extends Controller
         $task = null;
         if ($taskIdentifier) {
             $task = Task::findByIdentifier($taskIdentifier);
-            $task?->load(['priority', 'assignee', 'status', 'labels', 'checklistItems', 'comments']);
+            $task?->load(['priority', 'assignee', 'status', 'labels', 'checklistItems'])->loadCount('comments');
             $task = $task ? new TaskResource($task) : null;
         }
 
@@ -76,8 +76,9 @@ class TaskController extends Controller
 
     public function addLabels(AddLabelsRequest $request, Task $task): void
     {
-        [$existingLabelIds, $newLabelsData] = collect($request->get('selectedLabels'))
-            ->partition(fn($label) => !is_null($label['id']));
+        [$existingLabelIds, $newLabelsData] = collect($request->get('selectedLabels'))->partition(function ($label) {
+                return !is_null($label['id']);
+            });
 
         if ($existingLabelIds->isNotEmpty()) {
             $task->labels()->syncWithoutDetaching($existingLabelIds->pluck('id'));

@@ -44,8 +44,6 @@
 
 <script setup>
 import { Menu, MenuButton, MenuItems } from '@headlessui/vue'
-import OutlineButton from "@/Components/shared/Buttons/OutlineButton.vue"
-import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue"
 import { LinkIcon, XMarkIcon, PhotoIcon } from '@heroicons/vue/24/outline'
 import { ref } from "vue"
 import { useEditorSelection } from '@/composables/useEditorSelection.js'
@@ -55,7 +53,7 @@ const props = defineProps({
 })
 
 const { restore } = useEditorSelection(props.editor)
-const error = ref('') // kļūdu ziņojums
+const error = ref('');
 
 const MAX_FILE_SIZE_MB = 10
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/gif']
@@ -83,17 +81,22 @@ function validateFile(file) {
 
 const handleDrop = (event) => {
     event.preventDefault()
-    const file = event.dataTransfer.files[0]
-    if (!validateFile(file)) return
+    const file = event.dataTransfer.files[0];
+
+    if (!validateFile(file)) {
+        return;
+    }
 
     readFile(file)
 }
 
 function readFile(file) {
-    const reader = new FileReader()
+    const reader = new FileReader();
+
     reader.onload = () => {
         insertImage(reader.result)
     }
+
     reader.readAsDataURL(file)
 }
 
@@ -136,5 +139,3 @@ function insertImage(url) {
         .run()
 }
 </script>
-
-

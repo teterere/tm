@@ -1,17 +1,18 @@
 <template>
-    <div class="flex items-center justify-between py-3">
+    <div class="flex justify-center items-center justify-between py-3">
         <button
             v-if="meta.prev_page_url"
             @click="changePage(meta.current_page - 1)"
             class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-        >Iepriekšējā</button>
+        >
+            Iepriekšējā
+        </button>
         <button
             v-if="meta.next_page_url"
             @click="changePage(meta.current_page + 1)"
             class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >Nākamā</button>
 
-        <!-- Advanced: lappušu numuri -->
         <nav class="isolate inline-flex gap-x-1" aria-label="Pagination">
             <template v-for="(pageData, index) in visiblePages" :key="index">
                 <span v-if="pageData.page === '...'" class="pagination-button disabled">...</span>
@@ -35,6 +36,7 @@ import { computed } from "vue";
 const props = defineProps({
     meta: Object
 });
+
 const emit = defineEmits(['changePage']);
 
 const visiblePages = computed(() => {

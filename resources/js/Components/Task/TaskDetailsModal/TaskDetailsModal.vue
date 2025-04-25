@@ -48,7 +48,6 @@ import TaskComments from "@/Components/Task/TaskDetailsModal/TaskComments/TaskCo
 import TaskEditTitleInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditTitleInput.vue";
 import TaskEditDescriptionInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditDescriptionInput.vue";
 import {provide} from "vue";
-import {router} from "@inertiajs/vue3";
 
 const props = defineProps({
     show: {
