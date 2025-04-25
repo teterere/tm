@@ -6,6 +6,7 @@ defineProps({
 });
 
 defineEmits(['update:modelValue']);
+defineExpose({ focus: () => input.value.focus() });
 
 const input = ref(null);
 
@@ -14,8 +15,6 @@ onMounted(() => {
         input.value.focus();
     }
 });
-
-defineExpose({ focus: () => input.value.focus() });
 </script>
 
 <template>

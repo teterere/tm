@@ -43,10 +43,6 @@
             v-if="showTaskDetailsModal"
             :show="showTaskDetailsModal"
             :task="selectedTask"
-            :statuses="statuses"
-            :priorities="priorities"
-            :labels="labels"
-            :employees="employees"
             @close="closeTaskDetailsModal"
         />
     </AppLayout>
@@ -56,7 +52,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { PlusIcon, EllipsisHorizontalIcon } from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
-import {ref, provide} from "vue";
+import {ref, provide, onMounted, watch} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
 import {VueDraggable} from "vue-draggable-plus";
 import {router} from "@inertiajs/vue3";
@@ -77,30 +73,52 @@ provide('employees', props.employees);
 const selectedTask = ref(props.task);
 const showTaskDetailsModal = ref(false);
 
+onMounted(() => {
+    if (props.task) {
+        openTaskDetailsModal(props.task);
+    }
+});
+
+// Watch if any tasks have been updated and refresh selected task value
+watch(() => props.statuses, (newStatuses) => {
+    const updatedTask = newStatuses
+        .flatMap(status => status.tasks)
+        .find(task => task.id === selectedTask.value?.id);
+
+    if (updatedTask) {
+        selectedTask.value = updatedTask;
+    }
+}, { deep: true });
+
 const openTaskDetailsModal = (task) => {
     if (!task) return;
     selectedTask.value = task;
     showTaskDetailsModal.value = true;
-    window.history.replaceState({}, '', `/uzdevumi/${task.identifier}`);
+
+    router.push({
+        url: route('tasks.show', {taskIdentifier: task.identifier}),
+        preserveScroll: true,
+        preserveState: true
+    })
 };
 
 const closeTaskDetailsModal = () => {
     selectedTask.value = null;
     showTaskDetailsModal.value = false;
-    window.history.replaceState({}, '', '/uzdevumi');
+
+    router.push({
+        url: route('tasks.index'),
+        preserveScroll: true,
+        preserveState: true
+    })
 };
 
 const updateTaskStatus = (event) => {
     const newIndex = event.newIndex + 1;
-    const movedTask = event.clonedData; // Nokopētais uzdevums (satur pilnu task objektu)
-    const newStatusId = event.to.getAttribute("data-status-id"); // Statusa ID, kurā uzdevums tika ielikts
-
-    console.log(newIndex)
+    const movedTask = event.clonedData;
+    const newStatusId = event.to.getAttribute("data-status-id");
 
     if (newIndex || (movedTask && newStatusId)) {
-        console.log("Task ID:", movedTask.id);
-        console.log("New Status ID:", newStatusId);
-
         router.patch(route('tasks.update-status', { task: movedTask.id, status: newStatusId }), {
             order: newIndex
         }, {
@@ -113,10 +131,5 @@ const updateTaskStatus = (event) => {
 <style scoped>
 .ghost {
     opacity: 0 !important;
-    background: #c8ebfb;
-}
-
-.sortable-ghost {
-    border: 2px solid red;
 }
 </style>

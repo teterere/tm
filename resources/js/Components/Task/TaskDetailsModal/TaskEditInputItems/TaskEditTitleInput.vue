@@ -20,29 +20,25 @@
 </template>
 
 <script setup>
-import {nextTick, ref} from "vue";
+import {inject, nextTick, ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import {OnClickOutside} from '@vueuse/components';
 import {CheckIcon, XMarkIcon} from "@heroicons/vue/24/outline";
 
-const props = defineProps({
-    task: Object
-});
+const task = inject('task');
 
 const titleInput = ref(null);
 const actionButtons = ref(null);
-
+const editStatus = ref(false);
 const options = { ignore: [actionButtons] };
 
 const form = useForm({
-    title: props.task.title
+    title: task.title
 });
-
-const editStatus = ref(false);
 
 const enableEditStatus = () => {
     editStatus.value = true;
-    form.title = props.task.title;
+    form.title = task.title;
 
     nextTick(() => {
         if (titleInput) {
@@ -56,13 +52,13 @@ const disableEditStatus = () => {
 };
 
 const submit = () => {
-    if (form.title === props.task.title) {
+    if (form.title === task.title) {
         editStatus.value = false;
 
         return;
     }
 
-    form.patch(route('tasks.update', { task: props.task.id }), {
+    form.patch(route('tasks.update', { task: task.id }), {
         preserveScroll: true,
         onSuccess: () => {
             editStatus.value = false;

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Task;
 use App\Models\User;
-use App\TaskEstimateService;
+use App\Services\TaskEstimateService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\TaskChecklistItemController;
+use App\Http\Controllers\TaskCommentController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +23,9 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/uzdevumi', [TaskController::class, 'index'])->name('tasks.index');
-    Route::get('/uzdevumi/{taskIdentifier}', [TaskController::class, 'index'])->name('show');
+    Route::get('/uzdevumi/{taskIdentifier}', [TaskController::class, 'index'])->name('tasks.show');
+
+    Route::post('/upload-image', [ImageUploadController::class, 'upload'])->name('upload-image');
 
     Route::prefix('uzdevumi/{task}')->name('tasks.')->group(function () {
         Route::patch('/', [TaskController::class, 'update'])->name('update');
@@ -41,6 +45,13 @@ Route::middleware([
             Route::patch('{item}', [TaskChecklistItemController::class, 'update'])->name('update');
             Route::delete('/delete-all-for-task', [TaskChecklistItemController::class, 'deleteAllForTask'])->name('delete-all-for-task');
             Route::delete('{item}', [TaskChecklistItemController::class, 'destroy'])->name('delete');
+        });
+
+        Route::prefix('comments')->name('comments.')->group(function () {
+            Route::get('/', [TaskCommentController::class, 'index'])->name('index');
+            Route::post('/', [TaskCommentController::class, 'store'])->name('store');
+            Route::patch('/{comment}', [TaskCommentController::class, 'update'])->name('update');
+            Route::delete('{comment}', [TaskCommentController::class, 'destroy'])->name('delete');
         });
     });
 });
