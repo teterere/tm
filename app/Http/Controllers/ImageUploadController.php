@@ -11,20 +11,20 @@ class ImageUploadController extends Controller
     public function upload(Request $request): JsonResponse
     {
         $request->validate([
-            'image' => 'required|image|max:10240', // max 10 MB
+            'image'   => 'required|image|max:10240',
             'context' => 'required|in:comment,task,avatar',
         ]);
 
-        $folder = match ($request->context) {
+        $folder = match ($request->get('context')) {
             'comment' => 'uploads/comments',
             'task' => 'uploads/tasks',
-            'avatar' => 'uploads/avatars',
+            'avatar' => 'uploads/avatars'
         };
 
         $path = $request->file('image')->store($folder, 'public');
 
         return response()->json([
-            'url' => Storage::url($path),
+            'url' => Storage::url($path)
         ]);
     }
 }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('identifier_prefix')->default('UZD');
             $table->unsignedBigInteger('identifier_number')->default(1);
             $table->unique(['company_id', 'identifier_prefix', 'identifier_number']);
+            $table->unique(['status_id', 'order']);
             $table->string('title');
             $table->text('description')->nullable();
             $table->date('due_date')->nullable();
