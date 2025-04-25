@@ -4,7 +4,7 @@
             <div class="flex items-start justify-between">
                 <DisclosureButton class="outline-0 w-full cursor-pointer">
                     <div class="flex items-start gap-x-2 mb-2">
-                        <button class="bg-gray-100 rounded-sm p-1">
+                        <button class="bg-gray-100 hover:bg-gray-200 rounded-sm p-1">
                             <ChevronDownIcon :class="{ 'rotate-180 transform': open }" class="w-3 h-3" />
                         </button>
 
@@ -44,23 +44,28 @@ import TaskListItem from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskC
 import {ChevronDownIcon} from "@heroicons/vue/24/outline";
 import TaskProgressbar from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskProgressbar.vue";
 import NewChecklistItemInput from "@/Components/Task/TaskDetailsModal/TaskChecklist/NewChecklistItemInput.vue";
-import draggable from 'vuedraggable'
 import {useForm} from "@inertiajs/vue3";
-import {inject, ref, watch} from "vue";
+import {ref, watch} from "vue";
 import TaskChecklistOptionsDropdown from "@/Components/Task/TaskDetailsModal/TaskChecklist/TaskChecklistOptionsDropdown.vue";
 import {VueDraggable} from "vue-draggable-plus";
 
-const task = inject('task');
+const props = defineProps({
+    task: Object
+});
 
 const draggingDisabled = ref(false);
 
 const form = useForm({
-    items: task.checklist_items
+    items: props.task.checklist_items
+});
+
+watch(() => props.task.checklist_items, (newItems) => {
+    form.items = [...newItems];
 });
 
 const updateOrder = (event) => {
     if (event.oldIndex !== event.newIndex) {
-        form.patch(route('tasks.checklist-items.update-order', { task: task.id }), {
+        form.patch(route('tasks.checklist-items.update-order', { task: props.task.id }), {
             preserveScroll: true
         });
     }
@@ -69,8 +74,4 @@ const updateOrder = (event) => {
 const updateDraggingStatus = (newValue) => {
     draggingDisabled.value = newValue;
 };
-
-watch(() => task.checklist_items, (newItems) => {
-    form.items = [...newItems];
-});
 </script>

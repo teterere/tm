@@ -22,15 +22,14 @@
                             <div class="grid grid-cols-6 space-x-8">
                                 <div class="col-span-4">
                                     <div class="border-b border-gray-200 pb-4">
-                                        <TaskEditTitleInput :task="task" />
-
-                                        <TaskEditDescriptionInput :task="task" />
+                                        <TaskEditTitleInput />
+                                        <TaskEditDescriptionInput />
                                     </div>
 
                                     <TaskChecklist :task="task" />
-                                    <TaskComments />
+                                    <TaskComments :task="task" />
                                 </div>
-                                <TaskInfoPanel :statuses="statuses" :priorities="priorities" :labels="labels" :employees="employees" />
+                                <TaskInfoPanel />
                             </div>
                         </DialogPanel>
                     </TransitionChild>
@@ -55,11 +54,7 @@ const props = defineProps({
         type: Boolean,
         default: false
     },
-    task: Object,
-    statuses: Object,
-    priorities: Object,
-    labels: Object,
-    employees: Object
+    task: Object
 });
 
 provide('task', props.task);

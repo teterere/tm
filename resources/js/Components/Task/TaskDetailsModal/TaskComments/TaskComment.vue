@@ -1,21 +1,61 @@
 <template>
-    <div class="mb-4 bg-gray-50 p-3 rounded-sm">
+    <div class="mb-4 px-2 py-1 rounded-sm group">
         <div class="flex space-x-2">
-            <img class="inline-block size-10 rounded-full"
-                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                 alt=""/>
+            <img class="inline-block size-10 rounded-full mt-1"
+                 :src="comment.author.avatar_url"
+                 alt="Darbinieka attēls"/>
 
-            <div class="">
-                <div class="space-x-2 mb-1">
-                    <span class="text-sm font-semibold text-gray-600">Jānis Bērziņš</span>
-                    <span class="text-xs text-gray-400">pirms stundas</span>
+            <div class="w-full">
+                <div class="space-x-2 mb-1 pl-1.5">
+                    <span class="text-sm font-semibold text-gray-600">{{ comment.author.name }}</span>
+                    <span class="text-xs text-gray-400">{{ comment.created_at }}</span>
                 </div>
-                <p class="text-sm/6 text-gray-700">Lorem ipsum dolor sit amet consectetur adipiscing elit lacinia, lacus vulputate malesuada cras suscipit massa nulla rutrum id, hendrerit facilisis sollicitudin pretium curabitur metus mauris. Proin habitasse suspendisse risus pretium mus accumsan nunc malesuada pellentesque sociis aliquam vitae vel, et convallis leo ut lectus gravida dictumst montes nascetur dictum torquent. Varius nibh nostra litora ligula lacinia aptent aliquam, eros primis eleifend </p>
+
+                <CommentInput v-if="editStatus" :comment="comment" @close="$emit('close-edit')" @commentUpdated="$emit('commentUpdated')" />
+                <div v-else v-html="comment.body" class="comment-body text-sm/6 text-gray-600 p-1.5"></div>
+
+                <div v-if="!editStatus" class="flex gap-x-2 justify-end w-full opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                    <TaskCommentActionButton @click="$emit('reply', comment.author.name)">Atbildēt</TaskCommentActionButton>
+                    <div v-if="comment.author.is_auth" class="flex items-center gap-x-2">
+                        <TaskCommentActionButtonDivider />
+                        <TaskCommentActionButton @click="$emit('edit')">Labot</TaskCommentActionButton>
+                        <TaskCommentActionButtonDivider />
+                        <TaskCommentActionButton @click="showConfirmDeletionDialog = true">Dzēst</TaskCommentActionButton>
+                        <ConfirmDeletionDialog :show="showConfirmDeletionDialog" @confirm="deleteComment" @close="showConfirmDeletionDialog = false">
+                            <template #title>Dzēst komentāru?</template>
+                            <template #description>Apstiprini, ka tiešām vēlies dzēst šo komentāru. Šo darbību nav iespējams atsaukt.</template>
+                        </ConfirmDeletionDialog>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import TaskCommentActionButton from "@/Components/Task/TaskDetailsModal/TaskComments/TaskCommentActionButton.vue";
+import {ref} from "vue";
+import TaskCommentActionButtonDivider from "@/Components/Task/TaskDetailsModal/TaskComments/TaskCommentActionButtonDivider.vue";
+import {router} from "@inertiajs/vue3";
+import ConfirmDeletionDialog from "@/Components/ConfirmDeletionDialog.vue";
+import CommentInput from "@/Components/Task/TaskDetailsModal/TaskComments/CommentInput.vue";
 
+const props = defineProps({
+    comment: Object,
+    editStatus: Boolean
+});
+
+const emit = defineEmits(['reply', 'commentUpdated', 'edit', 'close-edit']);
+
+const showConfirmDeletionDialog = ref(false);
+
+const deleteComment = () => {
+    router.delete(route('tasks.comments.delete', { task: props.comment.task_id, comment: props.comment.id }), {
+        preserveScroll: true,
+        onSuccess: () => {
+            showConfirmDeletionDialog.value = false;
+            emit('commentUpdated')
+        },
+    });
+};
 </script>

@@ -15,7 +15,8 @@ use App\Models\TaskLabel;
 use App\Models\TaskPriority;
 use App\Models\TaskStatus;
 use App\Models\User;
-use App\TaskEstimateService;
+use App\Services\TaskEstimateService;
+use App\Services\TaskService;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,7 +32,7 @@ class TaskController extends Controller
         $task = null;
         if ($taskIdentifier) {
             $task = Task::findByIdentifier($taskIdentifier);
-            $task?->load(['priority', 'assignee', 'status', 'labels', 'checklistItems']);
+            $task?->load(['priority', 'assignee', 'status', 'labels', 'checklistItems'])->loadCount('comments');
             $task = $task ? new TaskResource($task) : null;
         }
 
@@ -63,21 +64,7 @@ class TaskController extends Controller
     {
         $newOrder = $request->get('order');
 
-        Task::where('status_id', $task->status_id)
-            ->where('order', '>', $task->order)
-            ->decrement('order');
-
-        // Atjauninām pārvietoto uzdevumu
-        $task->update([
-            'status_id' => $status->id,
-            'order'     => $newOrder
-        ]);
-
-        // Pabīdam uzdevumus jaunajā statusā, lai izvairītos no dublikātiem
-        Task::where('status_id', $status->id)
-            ->where('id', '!=', $task->id)
-            ->where('order', '>=', $newOrder)
-            ->increment('order');
+        TaskService::updateStatus($task, $status, $newOrder);
     }
 
     public function updatePriority(TaskUpdatePriorityRequest $request, Task $task, TaskPriority $priority): void
@@ -89,8 +76,9 @@ class TaskController extends Controller
 
     public function addLabels(AddLabelsRequest $request, Task $task): void
     {
-        [$existingLabelIds, $newLabelsData] = collect($request->get('selectedLabels'))
-            ->partition(fn($label) => !is_null($label['id']));
+        [$existingLabelIds, $newLabelsData] = collect($request->get('selectedLabels'))->partition(function ($label) {
+                return !is_null($label['id']);
+            });
 
         if ($existingLabelIds->isNotEmpty()) {
             $task->labels()->syncWithoutDetaching($existingLabelIds->pluck('id'));

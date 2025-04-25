@@ -14,7 +14,7 @@
                 <ComboboxOption v-for="employee in filteredPeople" :key="employee.id" :value="employee" as="template" v-slot="{ active, selected }">
                     <li :class="['relative cursor-default py-2 pr-9 pl-3 select-none', active ? 'bg-indigo-600 text-white outline-hidden' : 'text-gray-900']">
                         <div class="flex items-center">
-                            <img :src="employee.avatar_path" alt="Lietotāja attēls" class="size-7 shrink-0 rounded-full" />
+                            <img :src="employee.avatar_url" alt="Lietotāja attēls" class="size-7 shrink-0 rounded-full" />
                             <span :class="['ml-3 truncate', selected && 'font-semibold']">
                                 {{ employee.name }}
                               </span>
@@ -29,7 +29,7 @@
     </Combobox>
 
     <div v-else @click="enableEditStatus" class="flex items-center w-full hover:bg-gray-100 rounded-xs space-x-2 p-1">
-        <img class="inline-block size-7 rounded-full" :src="task.assignee.avatar_path" alt="Lietotāja attēls"/>
+        <img class="inline-block size-7 rounded-full" :src="task.assignee.avatar_url" alt="Lietotāja attēls"/>
         <span class="text-sm text-gray-600">{{ task.assignee.name }}</span>
     </div>
 </template>
