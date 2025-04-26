@@ -37,26 +37,16 @@
                     <EmojiDropdown :editor="editor" />
                 </div>
 
-                <div v-if="comment" class="flex justify-end gap-3 order-2 md:order-none">
+                <div class="flex justify-end gap-3 order-2 md:order-none">
                     <button
-                        @click="$emit('close')"
+                        @click="cancel"
                         class="text-xs hover:bg-gray-100 font-semibold text-gray-400 hover:text-gray-600 px-2 rounded-sm"
                     >
-                        Atcelt
+                        {{ cancelButtonText }}
                     </button>
-                    <PrimaryButton @click="submit">Saglabāt</PrimaryButton>
-                </div>
-                <div v-else class="flex justify-end gap-3 order-2 md:order-none">
-                    <button
-                        @click="clear"
-                        class="text-xs hover:bg-gray-100 font-semibold text-gray-400 hover:text-gray-600 px-2 rounded-sm"
-                    >
-                        Notīrīt
-                    </button>
-                    <PrimaryButton @click="submit">Pievienot</PrimaryButton>
+                    <PrimaryButton @click="submit">{{ submitButtonText }}</PrimaryButton>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -79,10 +69,23 @@ import Mention from '@tiptap/extension-mention'
 import Suggestion from '@tiptap/suggestion'
 import { useEventListener } from '@vueuse/core'
 
-const props = defineProps({ comment: Object });
-const emit = defineEmits(['close', 'commentUpdated']);
+const props = defineProps({
+    content: {
+        type: String,
+        default: ''
+    },
+    submitButtonText: {
+        type: String,
+        default: 'Saglabāt'
+    },
+    cancelButtonText: {
+        type: String,
+        default: 'Atcelt'
+    }
+});
 
-const task = inject('task')
+const emit = defineEmits(['close', 'submit']);
+
 const employees = inject('employees');
 
 const showMentionDropdown = ref(false)
@@ -170,7 +173,7 @@ const mentionSuggestion = {
 }
 
 const editor = useEditor({
-    content: props.comment?.body || '',
+    content: props.content,
     extensions: [
         StarterKit,
         Suggestion,
@@ -188,8 +191,7 @@ const editor = useEditor({
         attributes: {
             class: 'focus:outline-none min-h-24 py-2 px-4 text-sm text-gray-600',
         },
-    },
-    onUpdate: ({ editor }) => form.body = editor.getHTML(),
+    }
 })
 
 let lastEditorSelection = null
@@ -213,24 +215,17 @@ function updateMentionPosition() {
 }
 
 const submit = () => {
-    if (props.comment) {
-        form.patch(route('tasks.comments.update', { task: task.id, comment: props.comment.id }), {
-            preserveScroll: true,
-            onSuccess: () => {
-                emit('close');
-                emit('commentUpdated');
-                clear()
-            },
-        })
-    } else {
-        form.post(route('tasks.comments.store', { task: task.id }), {
-            preserveScroll: true,
-            onSuccess: () => {
-                emit('commentUpdated')
-                clear()
-            },
-        })
+    emit('submit', editor.value.getHTML());
+}
+
+const cancel = () => {
+    if (props.cancelButtonText === 'Atcelt') {
+        emit('close');
+
+        return;
     }
+
+    clear();
 }
 
 const clear = () => {
@@ -250,11 +245,11 @@ const focusWithMention = (username) => {
 }
 
 onMounted(() => {
-    if (props.comment && editor.value) {
+    if (props.content && editor.value) {
         editor.value.commands.focus();
         editor.value.commands.setTextSelection(editor.value.state.doc.content.size);
     }
 });
 
-defineExpose({ focusWithMention });
+defineExpose({ focusWithMention, clear });
 </script>
