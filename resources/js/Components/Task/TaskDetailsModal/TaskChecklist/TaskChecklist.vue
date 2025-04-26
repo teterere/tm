@@ -19,7 +19,7 @@
             </div>
 
             <DisclosurePanel class="text-gray-500">
-                <div class="ml-6">
+                <div class="ml-2 md:ml-6">
                     <NewChecklistItemInput :task="task" />
 
                     <VueDraggable

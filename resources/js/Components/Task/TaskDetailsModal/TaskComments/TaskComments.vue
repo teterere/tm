@@ -23,14 +23,14 @@
                 </div>
             </div>
             <DisclosurePanel class="text-gray-500">
-                <AddCommentInput ref="commentInputField" @commentUpdated="refreshComments" />
+                <Wysiwyg ref="commentInputField" @submit="addComment" submitButtonText="Pievienot" cancelButtonText="Notīrīt" />
 
                 <div class="relative">
                     <div v-if="loading" class="absolute inset-0 bg-white/60 flex items-center justify-center z-10">
                         <span class="inline-block w-8 h-8 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></span>
                     </div>
 
-                    <div v-if="error" class="text-center text-red-500 py-6 font-semibold">
+                    <div v-if="error" class="text-center py-6 font-semibold">
                         {{ error }}
                     </div>
 
@@ -59,10 +59,11 @@
 <script setup>
 import TaskComment from "@/Components/Task/TaskDetailsModal/TaskComments/TaskComment.vue";
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
-import {ChevronDownIcon, BarsArrowDownIcon, BarsArrowUpIcon} from "@heroicons/vue/24/outline/index";
-import AddCommentInput from "@/Components/Task/TaskDetailsModal/TaskComments/CommentInput.vue";
+import {ChevronDownIcon, BarsArrowDownIcon, BarsArrowUpIcon} from "@heroicons/vue/24/outline";
 import Pagination from "@/Components/shared/Pagination.vue";
 import {onMounted, ref} from "vue";
+import Wysiwyg from "@/Components/shared/wysiwyg/Wysiwyg.vue";
+import {useForm} from "@inertiajs/vue3";
 
 const props = defineProps({
     task: Object
@@ -92,7 +93,7 @@ const fetchComments = async (customPage = null) => {
         });
         comments.value = response.data.data
         meta.value = response.data.meta
-        page.value = meta.value.current_page // sync page
+        page.value = meta.value.current_page
     } catch (err) {
         error.value = 'Neizdevās ielādēt komentārus'
     } finally {
@@ -103,13 +104,29 @@ const fetchComments = async (customPage = null) => {
 const toggleDirection = (newDirection) => {
     if (direction.value !== newDirection) {
         direction.value = newDirection;
-        page.value = 1; // reset page uz 1
-        fetchComments(1); // ielādē komentārus no sākuma ar jaunu virzienu
+        page.value = 1;
+        fetchComments(1);
     }
 }
 
+const form = useForm({
+    body: ''
+});
+
+const addComment = (content) => {
+    form.transform((data) => ({
+        ...data,
+        body: content
+    })).post(route('tasks.comments.store', { task: props.task.id }), {
+        preserveScroll: true,
+        onSuccess: () => {
+            refreshComments();
+            commentInputField.value.clear();
+        },
+    });
+}
+
 const refreshComments = () => {
-    console.log('refresh?')
     page.value = 1;
     fetchComments(1);
 }
