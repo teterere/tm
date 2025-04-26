@@ -185,7 +185,7 @@ import {
 } from '@heroicons/vue/24/outline';
 
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
-import {router} from "@inertiajs/vue3";;
+import {router} from "@inertiajs/vue3";
 
 const navigation = [
     { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
