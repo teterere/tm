@@ -24,8 +24,8 @@
                 </div>
             </div>
 
-            <div class="flex justify-between items-center p-1">
-                <div class="flex gap-1 flex-wrap">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center p-1 gap-2 md:gap-0">
+                <div class="flex flex-wrap gap-1 order-1 md:order-none border-b md:border-0">
                     <SimpleEditorButton
                         v-for="button in simpleEditButtons"
                         :key="button.action"
@@ -37,7 +37,7 @@
                     <EmojiDropdown :editor="editor" />
                 </div>
 
-                <div v-if="comment" class="flex justify-end space-x-3">
+                <div v-if="comment" class="flex justify-end gap-3 order-2 md:order-none">
                     <button
                         @click="$emit('close')"
                         class="text-xs hover:bg-gray-100 font-semibold text-gray-400 hover:text-gray-600 px-2 rounded-sm"
@@ -46,8 +46,7 @@
                     </button>
                     <PrimaryButton @click="submit">Saglabāt</PrimaryButton>
                 </div>
-
-                <div v-else class="flex justify-end space-x-3">
+                <div v-else class="flex justify-end gap-3 order-2 md:order-none">
                     <button
                         @click="clear"
                         class="text-xs hover:bg-gray-100 font-semibold text-gray-400 hover:text-gray-600 px-2 rounded-sm"
@@ -57,6 +56,7 @@
                     <PrimaryButton @click="submit">Pievienot</PrimaryButton>
                 </div>
             </div>
+
         </div>
     </div>
 </template>

@@ -14,7 +14,7 @@
                 <CommentInput v-if="editStatus" :comment="comment" @close="$emit('close-edit')" @commentUpdated="$emit('commentUpdated')" />
                 <div v-else v-html="comment.body" class="comment-body text-sm/6 text-gray-600 p-1.5"></div>
 
-                <div v-if="!editStatus" class="flex gap-x-2 justify-end w-full opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                <div v-if="!editStatus" class="flex gap-x-2 justify-end w-full">
                     <TaskCommentActionButton @click="$emit('reply', comment.author.name)">Atbildēt</TaskCommentActionButton>
                     <div v-if="comment.author.is_auth" class="flex items-center gap-x-2">
                         <TaskCommentActionButtonDivider />
