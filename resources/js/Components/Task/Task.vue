@@ -14,7 +14,7 @@
 
         <div class="py-3">
             <h3 class="font-medium mb-2">{{ task.title }}</h3>
-            <p class="text-gray-500 text-sm line-clamp-3">{{ task.description }}</p>
+            <p v-html="task.description" class="text-gray-500 text-sm line-clamp-3"></p>
         </div>
         <div class="flex items-center border-b-1 pb-2 mb-2">
             <ClockIcon class="h-4 w-4 text-gray-500 mr-1" />

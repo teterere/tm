@@ -1,10 +1,10 @@
 <template>
     <AppLayout>
-        <div class="grid grid-cols-4 px-4 sm:px-6 lg:px-8 space-x-4">
+        <div class="flex gap-4 px-4 sm:px-6 lg:px-8 overflow-x-auto pb-4 2xl:grid 2xl:grid-cols-4 2xl:gap-4 2xl:overflow-x-visible">
             <div
                 v-for="status in statuses"
                 :key="status.id"
-                class="col-span-1 bg-slate-100 rounded p-3"
+                class="col-span-1 bg-slate-100 rounded p-3 min-w-3xs 2xl:w-auto"
             >
                 <div class="border-b-2 mb-4 pb-2 border-indigo-200 flex items-center justify-between">
                     <div class="flex items-center">
