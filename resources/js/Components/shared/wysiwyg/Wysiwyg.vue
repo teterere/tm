@@ -51,9 +51,8 @@
     </div>
 </template>
 
-
 <script setup>
-import {ref, inject, computed, onMounted, nextTick} from 'vue'
+import {ref, inject, computed, onMounted} from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import PrimaryButton from '@/Components/shared/Buttons/PrimaryButton.vue'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
