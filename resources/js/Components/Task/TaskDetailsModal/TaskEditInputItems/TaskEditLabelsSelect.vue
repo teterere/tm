@@ -1,153 +1,125 @@
 <template>
-    <Combobox as="div" v-model="form.selectedLabels" :open="isOpen" @update:modelValue="query = ''" class="w-full" multiple>
-        <div class="relative w-full mt-2">
-            <ComboboxButton
-                @click="toggleDropdown"
-                class="selected-labels-container w-full hover:bg-gray-100 rounded-xs text-sm px-2 py-1 text-gray-900 cursor-pointer flex flex-wrap gap-2 items-center">
-                <template v-if="task && task.labels.length > 0">
-                    <div ref="taskLabelRef" class="flex flex-wrap gap-1.5">
-                        <TaskLabel v-for="label in task.labels" :key="label.id" :label="label" :removeButton="isOpen" @remove.stop="removeLabel(label)" />
-                    </div>
-                    <span v-if="isOpen && task.labels.length > 1" @click="removeAllLabels" class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset ring-gray-200 hover:text-rose-700 text-gray-700">noņemt visas etiķetes</span>
-                </template>
-                <template v-else-if="form.selectedLabels.length > 0">
-                    <div class="flex flex-wrap gap-1.5">
-                        <TaskLabel v-for="label in form.selectedLabels" :key="label.id" :label="label" :removeButton="isOpen" @remove.stop="removeLabel(label)" />
-                    </div>
-                    <span v-if="isOpen && form.selectedLabels.length > 1" @click="removeAllLabels" class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset ring-gray-200 hover:text-rose-700 text-gray-700">noņemt visas etiķetes</span>
-                </template>
-                <span v-else-if="(!task || !task.labels.length) && !isOpen" class="text-sm text-gray-600">Pievienot etiķetes</span>
-            </ComboboxButton>
+    <div v-if="editStatus" class="min-w-full">
+        <multiselect
+            id="labels-multiselect"
+            ref="inputRef"
+            v-model="selectedLabels"
+            :options="filteredOptions"
+            :multiple="true"
+            track-by="title"
+            label="title"
+            :close-on-select="false"
+            :clear-on-select="true"
+            :preserve-search="true"
+            :taggable="true"
+            :hide-selected="true"
+            :show-labels="false"
+            :tag-placeholder="''"
+            :searchable="true"
+            placeholder="Pievienot etiķetes"
+            @close="handleBlur"
+            @tag="addTag"
+            :filter-method="filterLabels"
+        >
+            <template v-slot:option="{ option }">
+                <div v-if="option.isTag" class="label-option--add">
+                    <span class="mr-1">{{ option.label }} </span> <span>(izveidot)</span>
+                </div>
+                <div v-else class="label-option">
+                    {{ option.title }}
+                </div>
+            </template>
+            <template v-slot:tag="{ option, remove }">
+              <span class="label-tag bg-gray-200 text-gray-700 text-xs rounded px-1.5 py-0.5 flex items-center mr-1 mb-1">
+                {{ option.title }}
+                <button type="button" @click.stop="remove(option)" class="ml-1 text-gray-500 hover:text-red-600">
+                    <XMarkIcon class="w-3 h-3" />
+                </button>
+              </span>
+            </template>
+        </multiselect>
+    </div>
 
-            <p v-if="form.errors" v-for="error in form.errors" class="text-red-500 text-xs mt-3 ml-1">
-                {{ error }}
-            </p>
-
-            <ComboboxInput v-if="isOpen"
-                           class="block w-full rounded-xs bg-white py-1 pr-12 pl-3 mt-1 text-sm text-gray-900 focus:border-gray-300 focus:ring-gray-300 placeholder:text-gray-400 sm:text-sm"
-                           @change="query = $event.target.value"
-                           @blur="handleBlur($event)"
-                           @input="form.clearErrors()"
-                           :display-value="() => query"
-            />
-
-            <ComboboxOptions v-if="isOpen && (filteredLabels.length > 0 || newLabel)"
-                             class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base ring-1 shadow-lg ring-black/5 focus:outline-none sm:text-sm">
-                <ComboboxOption v-for="label in filteredLabels" :key="label.id" :value="label" as="template" v-slot="{ active, selected }">
-                    <li :class="['relative cursor-default py-2 pr-9 pl-3 select-none', active ? 'bg-indigo-600 text-white' : 'text-gray-900']">
-                        <span :class="['block truncate', selected && 'font-semibold']">{{ label.title }}</span>
-                    </li>
-                </ComboboxOption>
-                <ComboboxOption v-if="newLabel" :value="newLabel" as="template" v-slot="{ active, selected }">
-                    <li :class="['relative cursor-default py-2 pr-9 pl-3 select-none', active ? 'bg-indigo-600 text-white' : 'text-gray-900']">
-                        <span :class="['block truncate', selected && 'font-semibold']">{{ query }} (jauna birka)</span>
-                    </li>
-                </ComboboxOption>
-            </ComboboxOptions>
-        </div>
-    </Combobox>
+    <div v-else @click="enableEditStatus" class="flex flex-wrap gap-1.5 w-full hover:bg-gray-100 rounded-xs p-1 min-h-[2rem] cursor-pointer">
+        <template v-if="selectedLabels.length">
+      <span v-for="label in selectedLabels" :key="label.id || label.title" class="bg-gray-200 text-gray-700 rounded px-2 py-0.5 text-xs flex items-center">
+        {{ label.title }}
+      </span>
+        </template>
+        <span v-else class="text-sm text-gray-600">Pievienot etiķetes</span>
+    </div>
 </template>
 
+
+
+
 <script setup>
-import {computed, inject, ref, watch} from 'vue';
-import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from '@headlessui/vue';
-import TaskLabel from "@/Components/Task/TaskLabel/TaskLabel.vue";
-import {router, useForm} from "@inertiajs/vue3";
+import { ref, inject, computed, watch, nextTick } from 'vue'
+import Multiselect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+import {XMarkIcon} from "@heroicons/vue/24/outline/index.js";
 
-const labels = inject('labels');
-const task = inject('task', null);
+const emit = defineEmits(['update'])
 
-const emit = defineEmits(['update']);
+const labels = inject('labels', []) // Pieņemam, ka labels ir [{id, title}, ...]
+const task = inject('task', null)
 
-const form = useForm({
-    selectedLabels: []
-});
+const editStatus = ref(false)
+const inputRef = ref(null)
+const query = ref('')
 
-const query = ref('');
-const isOpen = ref(false);
-const taskLabelRef = ref(null);
+const selectedLabels = ref(
+    task?.labels ? [...task.labels] : []
+)
 
-const filteredLabels = computed(() => {
-    const normalizedQuery = query.value.trim().toLowerCase();
+// Pēc atvēršanas autofokusē dropdown
+watch(editStatus, async (val) => {
+    if (val) {
+        await nextTick()
+        inputRef.value?.activate()
+    }
+})
 
-    let result = labels;
+// Meklēšana neatkarīgi no diakritikām
+function normalizeString(str) {
+    return (str || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+}
 
+function filterLabels(option, label, search) {
+    if (!search) return true
+    return normalizeString(label).includes(normalizeString(search))
+}
+
+// Jaunas birkas pievienošana (on tag)
+const addTag = (newTag) => {
+    // Reāli vajadzētu izsaukt API lai izveido birku, šeit tikai piemērs:
+    const tagObj = { id: null, title: newTag }
+    selectedLabels.value.push(tagObj)
+}
+
+// Pieprasījuma options, kas nesatur jau izvēlētos
+const filteredOptions = computed(() => {
+    const selectedIds = new Set(selectedLabels.value.map(l => l.id))
+    return labels.filter(l => !selectedIds.has(l.id))
+})
+
+// Read/Write režīms
+const enableEditStatus = () => { editStatus.value = true }
+const handleBlur = () => { editStatus.value = false }
+
+// Pēc izmaiņām izsauc patch vai emit
+watch(selectedLabels, () => {
     if (task) {
-        result = labels.filter(label => !task.labels.some(taskLabel => taskLabel.id === label.id));
+        // Patch uz serveri, piemērs:
+        // TODO: aizvieto ar savu api call
+        // form.post(...);
+        // Šeit tikai emit
+        emit('update', selectedLabels.value)
+    } else {
+        emit('update', selectedLabels.value)
     }
-
-    return normalizedQuery
-        ? result.filter(label => label.title.toLowerCase().includes(normalizedQuery))
-        : result;
-});
-
-watch(() => form.selectedLabels, () => {
-    addLabels();
-});
-
-const handleBlur = (event) => {
-    if (event.relatedTarget && event.relatedTarget.classList.contains('selected-labels-container')) {
-        return;
-    }
-
-    isOpen.value = false;
-    query.value = '';
-};
-
-const toggleDropdown = () => {
-    isOpen.value = !isOpen.value;
-};
-
-const newLabel = computed(() => {
-    return query.value === '' ? null : { id: null, title: query.value }
-});
-
-const addLabels = () => {
-    if (task) {
-        form.post(route('tasks.labels.add', { task: task.id }), {
-            preserveScroll: true,
-            onSuccess: () => {
-                query.value = '';
-            },
-        });
-
-        return;
-    }
-
-    emit('update', form.selectedLabels);
-};
-
-const removeLabel = (label) => {
-    if (task) {
-        router.delete(route('tasks.labels.remove', { task: task.id, label: label.id }), {
-            preserveScroll: true,
-            onSuccess: () => {
-                if (!task.labels.length) {
-                    isOpen.value = false;
-                }
-            },
-        });
-
-        return;
-    }
-
-    form.selectedLabels = form.selectedLabels.filter(l => l.id !== label.id);
-};
-
-const removeAllLabels = () => {
-    if (task) {
-        router.delete(route('tasks.labels.remove-all', { task: task.id }), {
-            preserveScroll: true,
-            onSuccess: () => {
-                if (!task.labels.length) {
-                    isOpen.value = false;
-                }
-            },
-        });
-
-        return;
-    }
-
-    form.selectedLabels = [];
-};
+})
 </script>
