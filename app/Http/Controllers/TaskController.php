@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Task\TaskStoreRequest;
 use App\Http\Requests\Task\TaskUpdatePriorityRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
 use App\Http\Requests\Task\TaskUpdateStatusRequest;
@@ -17,6 +18,7 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use App\Services\TaskEstimateService;
 use App\Services\TaskService;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -45,6 +47,22 @@ class TaskController extends Controller
         ]);
     }
 
+    public function store(TaskStoreRequest $request): RedirectResponse
+    {
+        $data = $request->all();
+        $estimate = TaskEstimateService::calculateEstimate($data['estimate']);
+        unset($data['estimate']);
+
+        $task = Task::create(array_merge($request->all(), [
+            'company_id' => auth()->user()->company_id,
+            'estimate' => $estimate
+        ]));
+
+        $task->refresh();
+
+        return to_route('tasks.show', ['taskIdentifier' => $task->identifier]);
+    }
+
     public function update(TaskUpdateRequest $request, Task $task): void
     {
         $data = $request->validated();
@@ -64,7 +82,7 @@ class TaskController extends Controller
     {
         $newOrder = $request->get('order');
 
-        TaskService::updateStatus($task, $status, $newOrder);
+        TaskService::moveTask($task, $status, $newOrder);
     }
 
     public function updatePriority(TaskUpdatePriorityRequest $request, Task $task, TaskPriority $priority): void
@@ -77,25 +95,12 @@ class TaskController extends Controller
     public function addLabels(AddLabelsRequest $request, Task $task): void
     {
         [$existingLabelIds, $newLabelsData] = collect($request->get('selectedLabels'))->partition(function ($label) {
-                return !is_null($label['id']);
-            });
-
-        if ($existingLabelIds->isNotEmpty()) {
-            $task->labels()->syncWithoutDetaching($existingLabelIds->pluck('id'));
-        }
+            return !is_null($label['id']);
+        });
 
         $newLabels = auth()->user()->company->labels()->createMany($newLabelsData);
+        $allLabelIds = $existingLabelIds->pluck('id')->concat($newLabels->pluck('id'));
 
-        $task->labels()->syncWithoutDetaching($newLabels->pluck('id'));
-    }
-
-    public function removeLabel(RemoveLabelsRequest $request, Task $task, TaskLabel $label): void
-    {
-        $task->labels()->detach($label->id);
-    }
-
-    public function removeAllLabels(RemoveLabelsRequest $request, Task $task): void
-    {
-        $task->labels()->detach();
+        $task->labels()->sync($allLabelIds);
     }
 }

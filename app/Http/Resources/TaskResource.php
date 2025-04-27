@@ -23,7 +23,7 @@ class TaskResource extends JsonResource
             'title'                           => $this->title,
             'description'                     => $this->description,
             'due_date_raw'                    => $this->due_date,
-            'due_date'                        => optional($this->due_date)->locale('lv')->translatedFormat('j. F'),
+            'due_date'                        => $this->due_date ? $this->due_date->locale('lv')->translatedFormat('j. F') : '',
             'estimate_raw'                    => $this->estimate,
             'estimate'                        => $this->formattedEstimate,
             'created_at'                      => $this->created_at->locale('lv')->diffForHumans(),

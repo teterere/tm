@@ -23,6 +23,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/uzdevumi', [TaskController::class, 'index'])->name('tasks.index');
+    Route::post('/uzdevumi', [TaskController::class, 'store'])->name('tasks.store');
     Route::get('/uzdevumi/{taskIdentifier}', [TaskController::class, 'index'])->name('tasks.show');
 
     Route::post('/upload-image', [ImageUploadController::class, 'upload'])->name('upload-image');
@@ -32,10 +33,8 @@ Route::middleware([
         Route::patch('/update-status/{status}', [TaskController::class, 'updateStatus'])->name('update-status');
         Route::patch('/update-priority/{priority}', [TaskController::class, 'updatePriority'])->name('update-priority');
 
-        Route::prefix('birkas')->name('labels.')->group(function () {
+        Route::prefix('etiketes')->name('labels.')->group(function () {
             Route::post('/add', [TaskController::class, 'addLabels'])->name('add');
-            Route::delete('/remove-all', [TaskController::class, 'removeAllLabels'])->name('remove-all');
-            Route::delete('{label}', [TaskController::class, 'removeLabel'])->name('remove');
         });
 
         Route::prefix('checklist-items')->name('checklist-items.')->group(function () {

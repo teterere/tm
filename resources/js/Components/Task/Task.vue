@@ -16,14 +16,20 @@
             <h3 class="font-medium mb-2">{{ task.title }}</h3>
             <p v-html="task.description" class="text-gray-500 text-sm line-clamp-3"></p>
         </div>
-        <div class="flex items-center border-b-1 pb-2 mb-2">
+        <div v-if="task.due_date" class="flex items-center border-b-1 pb-2 mb-2">
             <ClockIcon class="h-4 w-4 text-gray-500 mr-1" />
             <span class="text-gray-500 text-xs">{{ task.due_date }}</span>
         </div>
         <div class="flex justify-between items-center">
-            <div class="flex-items-center space-x-2">
+            <div v-if="task.assignee" class="flex-items-center space-x-2">
                 <img class="inline-block size-7 rounded-full" :src="task.assignee.avatar_url" alt="" />
                 <span class="text-xs text-gray-600">{{ task.assignee.name }}</span>
+            </div>
+            <div v-else class="flex items-center space-x-2">
+                <div class="bg-gray-200 rounded-full p-1">
+                    <UserIcon class="size-5 text-gray-400" />
+                </div>
+                <span class="text-xs text-gray-600">Bez izpildītāja</span>
             </div>
 
             <div class="flex items-center space-x-3">
@@ -49,6 +55,7 @@
 import {CheckCircleIcon, ClockIcon, EllipsisHorizontalIcon, ChatBubbleOvalLeftEllipsisIcon} from "@heroicons/vue/24/outline";
 import TaskPriorityLabel from "@/Components/Task/TaskPriority/TaskPriorityLabel.vue";
 import TaskLabel from "@/Components/Task/TaskLabel/TaskLabel.vue";
+import {UserIcon} from "@heroicons/vue/20/solid/index.js";
 
 defineProps({
     task: Object

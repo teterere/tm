@@ -152,7 +152,7 @@
                 </div>
             </div>
 
-            <main class="py-10">
+            <main class="py-4">
                 <slot />
             </main>
         </div>

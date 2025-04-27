@@ -7,7 +7,7 @@ class TaskEstimateService
     public static function calculateEstimate(string|null $estimateString)
     {
         if (is_null($estimateString)) {
-            return 0;
+            return null;
         }
 
         $timeParts = explode(' ', $estimateString);

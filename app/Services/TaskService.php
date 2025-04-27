@@ -8,53 +8,93 @@ use DB;
 
 class TaskService
 {
-    public static function moveTaskWithinStatus(Task $task, int $newOrder): void
+    public static function moveTask(Task $task, TaskStatus $newStatus, int $newOrder): void
     {
-        if ($newOrder === $task->order) {
-            return;
-        }
+        DB::transaction(function () use ($task, $newStatus, $newOrder) {
+            $originalStatusId = $task->status_id;
+            $originalOrder = $task->order;
+            $movingToOtherStatus = $originalStatusId !== $newStatus->id;
 
-        DB::transaction(function () use ($task, $newOrder) {
-            if ($newOrder > $task->order) {
-                Task::where('status_id', $task->status_id)
-                    ->where('order', '>', $task->order)
-                    ->where('order', '<=', $newOrder)
-                    ->decrement('order');
+            // Assign a temporary order far outside normal range (to avoid conflicts)
+            $tempOrder = Task::max('order') + 1000;
+            $task->order = $tempOrder;
+            $task->status_id = $newStatus->id;
+            $task->save();
+
+            // Reorder in old status
+            if ($movingToOtherStatus) {
+                $tasksToDecrement = Task::where('status_id', $originalStatusId)
+                    ->where('order', '>', $originalOrder)
+                    ->orderBy('order')
+                    ->get();
+
+                foreach ($tasksToDecrement as $task) {
+                    $task->order -= 1;
+                    $task->save();
+                }
             } else {
-                Task::where('status_id', $task->status_id)
-                    ->where('order', '>=', $newOrder)
-                    ->where('order', '<', $task->order)
-                    ->increment('order');
+                // Moving within same status
+                if ($newOrder > $originalOrder) {
+                    $tasksToDecrement = Task::where('status_id', $originalStatusId)
+                        ->where('order', '>', $originalOrder)
+                        ->where('order', '<=', $newOrder)
+                        ->orderBy('order', 'asc')
+                        ->get();
+
+                    foreach ($tasksToDecrement as $task) {
+                        $task->order -= 1;
+                        $task->save();
+                    }
+                } else {
+                    $tasksToIncrement = Task::where('status_id', $originalStatusId)
+                        ->where('order', '>=', $newOrder)
+                        ->where('order', '<', $originalOrder)
+                        ->orderBy('order', 'desc')
+                        ->get();
+
+                    foreach ($tasksToIncrement as $t) {
+                        $t->order += 1;
+                        $t->save();
+                    }
+                }
             }
 
-            $task->update([
-                'order' => $newOrder
-            ]);
+            // In new status, increment all tasks >= newOrder (if moving between statuses)
+            if ($movingToOtherStatus) {
+                $tasksToIncrement = Task::where('status_id', $newStatus->id)
+                    ->where('order', '>=', $newOrder)
+                    ->orderBy('order', 'desc')
+                    ->get();
+
+                foreach ($tasksToIncrement as $t) {
+                    $t->order += 1;
+                    $t->save();
+                }
+            }
+
+            // Put task in the correct place
+            $task->order = $newOrder;
+            $task->save();
+
+            self::normalizeStatusOrders($newStatus);
+
+            if ($movingToOtherStatus) {
+                $oldStatus = TaskStatus::find($originalStatusId);
+                if ($oldStatus) {
+                    self::normalizeStatusOrders($oldStatus);
+                }
+            }
         });
     }
 
-    public static function updateStatus(Task $task, TaskStatus $status, $newOrder): void
+    private static function normalizeStatusOrders(TaskStatus $status): void
     {
-        if ($task->status_id === $status->id) {
-            self::moveTaskWithinStatus($task, $newOrder);
+        $tasks = Task::where('status_id', $status->id)->orderBy('order')->get();
+        $i = 1;
 
-            return;
+        foreach ($tasks as $task) {
+            $task->order = $i++;
+            $task->save();
         }
-
-        DB::transaction(function () use ($task, $status, $newOrder) {
-            Task::where('status_id', $task->status_id)
-                ->where('order', '>', $task->order)
-                ->decrement('order');
-
-            $task->update([
-                'status_id' => $status->id,
-                'order'     => $newOrder
-            ]);
-
-            Task::where('status_id', $status->id)
-                ->where('id', '!=', $task->id)
-                ->where('order', '>=', $newOrder)
-                ->increment('order');
-        });
     }
 }

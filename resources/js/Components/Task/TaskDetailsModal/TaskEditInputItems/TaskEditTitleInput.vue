@@ -38,7 +38,6 @@ const form = useForm({
 
 const enableEditStatus = () => {
     editStatus.value = true;
-    form.title = task.title;
 
     nextTick(() => {
         if (titleInput) {
