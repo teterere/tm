@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Task\TaskStoreRequest;
 use App\Http\Requests\Task\TaskUpdatePriorityRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
 use App\Http\Requests\Task\TaskUpdateStatusRequest;
@@ -18,7 +19,6 @@ use App\Models\User;
 use App\Services\TaskEstimateService;
 use App\Services\TaskService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -47,7 +47,7 @@ class TaskController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(TaskStoreRequest $request): RedirectResponse
     {
         $data = $request->all();
         $estimate = TaskEstimateService::calculateEstimate($data['estimate']);
