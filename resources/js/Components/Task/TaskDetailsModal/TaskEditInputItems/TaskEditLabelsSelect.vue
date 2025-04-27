@@ -4,13 +4,19 @@
             <ComboboxButton
                 @click="toggleDropdown"
                 class="selected-labels-container w-full hover:bg-gray-100 rounded-xs text-sm px-2 py-1 text-gray-900 cursor-pointer flex flex-wrap gap-2 items-center">
-                <template v-if="task.labels.length > 0">
+                <template v-if="task && task.labels.length > 0">
                     <div ref="taskLabelRef" class="flex flex-wrap gap-1.5">
                         <TaskLabel v-for="label in task.labels" :key="label.id" :label="label" :removeButton="isOpen" @remove.stop="removeLabel(label)" />
                     </div>
-                    <span v-if="isOpen && task.labels.length > 1" @click="removeAllLabels" class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset ring-gray-200 hover:text-rose-700 text-gray-700">noņemt visas birkas</span>
+                    <span v-if="isOpen && task.labels.length > 1" @click="removeAllLabels" class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset ring-gray-200 hover:text-rose-700 text-gray-700">noņemt visas etiķetes</span>
                 </template>
-                <span v-else-if="!task.labels.length && !isOpen" class="text-gray-600">Pievienot</span>
+                <template v-else-if="form.selectedLabels.length > 0">
+                    <div class="flex flex-wrap gap-1.5">
+                        <TaskLabel v-for="label in form.selectedLabels" :key="label.id" :label="label" :removeButton="isOpen" @remove.stop="removeLabel(label)" />
+                    </div>
+                    <span v-if="isOpen && form.selectedLabels.length > 1" @click="removeAllLabels" class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset ring-gray-200 hover:text-rose-700 text-gray-700">noņemt visas etiķetes</span>
+                </template>
+                <span v-else-if="(!task || !task.labels.length) && !isOpen" class="text-sm text-gray-600">Pievienot etiķetes</span>
             </ComboboxButton>
 
             <p v-if="form.errors" v-for="error in form.errors" class="text-red-500 text-xs mt-3 ml-1">
@@ -49,7 +55,9 @@ import TaskLabel from "@/Components/Task/TaskLabel/TaskLabel.vue";
 import {router, useForm} from "@inertiajs/vue3";
 
 const labels = inject('labels');
-const task = inject('task');
+const task = inject('task', null);
+
+const emit = defineEmits(['update']);
 
 const form = useForm({
     selectedLabels: []
@@ -61,11 +69,16 @@ const taskLabelRef = ref(null);
 
 const filteredLabels = computed(() => {
     const normalizedQuery = query.value.trim().toLowerCase();
-    const labelsNotAssignedToTask = labels.filter(label => !task.labels.some(taskLabel => taskLabel.id === label.id));
+
+    let result = labels;
+
+    if (task) {
+        result = labels.filter(label => !task.labels.some(taskLabel => taskLabel.id === label.id));
+    }
 
     return normalizedQuery
-        ? labelsNotAssignedToTask.filter(label => label.title.toLowerCase().includes(normalizedQuery))
-        : labelsNotAssignedToTask;
+        ? result.filter(label => label.title.toLowerCase().includes(normalizedQuery))
+        : result;
 });
 
 watch(() => form.selectedLabels, () => {
@@ -90,33 +103,51 @@ const newLabel = computed(() => {
 });
 
 const addLabels = () => {
-    form.post(route('tasks.labels.add', { task: task.id }), {
-        preserveScroll: true,
-        onSuccess: () => {
-            query.value = '';
-        },
-    });
+    if (task) {
+        form.post(route('tasks.labels.add', { task: task.id }), {
+            preserveScroll: true,
+            onSuccess: () => {
+                query.value = '';
+            },
+        });
+
+        return;
+    }
+
+    emit('update', form.selectedLabels);
 };
 
 const removeLabel = (label) => {
-    router.delete(route('tasks.labels.remove', { task: task.id, label: label.id }), {
-        preserveScroll: true,
-        onSuccess: () => {
-            if (!task.labels.length) {
-                isOpen.value = false;
-            }
-        },
-    });
+    if (task) {
+        router.delete(route('tasks.labels.remove', { task: task.id, label: label.id }), {
+            preserveScroll: true,
+            onSuccess: () => {
+                if (!task.labels.length) {
+                    isOpen.value = false;
+                }
+            },
+        });
+
+        return;
+    }
+
+    form.selectedLabels = form.selectedLabels.filter(l => l.id !== label.id);
 };
 
 const removeAllLabels = () => {
-    router.delete(route('tasks.labels.remove-all', { task: task.id }), {
-        preserveScroll: true,
-        onSuccess: () => {
-            if (!task.labels.length) {
-                isOpen.value = false;
-            }
-        },
-    });
+    if (task) {
+        router.delete(route('tasks.labels.remove-all', { task: task.id }), {
+            preserveScroll: true,
+            onSuccess: () => {
+                if (!task.labels.length) {
+                    isOpen.value = false;
+                }
+            },
+        });
+
+        return;
+    }
+
+    form.selectedLabels = [];
 };
 </script>

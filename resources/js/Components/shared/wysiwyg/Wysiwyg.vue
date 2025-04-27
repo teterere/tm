@@ -37,7 +37,7 @@
                     <EmojiDropdown :editor="editor" />
                 </div>
 
-                <div class="flex justify-end gap-3 order-2 md:order-none">
+                <div v-if="showActionButtons" class="flex justify-end gap-3 order-2 md:order-none">
                     <button
                         @click="cancel"
                         class="text-xs hover:bg-gray-100 font-semibold text-gray-400 hover:text-gray-600 px-2 rounded-sm"
@@ -72,6 +72,10 @@ const props = defineProps({
     content: {
         type: String,
         default: ''
+    },
+    showActionButtons: {
+        type: Boolean,
+        default: true
     },
     submitButtonText: {
         type: String,

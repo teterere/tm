@@ -1,7 +1,7 @@
 <template>
     <Menu as="div" class="relative inline-block text-left pl-1">
         <MenuButton :class="['inline-flex w-full justify-center gap-x-1.5 rounded-xs py-1 text-sm font-medium cursor-pointer']">
-            <TaskPriorityLabel :priority="task.priority" />
+            <TaskPriorityLabel :priority="selectedPriority" />
         </MenuButton>
 
         <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
@@ -10,7 +10,6 @@
                     <MenuItem v-for="priority in filteredPriorities" v-slot="{ active }">
                         <button @click="updatePriority(priority)" :class="[active ? 'outline-hidden bg-gray-100' : 'text-gray-700', 'flex items-center justify-between p-2 text-sm w-full cursor-pointer text-start']">
                             <TaskPriorityLabel :priority="priority" />
-                            <CheckIcon v-if="task.priority.id === priority.id" class="w-4 h-4 text-green-600" />
                         </button>
                     </MenuItem>
                 </div>
@@ -23,19 +22,30 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 import {router} from "@inertiajs/vue3";
 import TaskPriorityLabel from "@/Components/Task/TaskPriority/TaskPriorityLabel.vue";
-import {CheckIcon} from "@heroicons/vue/24/outline";
-import {computed, inject} from "vue";
+import {computed, inject, ref} from "vue";
 
-const task = inject('task');
+const emit = defineEmits(['update']);
+
+const task = inject('task', null);
 const priorities = inject('priorities');
+const selectedPriority = ref(task?.priority || priorities[priorities.length - 1]);
 
 const updatePriority = (priority) => {
-    router.patch(route('tasks.update-priority', { task: task.id, priority: priority.id }), {}, {
-        preserveScroll: true
-    });
+    if (task) {
+        router.patch(route('tasks.update-priority', { task: task.id, priority: priority.id }), {}, {
+            preserveScroll: true
+        });
+
+        return;
+    }
+
+    selectedPriority.value = priority;
+    emit('update', priority);
 };
 
 const filteredPriorities = computed(() => {
-    return priorities.filter(priority => priority.id !== task.priority.id);
+    return priorities.filter(priority => {
+        return priority.id !== selectedPriority.value.id;
+    });
 });
 </script>

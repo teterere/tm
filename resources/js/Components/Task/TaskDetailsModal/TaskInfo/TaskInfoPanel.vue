@@ -18,13 +18,13 @@
                 <DisclosurePanel>
                     <div class="space-y-1.5 md:space-y-4 py-4 p-2 border-b md:border-0">
                         <TaskInfo title="Statuss">
-                            <TaskStatusDropdown />
+                            <TaskStatusDropdown @update="$emit('status-updated')" />
                         </TaskInfo>
 
                         <TaskInfo title="Prioritāte">
-                            <TaskEditPriorityDropdown />
+                            <TaskEditPriorityDropdown @update="$emit('priority-updated')" />
                         </TaskInfo>
-                        <TaskInfo title="Birkas">
+                        <TaskInfo title="Etiķetes">
                             <TaskEditLabelsSelect />
                         </TaskInfo>
                         <TaskInfo title="Termiņš">

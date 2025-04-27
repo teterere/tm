@@ -38,7 +38,7 @@ class AddLabelsRequest extends FormRequest
     {
         return [
             'selectedLabels.required'                 => 'Jānorāda vismaz viena birka.',
-            'selectedLabels.*.id.integer'             => 'Birkas ID ir jābūt veselam skaitlim.',
+            'selectedLabels.*.id.integer'             => 'Etiķetes ID ir jābūt veselam skaitlim.',
             'selectedLabels.*.id.exists'              => 'Izvēlētā birka neeksistē.',
             'selectedLabels.*.title.required_without' => 'Nosaukums nedrīkst būt tukšs',
             'selectedLabels.*.title.max'              => 'Nosaukums nedrīkst būt garāks par 255 rakstzīmēm'

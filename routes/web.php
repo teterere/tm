@@ -32,7 +32,7 @@ Route::middleware([
         Route::patch('/update-status/{status}', [TaskController::class, 'updateStatus'])->name('update-status');
         Route::patch('/update-priority/{priority}', [TaskController::class, 'updatePriority'])->name('update-priority');
 
-        Route::prefix('birkas')->name('labels.')->group(function () {
+        Route::prefix('etiketes')->name('labels.')->group(function () {
             Route::post('/add', [TaskController::class, 'addLabels'])->name('add');
             Route::delete('/remove-all', [TaskController::class, 'removeAllLabels'])->name('remove-all');
             Route::delete('{label}', [TaskController::class, 'removeLabel'])->name('remove');

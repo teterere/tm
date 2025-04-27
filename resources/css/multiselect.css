@@ -1,0 +1,112 @@
+/* Pamata wrapper stils */
+.multiselect {
+    font-size: .9rem !important;
+    min-height: 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    border-radius: 2px !important;
+    border: 1px solid #e5e7eb !important; /* Tailwind border-gray-200 */
+    background: #fff !important;
+    box-shadow: none !important;
+}
+
+/* Noņem caret bultiņu */
+.multiselect__select {
+    display: none !important;
+}
+
+/* Tags wrapper, kurā sēž teksts */
+.multiselect__tags,
+.multiselect__tags:focus,
+.multiselect__tags:focus-within,
+.multiselect__tags:focus-visible,
+.multiselect--active .multiselect__tags,
+.multiselect--open .multiselect__tags {
+    border-radius: 2px !important;
+    min-height: 2rem !important;
+    padding: 0 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    min-width: 100% !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+/* Centrē placeholder (ja vajag) */
+.multiselect__placeholder {
+    display: flex !important;
+    align-items: center !important;
+    height: 1.5rem !important;
+    min-height: 1.5rem !important;
+    line-height: 1.5rem !important;
+    color: #bababa !important;
+    padding-left: 0.25rem !important;
+    background: transparent !important;
+}
+
+/* Teksta wrappers vienai vērtībai */
+.multiselect__single {
+    font-size: .9rem !important;
+    line-height: 1.5rem !important;
+    padding: 0 0.25rem !important;
+    display: flex !important;
+    align-items: center !important;
+    min-height: 1.5rem !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Tieši uz input uzliec ring un border fix! */
+.multiselect__input,
+.multiselect__input:focus,
+.multiselect__input:focus-visible,
+.multiselect__input:focus-within {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 1.5rem !important;
+    line-height: 1.5rem !important;
+    font-size: .9rem !important;
+    color: inherit !important;
+}
+
+/* Opciju bloka stili */
+.multiselect__option {
+    padding: .5rem !important;
+    font-size: .9rem !important;
+    background: #fff !important;
+    color: #333 !important;
+}
+
+/* Opciju highlight un izvēlētais */
+.multiselect__option--highlight {
+    background: #efefef !important;
+    color: #333 !important;
+}
+
+.multiselect__option--selected {
+    background: rgb(78, 56, 246) !important;
+    color: #fff !important;
+}
+
+/* Vienmēr atver dropdown uz leju */
+.multiselect--above .multiselect__content-wrapper {
+    top: 100% !important;
+    bottom: auto !important;
+}
+
+/* Ja multiselect wrapperiem kaut kur parādās border vai outline uz focus */
+.multiselect:focus,
+.multiselect:focus-within,
+.multiselect:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 2px !important;
+}

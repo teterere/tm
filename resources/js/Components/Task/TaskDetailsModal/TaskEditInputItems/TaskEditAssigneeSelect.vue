@@ -1,76 +1,81 @@
 <template>
-    <Combobox v-if="editStatus" as="div" v-model="selectedAssignee" @update:modelValue="query = ''" class="w-full">
-        <div class="relative mt-2">
-            <ComboboxInput
-                class="block w-full rounded-md bg-white py-1.5 pr-12 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                @change="query = $event.target.value"
-                @blur="handleBlur"
-                :display-value="(person) => person?.name" />
-            <ComboboxButton class="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-hidden">
-                <ChevronUpDownIcon class="size-5 text-gray-400" aria-hidden="true" />
-            </ComboboxButton>
-
-            <ComboboxOptions v-if="filteredPeople.length > 0" hold open class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base ring-1 shadow-lg ring-black/5 focus:outline-hidden sm:text-sm">
-                <ComboboxOption v-for="employee in filteredPeople" :key="employee.id" :value="employee" as="template" v-slot="{ active, selected }">
-                    <li :class="['relative cursor-default py-2 pr-9 pl-3 select-none', active ? 'bg-indigo-600 text-white outline-hidden' : 'text-gray-900']">
-                        <div class="flex items-center">
-                            <img :src="employee.avatar_url" alt="Lietotāja attēls" class="size-7 shrink-0 rounded-full" />
-                            <span :class="['ml-3 truncate', selected && 'font-semibold']">
-                                {{ employee.name }}
-                              </span>
-                        </div>
-                        <span v-if="selected" :class="['absolute inset-y-0 right-0 flex items-center pr-4', active ? 'text-white' : 'text-indigo-600']">
-                          <CheckIcon class="size-5" aria-hidden="true" />
-                        </span>
-                    </li>
-                </ComboboxOption>
-            </ComboboxOptions>
-        </div>
-    </Combobox>
+    <div v-if="editStatus" class="min-w-full">
+        <multiselect
+            id="single-select-object"
+            ref="inputRef"
+            v-model="selectedAssignee"
+            track-by="name"
+            label="name"
+            :options="employees"
+            :allow-empty="false"
+            :show-labels="false"
+            aria-label="pick a value"
+            placeholder="Izvēlies izpildītāju"
+            @close="handleBlur"
+        >
+            <template v-slot:singleLabel="{ option }">
+                <span>{{ option.name }}</span>
+            </template>
+            <template v-slot:option="{ option }">
+                <div class="flex items-center space-x-2">
+                    <img v-if="option.avatar_url" :src="option.avatar_url" class="size-7 rounded-full" />
+                    <span>{{ option.name }}</span>
+                </div>
+            </template>
+        </multiselect>
+    </div>
 
     <div v-else @click="enableEditStatus" class="flex items-center w-full hover:bg-gray-100 rounded-xs space-x-2 p-1">
-        <img class="inline-block size-7 rounded-full" :src="task.assignee.avatar_url" alt="Lietotāja attēls"/>
-        <span class="text-sm text-gray-600">{{ task.assignee.name }}</span>
+        <div v-if="selectedAssignee" class="flex items-center space-x-2">
+            <img class="inline-block size-7 rounded-full" :src="selectedAssignee.avatar_url" alt="Lietotāja attēls"/>
+            <span class="text-sm text-gray-600">{{ selectedAssignee.name }}</span>
+        </div>
+        <div v-else class="flex items-center space-x-2">
+            <div class="bg-gray-200 rounded-full p-1">
+                <UserIcon class="size-5 text-gray-400" />
+            </div>
+            <span class="text-sm text-gray-600">Bez izpildītāja</span>
+        </div>
     </div>
 </template>
 
 <script setup>
-import {computed, inject, ref, watch} from 'vue'
-import {Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions} from '@headlessui/vue'
-import { ChevronUpDownIcon } from '@heroicons/vue/16/solid'
-import { CheckIcon } from '@heroicons/vue/20/solid'
-import {useForm} from "@inertiajs/vue3";
+import {ref, inject, watch, nextTick} from 'vue'
+import Multiselect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+import {UserIcon} from '@heroicons/vue/20/solid'
+import {useForm} from "@inertiajs/vue3"
+
+const emit = defineEmits(['update']);
 
 const employees = inject('employees');
-const task = inject('task');
+const task = inject('task', null);
 
-const query = ref('')
-const filteredPeople = computed(() =>
-    query.value === ''
-        ? employees
-        : employees.filter((person) => {
-            return person.name.toLowerCase().includes(query.value.toLowerCase())
-        }),
-);
+const editStatus = ref(false);
+const inputRef = ref(null);
 
-const handleBlur = () => {
-    editStatus.value = false;
-    query.value = '';
-};
+const selectedAssignee = ref(task?.assignee);
+const form = useForm({
+    assignee_id: task?.assignee_id || null
+});
+
+watch(editStatus, async (val) => {
+    if (val) {
+        await nextTick();
+        inputRef.value?.activate();
+    }
+});
 
 const enableEditStatus = () => {
     editStatus.value = true;
-};
+}
 
-const editStatus = ref(false);
-
-const selectedAssignee = ref(task.assignee);
-const form = useForm({
-    assignee_id: task.assignee_id
-});
+const handleBlur = () => {
+    editStatus.value = false;
+}
 
 watch(selectedAssignee, () => {
-    if (selectedAssignee.id === task.assignee_id) {
+    if (selectedAssignee.value?.id === task?.assignee_id) {
         return;
     }
 
@@ -78,14 +83,20 @@ watch(selectedAssignee, () => {
 });
 
 const submit = () => {
-    form.transform(data => ({
-        ...data,
-        assignee_id: selectedAssignee.value.id,
-    })).patch(route('tasks.update', task.id), {
-        preserveScroll: true,
-        onSuccess: () => {
-            editStatus.value = false;
-        }
-    });
-};
+    if (task && selectedAssignee.value) {
+        form.transform(data => ({
+            ...data,
+            assignee_id: selectedAssignee.value.id,
+        })).patch(route('tasks.update', task.id), {
+            preserveScroll: true,
+            onSuccess: () => {
+                editStatus.value = false;
+            }
+        });
+
+        return;
+    }
+
+    emit('update', selectedAssignee);
+}
 </script>

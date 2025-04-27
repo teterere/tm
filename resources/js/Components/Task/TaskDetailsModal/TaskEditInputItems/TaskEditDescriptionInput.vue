@@ -7,8 +7,6 @@
 import {inject, nextTick, ref} from "vue";
 import { useTextareaAutosize } from '@vueuse/core'
 import {useForm} from "@inertiajs/vue3";
-import OutlineButton from "@/Components/shared/Buttons/OutlineButton.vue";
-import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
 import Wysiwyg from "@/Components/shared/wysiwyg/Wysiwyg.vue";
 
 const task = inject('task');

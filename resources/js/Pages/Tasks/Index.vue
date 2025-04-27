@@ -1,5 +1,12 @@
 <template>
     <AppLayout>
+        <div class="flex items-center justify-end px-4 sm:px-6 lg:px-8 pb-4">
+            <PrimaryButton @click="showCreateTaskModal = true">
+                <PlusIcon class="h-4 w-4" />
+                <span>Izveidot uzdevumu</span>
+            </PrimaryButton>
+            <CreateTaskModal :show="showCreateTaskModal" />
+        </div>
         <div class="flex gap-4 px-4 sm:px-6 lg:px-8 overflow-x-auto pb-4 2xl:grid 2xl:grid-cols-4 2xl:gap-4 2xl:overflow-x-visible">
             <div
                 v-for="status in statuses"
@@ -56,6 +63,8 @@ import {ref, provide, onMounted, watch} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
 import {VueDraggable} from "vue-draggable-plus";
 import {router} from "@inertiajs/vue3";
+import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
+import CreateTaskModal from "@/Components/Task/TaskDetailsModal/CreateTaskModal.vue";
 
 const props = defineProps({
     statuses: Array,
@@ -72,6 +81,7 @@ provide('employees', props.employees);
 
 const selectedTask = ref(props.task);
 const showTaskDetailsModal = ref(false);
+const showCreateTaskModal = ref(false);
 
 onMounted(() => {
     if (props.task) {
