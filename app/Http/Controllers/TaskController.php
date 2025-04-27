@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Task\TaskDeleteRequest;
 use App\Http\Requests\Task\TaskStoreRequest;
 use App\Http\Requests\Task\TaskUpdatePriorityRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
@@ -55,7 +56,7 @@ class TaskController extends Controller
 
         $task = Task::create(array_merge($request->all(), [
             'company_id' => auth()->user()->company_id,
-            'estimate' => $estimate
+            'estimate'   => $estimate
         ]));
 
         $task->refresh();
@@ -102,5 +103,16 @@ class TaskController extends Controller
         $allLabelIds = $existingLabelIds->pluck('id')->concat($newLabels->pluck('id'));
 
         $task->labels()->sync($allLabelIds);
+    }
+
+    public function destroy(TaskDeleteRequest $request, Task $task): RedirectResponse
+    {
+        $task->checklistItems()->delete();
+        $task->comments()->delete();
+        $task->labels()->detach();
+
+        $task->delete();
+
+        return to_route('tasks.index', [], 303);
     }
 }
