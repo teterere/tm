@@ -7,6 +7,7 @@
     border: 1px solid #e5e7eb !important;
     background: #fff !important;
     box-shadow: none !important;
+    position: relative !important;
 }
 
 .multiselect__select {
@@ -64,17 +65,6 @@
     color: inherit !important;
 }
 
-.multiselect__placeholder {
-    display: flex !important;
-    align-items: center !important;
-    height: 1.5rem !important;
-    min-height: 1.5rem !important;
-    line-height: 1.5rem !important;
-    color: #bababa !important;
-    padding-left: 0.25rem !important;
-    background: transparent !important;
-}
-
 .multiselect__option {
     padding: .5rem !important;
     font-size: .9rem !important;
@@ -90,6 +80,11 @@
 .multiselect__option--selected {
     background: rgb(78, 56, 246) !important;
     color: #fff !important;
+}
+
+.multiselect__content-wrapper {
+    top: 100% !important;
+    bottom: auto !important;
 }
 
 .multiselect--above .multiselect__content-wrapper {

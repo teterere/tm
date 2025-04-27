@@ -48,7 +48,6 @@ import Wysiwyg from "@/Components/shared/wysiwyg/Wysiwyg.vue";
 import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
 import OutlineButton from "@/Components/shared/Buttons/OutlineButton.vue";
 import {ref} from "vue";
-import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     show: {

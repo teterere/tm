@@ -4,8 +4,7 @@
 </template>
 
 <script setup>
-import {inject, nextTick, ref} from "vue";
-import { useTextareaAutosize } from '@vueuse/core'
+import {inject, ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import Wysiwyg from "@/Components/shared/wysiwyg/Wysiwyg.vue";
 

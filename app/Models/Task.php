@@ -13,6 +13,8 @@ class Task extends Model
 {
     use HasFactory;
 
+    public const MAX_DESCRIPTION_LENGTH = 6000;
+
     protected $fillable = [
         'company_id',
         'assignee_id',

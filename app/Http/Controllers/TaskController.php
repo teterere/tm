@@ -82,7 +82,7 @@ class TaskController extends Controller
     {
         $newOrder = $request->get('order');
 
-        TaskService::updateStatus($task, $status, $newOrder);
+        TaskService::moveTask($task, $status, $newOrder);
     }
 
     public function updatePriority(TaskUpdatePriorityRequest $request, Task $task, TaskPriority $priority): void
@@ -95,25 +95,12 @@ class TaskController extends Controller
     public function addLabels(AddLabelsRequest $request, Task $task): void
     {
         [$existingLabelIds, $newLabelsData] = collect($request->get('selectedLabels'))->partition(function ($label) {
-                return !is_null($label['id']);
-            });
-
-        if ($existingLabelIds->isNotEmpty()) {
-            $task->labels()->syncWithoutDetaching($existingLabelIds->pluck('id'));
-        }
+            return !is_null($label['id']);
+        });
 
         $newLabels = auth()->user()->company->labels()->createMany($newLabelsData);
+        $allLabelIds = $existingLabelIds->pluck('id')->concat($newLabels->pluck('id'));
 
-        $task->labels()->syncWithoutDetaching($newLabels->pluck('id'));
-    }
-
-    public function removeLabel(RemoveLabelsRequest $request, Task $task, TaskLabel $label): void
-    {
-        $task->labels()->detach($label->id);
-    }
-
-    public function removeAllLabels(RemoveLabelsRequest $request, Task $task): void
-    {
-        $task->labels()->detach();
+        $task->labels()->sync($allLabelIds);
     }
 }

@@ -53,7 +53,7 @@
 
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { PlusIcon, EllipsisHorizontalIcon } from '@heroicons/vue/24/outline';
+import { PlusIcon } from '@heroicons/vue/24/outline';
 import Task from "@/Components/Task/Task.vue";
 import {ref, provide, onMounted, watch} from "vue";
 import TaskDetailsModal from "@/Components/Task/TaskDetailsModal/TaskDetailsModal.vue";
