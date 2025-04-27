@@ -1,7 +1,7 @@
 <template>
     <div class="col-span-2 p-2 rounded-xs">
             <Disclosure v-slot="{ open }" :defaultOpen="true">
-                <div class="flex items-start justify-between">
+                <div class="flex items-center justify-between">
                     <DisclosureButton class="outline-0 w-full cursor-pointer">
                         <div class="flex items-start gap-x-2">
                             <button class="bg-gray-100 hover:bg-gray-200 rounded-sm p-1">
@@ -13,6 +13,27 @@
                             </div>
                         </div>
                     </DisclosureButton>
+                    <Menu as="div" class="relative inline-block pl-6">
+                        <MenuButton class="bg-gray-100 hover:bg-gray-200 rounded-sm p-1 cursor-pointer">
+                            <EllipsisHorizontalIcon class="w-3 h-3" />
+                        </MenuButton>
+
+                        <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+                            <MenuItems class="absolute right-0 z-10 mt-2 w-52 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden py-1">
+                                <MenuItem @click="showConfirmDeletionDialog = true" v-slot="{ active }">
+                                    <button :class="[active ? 'bg-gray-100 text-gray-900 outline-hidden' : 'text-gray-700', 'flex w-full items-center cursor-pointer px-4 py-2 text-sm']">
+                                        <TrashIcon class="w-4 h-4 mr-2" />
+                                        <span>Dzēst uzdevumu</span>
+                                    </button>
+                                </MenuItem>
+                            </MenuItems>
+                        </transition>
+                    </Menu>
+
+                    <ConfirmDeletionDialog :show="showConfirmDeletionDialog" @confirm="deleteTask" @close="showConfirmDeletionDialog = false">
+                        <template #title>Dzēst uzdevumu?</template>
+                        <template #description>Uzdevums un ar to saistītie dati tiks neatgriezeniski dzēsti. Šo darbību nav iespējams atsaukt.</template>
+                    </ConfirmDeletionDialog>
                 </div>
 
                 <DisclosurePanel>
@@ -49,7 +70,22 @@ import TaskEditLabelsSelect from "@/Components/Task/TaskDetailsModal/TaskEditInp
 import TaskEditDueDateInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditDueDateInput.vue";
 import TaskEditTimeEstimateInput from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditTimeEstimateInput.vue";
 import TaskEditAssigneeSelect from "@/Components/Task/TaskDetailsModal/TaskEditInputItems/TaskEditAssigneeSelect.vue";
-import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
+import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
 import {ChevronDownIcon} from "@heroicons/vue/24/outline";
+import {inject, ref} from "vue";
+import {EllipsisHorizontalIcon, TrashIcon} from "@heroicons/vue/24/outline/index.js";
+import ConfirmDeletionDialog from "@/Components/ConfirmDeletionDialog.vue";
+import {router} from "@inertiajs/vue3";
+
+const task = inject('task');
+const showConfirmDeletionDialog = ref(false);
+
+const deleteTask = () => {
+    router.delete(route('tasks.delete', {task: task.id}), {
+        onSuccess: () => {
+            router.visit(route('tasks.index'));
+        }
+    });
+}
 </script>
 
