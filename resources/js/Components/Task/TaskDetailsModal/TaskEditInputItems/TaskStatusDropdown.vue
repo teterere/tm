@@ -59,6 +59,6 @@ const updateStatus = (status) => {
     }
 
     selectedStatus.value = status;
-    emit('update', status);
+    emit('update', {field: 'status_id', value: status.id});
 };
 </script>

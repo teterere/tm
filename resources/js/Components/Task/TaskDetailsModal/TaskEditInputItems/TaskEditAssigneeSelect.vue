@@ -97,6 +97,6 @@ const submit = () => {
         return;
     }
 
-    emit('update', selectedAssignee);
+    emit('update', {field: 'assignee_id', value: selectedAssignee.value.id});
 }
 </script>

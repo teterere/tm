@@ -50,9 +50,6 @@
     </div>
 </template>
 
-
-
-
 <script setup>
 import { ref, inject, computed, watch, nextTick } from 'vue'
 import Multiselect from 'vue-multiselect'
@@ -116,10 +113,10 @@ watch(selectedLabels, () => {
         // Patch uz serveri, piemērs:
         // TODO: aizvieto ar savu api call
         // form.post(...);
-        // Šeit tikai emit
-        emit('update', selectedLabels.value)
-    } else {
-        emit('update', selectedLabels.value)
+
+        return;
     }
+
+    emit('update', {field: 'label_ids', value: selectedLabels.value});
 })
 </script>

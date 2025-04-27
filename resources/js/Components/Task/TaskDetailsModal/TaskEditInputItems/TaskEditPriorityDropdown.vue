@@ -40,7 +40,7 @@ const updatePriority = (priority) => {
     }
 
     selectedPriority.value = priority;
-    emit('update', priority);
+    emit('update', {field: 'priority_id', value: priority.id});
 };
 
 const filteredPriorities = computed(() => {

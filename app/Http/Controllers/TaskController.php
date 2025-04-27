@@ -17,6 +17,8 @@ use App\Models\TaskStatus;
 use App\Models\User;
 use App\Services\TaskEstimateService;
 use App\Services\TaskService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -43,6 +45,22 @@ class TaskController extends Controller
             'labels'     => $labels,
             'employees'  => EmployeeResource::collection($employees)
         ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $data = $request->all();
+        $estimate = TaskEstimateService::calculateEstimate($data['estimate']);
+        unset($data['estimate']);
+
+        $task = Task::create(array_merge($request->all(), [
+            'company_id' => auth()->user()->company_id,
+            'estimate' => $estimate
+        ]));
+
+        $task->refresh();
+
+        return to_route('tasks.show', ['taskIdentifier' => $task->identifier]);
     }
 
     public function update(TaskUpdateRequest $request, Task $task): void

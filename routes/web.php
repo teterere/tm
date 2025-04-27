@@ -23,6 +23,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/uzdevumi', [TaskController::class, 'index'])->name('tasks.index');
+    Route::post('/uzdevumi', [TaskController::class, 'store'])->name('tasks.store');
     Route::get('/uzdevumi/{taskIdentifier}', [TaskController::class, 'index'])->name('tasks.show');
 
     Route::post('/upload-image', [ImageUploadController::class, 'upload'])->name('upload-image');

@@ -23,21 +23,25 @@ const task = inject('task', null);
 const emit = defineEmits(['update']);
 
 const form = useForm({
-    due_date: task?.due_date_raw ? new Date(task.due_date_raw) : new Date()
+    due_date: task?.due_date_raw ? new Date(task.due_date_raw) : null
 });
 
 const formatDate = (date) => {
-    if (!date) return '';
-    const options = { day: 'numeric', month: 'long' };
-    return new Date(date).toLocaleDateString('lv-LV', options);
+    if (!date) return null;
+    try {
+        const options = { day: 'numeric', month: 'long' };
+        return new Date(date).toLocaleDateString('lv-LV', options);
+    } catch {
+        return null;
+    }
 };
 
 const formattedDate = computed(() => {
-    if (task) {
-        return task.due_date || formatDate(form.due_date);
+    if (!form.due_date) {
+        return '-';
     }
 
-    return formatDate(form.due_date);
+    return formatDate(form.due_date) ?? '-';
 });
 
 const submit = () => {
@@ -47,6 +51,7 @@ const submit = () => {
         });
         return;
     }
-    emit('update', form.due_date);
+
+    emit('update', { field: 'due_date', value: form.due_date });
 };
 </script>

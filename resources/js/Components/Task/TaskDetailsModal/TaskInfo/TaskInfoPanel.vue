@@ -18,23 +18,22 @@
                 <DisclosurePanel>
                     <div class="space-y-1.5 md:space-y-4 py-4 p-2 border-b md:border-0">
                         <TaskInfo title="Statuss">
-                            <TaskStatusDropdown @update="$emit('status-updated')" />
+                            <TaskStatusDropdown @update="$emit('update', $event)" />
                         </TaskInfo>
-
                         <TaskInfo title="Prioritāte">
-                            <TaskEditPriorityDropdown @update="$emit('priority-updated')" />
+                            <TaskEditPriorityDropdown @update="$emit('update', $event)" />
                         </TaskInfo>
                         <TaskInfo title="Etiķetes">
-                            <TaskEditLabelsSelect />
+                            <TaskEditLabelsSelect @update="$emit('update', $event)" />
                         </TaskInfo>
                         <TaskInfo title="Termiņš">
-                            <TaskEditDueDateInput />
+                            <TaskEditDueDateInput @update="$emit('update', $event)" />
                         </TaskInfo>
                         <TaskInfo title="Izpildītājs">
-                            <TaskEditAssigneeSelect />
+                            <TaskEditAssigneeSelect @update="$emit('update', $event)" />
                         </TaskInfo>
                         <TaskInfo title="Izpildes novērtējums">
-                            <TaskEditTimeEstimateInput />
+                            <TaskEditTimeEstimateInput @update="$emit('update', $event)" />
                         </TaskInfo>
                     </div>
                 </DisclosurePanel>

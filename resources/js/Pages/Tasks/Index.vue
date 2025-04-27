@@ -1,11 +1,11 @@
 <template>
     <AppLayout>
         <div class="flex items-center justify-end px-4 sm:px-6 lg:px-8 pb-4">
-            <PrimaryButton @click="showCreateTaskModal = true">
+            <PrimaryButton @click="showCreateTaskModal = true" >
                 <PlusIcon class="h-4 w-4" />
                 <span>Izveidot uzdevumu</span>
             </PrimaryButton>
-            <CreateTaskModal :show="showCreateTaskModal" />
+            <CreateTaskModal :show="showCreateTaskModal" @close="showCreateTaskModal = false" />
         </div>
         <div class="flex gap-4 px-4 sm:px-6 lg:px-8 overflow-x-auto pb-4 2xl:grid 2xl:grid-cols-4 2xl:gap-4 2xl:overflow-x-visible">
             <div
@@ -16,13 +16,9 @@
                 <div class="border-b-2 mb-4 pb-2 border-indigo-200 flex items-center justify-between">
                     <div class="flex items-center">
                         <h3 class="uppercase font-semibold text-sm text-gray-700 mr-2">{{ status.title }}</h3>
-                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-indigo-100 text-xs font-bold text-indigo-500">
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-xs bg-indigo-100 text-xs font-bold text-indigo-500">
                             {{ status.tasks.length }}
                         </span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <PlusIcon class="h-4 w-4 text-gray-400" />
-                        <EllipsisHorizontalIcon class="h-4 w-4 text-gray-400" />
                     </div>
                 </div>
 
@@ -83,12 +79,6 @@ const selectedTask = ref(props.task);
 const showTaskDetailsModal = ref(false);
 const showCreateTaskModal = ref(false);
 
-onMounted(() => {
-    if (props.task) {
-        openTaskDetailsModal(props.task);
-    }
-});
-
 // Watch if any tasks have been updated and refresh selected task value
 watch(() => props.statuses, (newStatuses) => {
     const updatedTask = newStatuses
@@ -136,6 +126,18 @@ const updateTaskStatus = (event) => {
         });
     }
 };
+
+watch(
+    () => props.task,
+    (newTask) => {
+        if (newTask) {
+            openTaskDetailsModal(newTask);
+        } else {
+            closeTaskDetailsModal();
+        }
+    },
+    { immediate: true }
+);
 </script>
 
 <style scoped>
