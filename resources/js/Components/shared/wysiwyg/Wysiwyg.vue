@@ -1,5 +1,5 @@
 <template>
-    <div class="flex items-start border-1 rounded-xs mb-6">
+    <div class="flex items-start border-1 rounded-xs mb-4">
         <div class="min-w-0 flex-1">
             <div class="bg-white relative">
                 <EditorContent :editor="editor" class="wysiwyg" />
@@ -37,7 +37,7 @@
                     <EmojiDropdown :editor="editor" />
                 </div>
 
-                <div class="flex justify-end gap-3 order-2 md:order-none">
+                <div v-if="showActionButtons" class="flex justify-end gap-3 order-2 md:order-none">
                     <button
                         @click="cancel"
                         class="text-xs hover:bg-gray-100 font-semibold text-gray-400 hover:text-gray-600 px-2 rounded-sm"
@@ -73,6 +73,10 @@ const props = defineProps({
         type: String,
         default: ''
     },
+    showActionButtons: {
+        type: Boolean,
+        default: true
+    },
     submitButtonText: {
         type: String,
         default: 'Saglabāt'
@@ -80,6 +84,10 @@ const props = defineProps({
     cancelButtonText: {
         type: String,
         default: 'Atcelt'
+    },
+    minHeightClass: {
+        type: String,
+        default: 'min-h-24'
     }
 });
 
@@ -188,10 +196,10 @@ const editor = useEditor({
     ],
     editorProps: {
         attributes: {
-            class: 'focus:outline-none min-h-24 py-2 px-4 text-sm text-gray-600',
+            class: 'focus:outline-none py-2 px-4 text-sm text-gray-600 ' + props.minHeightClass,
         },
     }
-})
+});
 
 let lastEditorSelection = null
 const form = useForm({ body: '' })
@@ -214,7 +222,11 @@ function updateMentionPosition() {
 }
 
 const submit = () => {
-    emit('submit', editor.value.getHTML());
+    emit('submit', getContent());
+}
+
+const getContent = () => {
+    return editor.value.getHTML();
 }
 
 const cancel = () => {
@@ -250,5 +262,5 @@ onMounted(() => {
     }
 });
 
-defineExpose({ focusWithMention, clear });
+defineExpose({ focusWithMention, clear, getContent });
 </script>

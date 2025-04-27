@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import './wysiwyg.css';
+@import './multiselect.css';
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
@@ -72,33 +74,4 @@
 
 input[type="checkbox"] {
     border-radius: 3px;
-}
-
-/* WYSIWYG */
-.wysiwyg ul {
-    list-style-type: disc;
-    margin-left: 1.5rem;
-}
-
-.wysiwyg ol {
-    list-style-type: decimal;
-    margin-left: 1.5rem;
-}
-
-.wysiwyg li {
-    display: list-item;
-    margin-bottom: 0.25rem;
-}
-
-.wysiwyg,
-.comment-body {
-    font-family: var(--base-font-family), var(--emoji-font-family), sans-serif;
-}
-
-.wysiwyg .mention,
-.comment-body .mention {
-    background: #efefef;
-    padding: 2px 4px 2px 4px;
-    border-radius: 4px;
-    font-weight: 600;
 }
