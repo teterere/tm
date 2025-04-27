@@ -2,14 +2,12 @@
     <div class="bg-white rounded p-3 mb-3 shadow-sm cursor-pointer hover:shadow-md">
         <div class="flex justify-between">
             <div class="flex space-x-2">
-                <TaskPriorityLabel :priority="task.priority" />
-
                 <div v-if="task.labels.length" class="flex items-center gap-1.5">
                     <TaskLabel v-for="label in task.labels" :label="label" />
                 </div>
             </div>
-
-            <EllipsisHorizontalIcon class="h-4 w-4 text-gray-400" />
+            <TaskPriorityLabel :priority="task.priority" />
+<!--            <EllipsisHorizontalIcon class="h-4 w-4 text-gray-400" />-->
         </div>
 
         <div class="py-3">

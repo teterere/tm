@@ -30,6 +30,7 @@ Route::middleware([
 
     Route::prefix('uzdevumi/{task}')->name('tasks.')->group(function () {
         Route::patch('/', [TaskController::class, 'update'])->name('update');
+        Route::delete('/', [TaskController::class, 'destroy'])->name('delete');
         Route::patch('/update-status/{status}', [TaskController::class, 'updateStatus'])->name('update-status');
         Route::patch('/update-priority/{priority}', [TaskController::class, 'updatePriority'])->name('update-priority');
 
