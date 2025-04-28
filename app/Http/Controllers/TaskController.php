@@ -8,7 +8,6 @@ use App\Http\Requests\Task\TaskUpdatePriorityRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
 use App\Http\Requests\Task\TaskUpdateStatusRequest;
 use App\Http\Requests\TaskLabels\AddLabelsRequest;
-use App\Http\Requests\TaskLabels\RemoveLabelsRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Http\Resources\TaskResource;
 use App\Http\Resources\TaskStatusResource;
@@ -25,7 +24,7 @@ use Inertia\Response;
 
 class TaskController extends Controller
 {
-    public function index(string $taskIdentifier = null): Response
+    public function index(string $taskIdentifier = null): Response|RedirectResponse
     {
         $statuses = TaskStatus::withTasksForCompany();
         $priorities = TaskPriority::all();
@@ -35,8 +34,13 @@ class TaskController extends Controller
         $task = null;
         if ($taskIdentifier) {
             $task = Task::findByIdentifier($taskIdentifier);
-            $task?->load(['priority', 'assignee', 'status', 'labels', 'checklistItems'])->loadCount('comments');
-            $task = $task ? new TaskResource($task) : null;
+
+            if (!$task) {
+                return redirect()->route('tasks.index');
+            }
+
+            $task->load(['priority', 'assignee', 'status', 'labels', 'checklistItems'])->loadCount('comments');
+            $task = new TaskResource($task);
         }
 
         return Inertia::render('Tasks/Index', [

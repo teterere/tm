@@ -135,6 +135,6 @@ class Task extends Model
         return self::where('identifier_prefix', $prefix)
             ->where('identifier_number', $number)
             ->where('company_id', auth()->user()?->company_id)
-            ->firstOrFail();
+            ->first();
     }
 }
