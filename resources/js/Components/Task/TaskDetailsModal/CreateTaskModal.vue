@@ -17,14 +17,16 @@
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-6 md:gap-x-8">
-                                <TaskInfoPanel @update="updateFormProperty" class="order-1 md:order-2 md:col-span-2" />
+                                <TaskInfoPanel @update="updateFormProperty" :form="form" class="order-1 md:order-2 md:col-span-2" />
                                 <div class="order-2 md:order-1 md:col-span-4">
                                     <div class="mb-4">
                                         <label for="title" class="text-sm font-semibold text-gray-600">Virsraksts <span class="text-red-800">*</span></label>
-                                        <input v-model="form.title" type="text" id="title" class="font-medium block w-full rounded-xs bg-white p-2 text-xl text-gray-900 outline-1 outline-offset-0 outline-gray-200 border-gray-200 focus:outline-1 focus:-outline-offset-0 focus:outline-gray-200 focus:ring-gray-200 focus:border-gray-200" />
+                                        <input v-model="form.title" @input="form.clearErrors('title')" type="text" id="title" class="font-medium block w-full rounded-xs bg-white p-2 text-xl text-gray-900 outline-1 outline-offset-0 outline-gray-200 border-gray-200 focus:outline-1 focus:-outline-offset-0 focus:outline-gray-200 focus:ring-gray-200 focus:border-gray-200" />
+                                        <p v-if="form.errors.title" class="mt-1 text-sm text-rose-600">{{ form.errors.title }}</p>
                                     </div>
                                     <label class="text-sm font-semibold text-gray-600">Apraksts</label>
-                                    <Wysiwyg ref="descriptionInputRef" :showActionButtons="false" min-height-class="min-h-48" />
+                                    <Wysiwyg ref="descriptionInputRef" @input="form.clearErrors('description')" :showActionButtons="false" min-height-class="min-h-48" />
+                                    <p v-if="form.errors.description" class="mt-1 text-sm text-rose-600">{{ form.errors.description }}</p>
                                     <div class="flex items-center space-x-4 justify-end">
                                         <OutlineButton>Atcelt</OutlineButton>
                                         <PrimaryButton @click="submit">Izveidot</PrimaryButton>
@@ -75,8 +77,8 @@ const close = () => {
     emit('close');
 }
 
-const updateFormProperty = (property, value) => {
-    form[property] = value;
+const updateFormProperty = (data) => {
+    form[data.field] = data.value;
 }
 
 const submit = () => {

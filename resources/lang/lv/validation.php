@@ -3,9 +3,10 @@
 return [
     'attributes' => [
         'description' => 'Apraksts',
+        'title'       => 'Virsraksts'
     ],
     'max'        => [
-        'string' => 'Lauks :attribute nedrīkst būt garāks par :max rakstzīmēm.',
+        'string' => ':attribute nedrīkst būt garāks par :max rakstzīmēm.',
     ],
-    'required'   => 'Lauks :attribute nevar būt tukšs'
+    'required'   => ':attribute nevar būt tukšs'
 ];
