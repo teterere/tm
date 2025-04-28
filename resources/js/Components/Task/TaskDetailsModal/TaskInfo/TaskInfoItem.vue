@@ -5,7 +5,7 @@
                 {{ title }}
             </h5>
         </div>
-        <div class="col-span-2 flex items-center">
+        <div class="col-span-2 flex flex-col items-start">
             <slot />
         </div>
     </div>
