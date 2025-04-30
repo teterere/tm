@@ -1,21 +1,18 @@
 <?php
 
+use App\Http\Controllers\DemoAccountController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\TaskChecklistItemController;
 use App\Http\Controllers\TaskCommentController;
 use App\Http\Controllers\TaskController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin'       => Route::has('login'),
-        'canRegister'    => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion'     => PHP_VERSION,
-    ]);
+    return Inertia::render('AboutProject');
 });
+
+Route::post('/demo-konts', [DemoAccountController::class, 'login'])->name('demo.login');
 
 Route::middleware([
     'auth:sanctum',

@@ -16,14 +16,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name'     => 'Andris Bērziņš',
-            'email'    => 'andris.berzins@example.com',
-            'password' => Hash::make('parole123'),
-            'avatar'   => 'andris-berzins.jpg'
-        ]);
-
         $users = [
+            'Andris Bērziņš',
             'Jānis Kalniņš',
             'Anna Ozola',
             'Pēteris Adamsons',
@@ -37,8 +31,9 @@ class UserSeeder extends Seeder
 
         foreach ($users as $name) {
             User::factory()->create([
-                'name'   => $name,
-                'avatar' => Str::slug($name) . '.jpg'
+                'company_id' => DatabaseSeeder::$targetCompany,
+                'name'       => $name,
+                'avatar'     => Str::slug($name) . '.jpg'
             ]);
         }
     }

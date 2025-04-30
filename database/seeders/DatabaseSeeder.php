@@ -11,13 +11,12 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+    public static ?Company $targetCompany = null;
+
     public function run(): void
     {
-        Company::create([
-            'title' => 'Uzņēmums ABC'
+        self::$targetCompany = self::$targetCompany ?? Company::create([
+            'title' => 'Uzņēmums ABC',
         ]);
 
         $this->call([

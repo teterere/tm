@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->boolean('is_demo')->default(false);
             $table->timestamps();
         });
     }
