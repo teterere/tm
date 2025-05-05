@@ -1,4 +1,14 @@
 <template>
+    <!-- Mobilā hamburgera poga -->
+    <div class="sticky top-0 z-40 bg-white border-b border-gray-200 px-4 py-4 flex justify-end items-center lg:hidden">
+        <button type="button" class="-m-2.5 p-2.5 text-gray-700" @click="sidebarOpen = true">
+            <span class="sr-only">Atvērt izvēlni</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </div>
+
     <TransitionRoot as="template" :show="sidebarOpen">
         <Dialog class="relative z-50 lg:hidden" @close="sidebarOpen = false">
             <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="transition-opacity ease-linear duration-300" leave-from="opacity-100" leave-to="opacity-0">
@@ -25,7 +35,7 @@
                                     <li>
                                         <ul role="list" class="-mx-2 space-y-1">
                                             <li v-for="item in navigation" :key="item.name">
-                                                <Link :href="item.href" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold']">
+                                                <Link :href="item.href" :method="item.method" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold']">
                                                     <component :is="item.icon" :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600', 'size-6 shrink-0']" aria-hidden="true" />
                                                     {{ item.name }}
                                                 </Link>
@@ -53,9 +63,7 @@
         </Dialog>
     </TransitionRoot>
 
-    <!-- Static sidebar for desktop -->
     <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        <!-- Sidebar component, swap this element with another sidebar if you like -->
         <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
             <div class="flex h-16 shrink-0 items-center">
                 <CubeTransparentIcon class="size-8 text-indigo-700" />
@@ -65,7 +73,7 @@
                     <li>
                         <ul role="list" class="-mx-2 space-y-1">
                             <li v-for="item in navigation" :key="item.name">
-                                <Link :href="item.href" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold w-full']" :method="item.method">
+                                <Link :href="item.href" :method="item.method" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold w-full']">
                                     <component :is="item.icon" :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600', 'size-6 shrink-0']" aria-hidden="true" />
                                     {{ item.name }}
                                 </Link>
@@ -83,6 +91,7 @@
         </div>
     </div>
 
+    <!-- Saturs -->
     <div class="lg:pl-72">
         <div v-if="$page.props.auth.user && route().current('tasks.*')" class="sticky top-0 z-40 flex">
             <SandboxModeInfoPanel />
@@ -93,6 +102,7 @@
         </main>
     </div>
 </template>
+
 
 <script setup>
 import { ref } from 'vue';
@@ -113,7 +123,7 @@ import {
     CodeBracketIcon
 } from '@heroicons/vue/24/outline';
 
-import {router, Link} from "@inertiajs/vue3";
+import { router, Link } from "@inertiajs/vue3";
 import SandboxModeInfoPanel from "@/Components/SandboxModeInfoPanel.vue";
 
 const navigation = [

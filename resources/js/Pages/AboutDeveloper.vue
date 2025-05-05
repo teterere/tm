@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-        <section class="grid md:grid-cols-3 md:pl-12 pt-22 space-x-12">
+        <section class="grid md:grid-cols-3 md:pl-12 py-22 space-x-12">
             <div class="col-span-2 flex flex-col justify-center px-6">
                 <h1 class="text-5xl font-bold text-gray-900 mb-8">Par izstrādātāju</h1>
 
