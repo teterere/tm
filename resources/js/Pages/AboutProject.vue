@@ -1,6 +1,6 @@
 <template>
     <AppLayout>
-        <section class="flex flex-col md:flex-row md:pl-12 pt-12">
+        <section class="flex flex-col md:flex-row md:pl-12 pt-22">
             <div class="flex flex-col justify-center px-6 md:w-1/2">
                 <div class="space-y-6 md:space-y-8 max-w-prose">
                 <h1 class="text-5xl font-bold text-gray-900">Par projektu</h1>
