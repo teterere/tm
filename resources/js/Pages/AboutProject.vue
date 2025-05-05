@@ -1,39 +1,54 @@
 <template>
     <AppLayout>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center p-8">
-            <div>
-                <h3 class="text-5xl font-bold text-gray-700 mb-8">Par projektu</h3>
+        <section class="flex flex-col md:flex-row md:pl-12 pt-12">
+            <div class="flex flex-col justify-center px-6 md:w-1/2">
+                <div class="space-y-6 md:space-y-8 max-w-prose">
+                <h1 class="text-5xl font-bold text-gray-900">Par projektu</h1>
 
-                <p class="mb-4">
-                    Šī ir vienkāršota Jira alternatīva, ko izstrādāju kā portfolio projektu, lai parādītu savas spējas UX, frontend un backend izstrādē.
-                </p>
-                <p class="mb-4">
-                    Projekts nodrošina Kanban uzdevumu pārvaldību ar iespēju pievienot, rediģēt, dzēst uzdevumus un komentārus.
-                </p>
-                <p class="mb-4">
-                    Katra demo sesija ir izolēta (“sandbox mode”) – katram lietotājam tiek izveidots atsevišķs pagaidu konts.
-                </p>
-                <p class="mb-4">
-                    Projekts izstrādāts ar Vue 3, Laravel 11 un Tailwind CSS.
-                </p>
-                <div class="flex gap-6 mt-8">
-                    <OutlineButton size="xl">Par projekta izstrādātāju</OutlineButton>
+                <div>
+                    <p class="text-sm uppercase tracking-wide text-gray-500 mb-2">Uzdevumu pārvaldības sistēmas piemērs</p>
+                    <p class="text-gray-700">
+                        Šis projekts tika izstrādāts, lai demonstrētu manas spējas fullstack izstrādē. Projekts darbojas izolētā sanbox vidē, kurā iespējams brīvi testēt funkcionalitāti un dati tiks automātiski dzēsti pēc 15 minūtēm.
+                    </p>
+                </div>
 
-                    <Link :href="route('demo.login')" method="post" as="button" class="btn flex items-center space-x-2 bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-indigo-600 px-3.5 py-2.5 text-sm">
-                        Atvērt Demo kontu
-                    </Link>
+                <div class="">
+                    <p class="text-sm text-gray-600 mb-2">Izstrādē izmantotās tehnoloģijas</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span v-for="technology in technologies" class="inline-flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full text-sm font-medium border">
+                          <img :src="'/storage/used-technologies/' + technology.logo" alt="Laravel" class="h-4 w-4" />
+                          {{ technology.title }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row md:flex-wrap gap-3 pt-4 px-8 md:px-0">
+                    <PrimaryButton :href="route('demo.login')" method="post" as="button" class="py-3 justify-center">
+                        <span>Atvērt demo kontu</span>
+                        <ArrowLongRightIcon class="size-4" />
+                    </PrimaryButton>
+
+                    <a href="https://gitlab.com/portfolio8403007/task-manager" target="_blank" class="btn flex items-center space-x-2 px-2.5 py-1.5 text-sm bg-white text-gray-900 ring-inset ring-1 ring-gray-200 hover:bg-gray-50 py-3 justify-center py-3 justify-center">
+                        <CodeBracketIcon class="size-4" />
+                        <span>Skatīt kodu GitLab</span>
+                    </a>
+
+                    <OutlineButton :href="route('about-developer')" class="py-3 justify-center">
+                        <UserIcon class="size-4" />
+                        <span>Par izstrādātāju</span>
+                    </OutlineButton>
                 </div>
             </div>
-
-            <div class="flex justify-center">
-                <img src="/storage/dashboard.png"
-                     class="max-w-[600px] w-full object-contain rounded-2xl border-[12px] shadow-2xl"
-                     style="border-color: #f1f3ff; box-shadow: 0 40px 60px rgb(223,223,223);"
-                     alt="Dashboard" />
             </div>
-        </div>
 
-
+            <div class="hidden md:block md:w-1/2 relative left-0 top-0 top-0 min-h-[600px]">
+                <img
+                    src="/storage/dashboard.png"
+                    alt="Uzdevumu dēlis"
+                    class="h-full object-cover object-left shadow-xl"
+                />
+            </div>
+        </section>
     </AppLayout>
 </template>
 
@@ -41,25 +56,15 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import OutlineButton from "@/Components/shared/Buttons/OutlineButton.vue";
 import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
-import {Cog8ToothIcon} from "@heroicons/vue/20/solid";
-import { Link } from '@inertiajs/vue3'
+import {useForm} from '@inertiajs/vue3';
+import {ArrowLongRightIcon, CodeBracketIcon, UserIcon} from '@heroicons/vue/24/outline';
+
+const form = useForm({});
+
+const technologies = [
+    {title: 'Laravel 11', logo: 'laravel.svg'},
+    {title: 'Vue 3', logo: 'vue.svg'},
+    {title: 'Inertia.js', logo: 'inertia.svg'},
+    {title: 'Tailwind CSS', logo: 'tailwind.svg'},
+];
 </script>
-
-<style scoped>
-    .background-icon {
-        width: 60rem;
-        height: 60rem;
-    }
-
-    .grid-background {
-        background-image: linear-gradient(#fbfbfb 1px, transparent 1px), linear-gradient(to right, #fbfbfb 1px, transparent 1px);
-        background-size: 77px 77px;
-        background-color: #ffffff;
-    }
-
-    img {
-        position: relative;
-        right: -15%;
-        box-shadow: -10.5px 9px 52px 18px #e0e0e0;
-    }
-</style>

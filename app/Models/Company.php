@@ -15,7 +15,7 @@ class Company extends Model
         'is_demo'
     ];
 
-    public function task(): HasMany
+    public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
     }

@@ -1,5 +1,7 @@
 <template>
     <AppLayout>
+<!--        <SandboxModeInfoPanel />-->
+
         <div class="flex items-center justify-end px-4 sm:px-6 lg:px-8 pb-4">
             <PrimaryButton @click="showCreateTaskModal = true" >
                 <PlusIcon class="h-4 w-4" />
@@ -61,6 +63,7 @@ import {VueDraggable} from "vue-draggable-plus";
 import {router} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
 import CreateTaskModal from "@/Components/Task/TaskDetailsModal/CreateTaskModal.vue";
+import SandboxModeInfoPanel from "@/Components/SandboxModeInfoPanel.vue";
 
 const props = defineProps({
     statuses: Array,

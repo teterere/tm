@@ -25,10 +25,10 @@
                                     <li>
                                         <ul role="list" class="-mx-2 space-y-1">
                                             <li v-for="item in navigation" :key="item.name">
-                                                <a :href="item.href" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold']">
+                                                <Link :href="item.href" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold']">
                                                     <component :is="item.icon" :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600', 'size-6 shrink-0']" aria-hidden="true" />
                                                     {{ item.name }}
-                                                </a>
+                                                </Link>
                                             </li>
                                         </ul>
                                     </li>
@@ -78,52 +78,8 @@
     </div>
 
     <div class="lg:pl-72">
-        <div v-if="$page.props.auth.user" class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-xs sm:gap-x-6 sm:px-6 lg:px-8">
-            <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="sidebarOpen = true">
-                <span class="sr-only">Atvērt navigāciju</span>
-                <Bars3Icon class="size-6" aria-hidden="true" />
-            </button>
-
-            <!-- Separator -->
-            <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" />
-
-            <div class="flex flex-1 items-center gap-x-4 self-stretch lg:gap-x-6">
-                <div class="flex-1"></div>
-<!--                <div class="bg-emerald-200 flex-1 h-3/4 p-2 rounded-sm flex items-center space-x-4">-->
-<!--                    <InformationCircleIcon class="size-8" />-->
-<!--                    <div>-->
-<!--                        <h5 class="text-sm font-semibold">Šis ir demo konts</h5>-->
-<!--                        <p class="text-sm">Visas veiktās darbības ir īslaicīgas. Dati tiks atjaunoti pēc <span class="font-bold">15min 00s</span></p>-->
-<!--                    </div>-->
-<!--                </div>-->
-                <div class="flex items-center gap-x-4 lg:gap-x-6">
-                    <!-- Separator -->
-                    <div class="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true" />
-
-                    <!-- Profile dropdown -->
-                    <Menu v-if="$page.props.auth.user" as="div" class="relative">
-                        <MenuButton class="-m-1.5 flex items-center p-1.5">
-                            <span class="sr-only">Open user menu</span>
-                            <img class="size-8 rounded-full bg-gray-50" :src="$page.props.auth.user.avatar_url" alt="" />
-                            <span class="hidden lg:flex lg:items-center">
-                              <span class="ml-4 text-sm/6 font-semibold text-gray-900" aria-hidden="true">
-                                  {{ $page.props.auth.user.name }}
-                              </span>
-                              <ChevronDownIcon class="ml-2 size-5 text-gray-400" aria-hidden="true" />
-                            </span>
-                        </MenuButton>
-                        <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                            <MenuItems class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 ring-1 shadow-lg ring-gray-900/5 focus:outline-hidden">
-                                <MenuItem v-slot="{ active }">
-                                    <button @click.prevent="logout" :class="[active ? 'bg-gray-50 outline-hidden' : '', 'block px-3 py-1 text-sm/6 text-gray-900 cursor-pointer w-full text-left']">
-                                        Iziet
-                                    </button>
-                                </MenuItem>
-                            </MenuItems>
-                        </transition>
-                    </Menu>
-                </div>
-            </div>
+        <div v-if="$page.props.auth.user && route().current('tasks.*')" class="sticky top-0 z-40 flex">
+            <SandboxModeInfoPanel />
         </div>
 
         <main class="py-4">
@@ -137,36 +93,30 @@ import { ref } from 'vue';
 import {
     Dialog,
     DialogPanel,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
     TransitionChild,
     TransitionRoot,
 } from '@headlessui/vue';
 
 import {
-    Bars3Icon,
     Cog6ToothIcon,
     FolderIcon,
     HomeIcon,
     UsersIcon,
     XMarkIcon,
-    ChevronDownIcon,
-    InformationCircleIcon
 } from '@heroicons/vue/24/outline';
 
-import {router} from "@inertiajs/vue3";
+import {router, Link} from "@inertiajs/vue3";
+import SandboxModeInfoPanel from "@/Components/SandboxModeInfoPanel.vue";
 
 const navigation = [
-    { name: 'Par projektu', href: '#', icon: HomeIcon, current: true },
-    { name: 'Par izstrādātāju', href: '#', icon: FolderIcon, current: false },
+    { name: 'Par projektu', href: route('home'), icon: HomeIcon, current: true },
+    { name: 'Par izstrādātāju', href: route('about-developer'), icon: FolderIcon, current: false },
     { name: 'Demo konts', href: '#', icon: UsersIcon, current: false }
-]
+];
 
-const sidebarOpen = ref(false)
+const sidebarOpen = ref(false);
 
 const logout = () => {
     router.post(route('logout'));
-};
+}
 </script>

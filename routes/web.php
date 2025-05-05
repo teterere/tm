@@ -5,19 +5,23 @@ use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\TaskChecklistItemController;
 use App\Http\Controllers\TaskCommentController;
 use App\Http\Controllers\TaskController;
+use App\Http\Middleware\EnsureDemoSessionIsValid;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('AboutProject');
-});
+})->name('home');
+
+Route::get('/par-izstradataju', function () {
+    return Inertia::render('AboutDeveloper');
+})->name('about-developer');
 
 Route::post('/demo-konts', [DemoAccountController::class, 'login'])->name('demo.login');
 
 Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
+    'auth',
+    EnsureDemoSessionIsValid::class
 ])->group(function () {
     Route::get('/uzdevumi', [TaskController::class, 'index'])->name('tasks.index');
     Route::post('/uzdevumi', [TaskController::class, 'store'])->name('tasks.store');
