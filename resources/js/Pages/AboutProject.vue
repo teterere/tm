@@ -59,8 +59,6 @@ import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
 import {useForm} from '@inertiajs/vue3';
 import {ArrowLongRightIcon, CodeBracketIcon, UserIcon} from '@heroicons/vue/24/outline';
 
-const form = useForm({});
-
 const technologies = [
     {title: 'Laravel 11', logo: 'laravel.svg'},
     {title: 'Vue 3', logo: 'vue.svg'},

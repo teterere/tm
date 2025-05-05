@@ -65,7 +65,7 @@
                     <li>
                         <ul role="list" class="-mx-2 space-y-1">
                             <li v-for="item in navigation" :key="item.name">
-                                <Link :href="item.href" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold']">
+                                <Link :href="item.href" :class="[item.current ? 'bg-gray-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-indigo-600', 'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold w-full']" :method="item.method">
                                     <component :is="item.icon" :class="[item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600', 'size-6 shrink-0']" aria-hidden="true" />
                                     {{ item.name }}
                                 </Link>
@@ -118,7 +118,7 @@ import SandboxModeInfoPanel from "@/Components/SandboxModeInfoPanel.vue";
 
 const navigation = [
     { name: 'Par projektu', href: route('home'), icon: DocumentTextIcon, current: route().current('home') },
-    { name: 'Demo konts', href: route('tasks.index'), icon: PlayIcon, current: route().current('tasks.*') },
+    { name: 'Demo konts', href: route('demo.login'), icon: PlayIcon, current: route().current('tasks.*'), method: 'POST' },
     { name: 'Par izstrādātāju', href: route('about-developer'), icon: UserIcon, current: route().current('about-developer') }
 ];
 
