@@ -38,30 +38,29 @@
 
                 <DisclosurePanel>
                     <div class="space-y-1.5 md:space-y-4 py-4 p-2 border-b md:border-0">
-                        <div v-if="form.errors">{{ form.errors }}</div>
                         <TaskInfo title="Statuss">
-                            <TaskStatusDropdown @update="$emit('update', $event)" @input="form.clearErrors('status_id')" />
-                            <p v-if="form.errors.status_id" class="mt-1 text-sm text-rose-600">{{ form.errors.status_id }}</p>
+                            <TaskStatusDropdown @update="$emit('update', $event)" @input="form?.clearErrors('status_id')" />
+                            <p v-if="form?.errors.status_id" class="mt-1 text-sm text-rose-600">{{ form?.errors.status_id }}</p>
                         </TaskInfo>
                         <TaskInfo title="Prioritāte">
-                            <TaskEditPriorityDropdown @update="$emit('update', $event)" @input="form.clearErrors('priority_id')" />
-                            <p v-if="form.errors.priority_id" class="mt-1 text-sm text-rose-600">{{ form.errors.priority_id }}</p>
+                            <TaskEditPriorityDropdown @update="$emit('update', $event)" @input="form?.clearErrors('priority_id')" />
+                            <p v-if="form?.errors.priority_id" class="mt-1 text-sm text-rose-600">{{ form?.errors.priority_id }}</p>
                         </TaskInfo>
                         <TaskInfo title="Etiķetes">
-                            <TaskEditLabelsSelect @update="$emit('update', $event)" @input="form.clearErrors('labels')" />
-                            <p v-if="form.errors.labels" class="mt-1 text-sm text-rose-600">{{ form.errors.labels }}</p>
+                            <TaskEditLabelsSelect @update="$emit('update', $event)" @input="form?.clearErrors('labels')" />
+                            <p v-if="form?.errors.labels" class="mt-1 text-sm text-rose-600">{{ form?.errors.labels }}</p>
                         </TaskInfo>
                         <TaskInfo title="Termiņš">
-                            <TaskEditDueDateInput @update="$emit('update', $event)" @input="form.clearErrors('due_date')" />
-                            <p v-if="form.errors.due_date" class="mt-1 text-sm text-rose-600">{{ form.errors.due_date }}</p>
+                            <TaskEditDueDateInput @update="$emit('update', $event)" @input="form?.clearErrors('due_date')" />
+                            <p v-if="form?.errors.due_date" class="mt-1 text-sm text-rose-600">{{ form?.errors.due_date }}</p>
                         </TaskInfo>
                         <TaskInfo title="Izpildītājs">
-                            <TaskEditAssigneeSelect @update="$emit('update', $event)" @input="form.clearErrors('assignee_id')" />
-                            <p v-if="form.errors.assignee_id" class="mt-1 text-sm text-rose-600">{{ form.errors.assignee_id }}</p>
+                            <TaskEditAssigneeSelect @update="$emit('update', $event)" @input="form?.clearErrors('assignee_id')" />
+                            <p v-if="form?.errors.assignee_id" class="mt-1 text-sm text-rose-600">{{ form?.errors.assignee_id }}</p>
                         </TaskInfo>
                         <TaskInfo title="Izpildes novērtējums">
-                            <TaskEditTimeEstimateInput @update="$emit('update', $event)" @input="form.clearErrors('estimate')" />
-                            <p v-if="form.errors.estimate" class="mt-1 text-sm text-rose-600">{{ form.errors.estimate }}</p>
+                            <TaskEditTimeEstimateInput @update="$emit('update', $event)" @input="form?.clearErrors('estimate')" />
+                            <p v-if="form?.errors.estimate" class="mt-1 text-sm text-rose-600">{{ form?.errors.estimate }}</p>
                         </TaskInfo>
                     </div>
                 </DisclosurePanel>
@@ -85,7 +84,10 @@ import ConfirmDeletionDialog from "@/Components/ConfirmDeletionDialog.vue";
 import {router} from "@inertiajs/vue3";
 
 const task = inject('task');
-const props = defineProps(['form'])
+const props = defineProps({
+    form: Object
+});
+
 const showConfirmDeletionDialog = ref(false);
 
 const deleteTask = () => {

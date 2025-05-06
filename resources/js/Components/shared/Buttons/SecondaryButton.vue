@@ -1,5 +1,5 @@
 <template>
-    <CustomButton :size="size" :href="href" class="bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline-indigo-600">
+    <CustomButton :size="size" :href="href" class="bg-gray-100 text-gray-800 hover:bg-gray-200">
         <slot />
     </CustomButton>
 </template>
