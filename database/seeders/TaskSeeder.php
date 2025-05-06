@@ -91,6 +91,7 @@ class TaskSeeder extends Seeder
 
         foreach ($tasks as $data) {
             $task = Task::factory()->create([
+                'company_id'  => DatabaseSeeder::$targetCompany,
                 'title'       => $data['title'],
                 'description' => $data['description']
             ]);

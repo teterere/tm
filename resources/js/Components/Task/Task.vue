@@ -53,7 +53,7 @@
 import {CheckCircleIcon, ClockIcon, EllipsisHorizontalIcon, ChatBubbleOvalLeftEllipsisIcon} from "@heroicons/vue/24/outline";
 import TaskPriorityLabel from "@/Components/Task/TaskPriority/TaskPriorityLabel.vue";
 import TaskLabel from "@/Components/Task/TaskLabel/TaskLabel.vue";
-import {UserIcon} from "@heroicons/vue/20/solid/index.js";
+import {UserIcon} from "@heroicons/vue/20/solid";
 
 defineProps({
     task: Object

@@ -11,10 +11,11 @@ class Company extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title'
+        'title',
+        'is_demo'
     ];
 
-    public function task(): HasMany
+    public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
     }

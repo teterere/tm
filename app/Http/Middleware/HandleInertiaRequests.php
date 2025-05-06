@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Http\Resources\EmployeeResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -40,6 +41,7 @@ class HandleInertiaRequests extends Middleware
             'auth.user' => fn () => $request->user()
                 ? EmployeeResource::make($request->user())
                 : null,
+            'sandbox_expires_at' => Session::get('sandbox_expires_at')
         ]);
     }
 }

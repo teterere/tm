@@ -24,7 +24,6 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id'  => 1,
             'title'       => $this->faker->sentence,
             'description' => $this->faker->paragraph,
             'due_date'    => $this->faker->dateTimeBetween('now', '+1 month'),
