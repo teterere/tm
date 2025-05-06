@@ -46,7 +46,7 @@
 import { Menu, MenuButton, MenuItems } from '@headlessui/vue'
 import { LinkIcon, XMarkIcon, PhotoIcon } from '@heroicons/vue/24/outline'
 import { ref } from "vue"
-import { useEditorSelection } from '@/composables/useEditorSelection.js'
+import { useEditorSelection } from '@/Composables/useEditorSelection.js'
 
 const props = defineProps({
     editor: Object
