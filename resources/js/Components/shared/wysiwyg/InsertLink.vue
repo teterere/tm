@@ -56,7 +56,7 @@ import OutlineButton from "@/Components/shared/Buttons/OutlineButton.vue";
 import PrimaryButton from "@/Components/shared/Buttons/PrimaryButton.vue";
 import { LinkIcon, XMarkIcon } from '@heroicons/vue/24/outline';
 import { ref } from "vue";
-import { useEditorSelection } from '@/composables/useEditorSelection.js'
+import { useEditorSelection } from '@/Composables/useEditorSelection.js'
 
 const props = defineProps({
     editor: Object
